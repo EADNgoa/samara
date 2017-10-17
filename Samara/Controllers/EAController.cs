@@ -24,7 +24,7 @@ namespace Samara.Controllers
         protected T BaseCreateEdit<T>(int? id, string IDname)
         {
             T a;
-            if (id.HasValue)
+            if (id.HasValue) //is edit
             {
                 a = db.SingleOrDefault<T>($"where {IDname} = @0", id);
                 return a;
@@ -32,15 +32,11 @@ namespace Samara.Controllers
             return default(T);
         }
 
-        protected ActionResult BaseSave<T>(T ObjToSave)
+        protected ActionResult BaseSave<T>(T ObjToSave, bool isExisting)
         {
             if (ModelState.IsValid)
             {
-                using (var trans = db.GetTransaction())
-                {
-                    db.Save(ObjToSave);
-                    trans.Complete();
-                }
+                var r = (isExisting)? db.Update(ObjToSave): db.Insert(ObjToSave);
                 return RedirectToAction("Index");
             }
 

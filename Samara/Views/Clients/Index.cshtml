@@ -1,13 +1,13 @@
-﻿@model IEnumerable<DefaultConnection.Client>
+﻿@model IEnumerable<Client>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Clients";
 }
 
-<h2>Index</h2>
+<h2>@ViewBag.Title</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create New", "Manage")
 </p>
 <table class="table">
     <tr>
@@ -29,9 +29,7 @@
             @Html.DisplayFor(modelItem => item.Address)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ClientId }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ClientId }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ClientId })
+            @Html.ActionLink("Edit", "Manage", new { id=item.ClientId }) 
         </td>
     </tr>
 }

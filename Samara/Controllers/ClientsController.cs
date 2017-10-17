@@ -16,13 +16,13 @@ namespace Samara.Controllers
         // GET: Clients
         public ActionResult Index()
         {
-            return View("Clients", base.BaseIndex<Client>("Clients"));
+            return View("Index", base.BaseIndex<Client>("Client"));
         }
 
        
 
         // GET: Clients/Create
-        public ActionResult Create(int? id)
+        public ActionResult Manage(int? id)
         {
             return View(base.BaseCreateEdit<Client>(id, "ClientId"));
         }
@@ -32,73 +32,11 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ClientId,ClientName,Address")] Client client)
-        {
-            if (ModelState.IsValid)
-            {
-                return base.BaseSave<Client>(client);                
-            }
-
-            return View(client);
+        public ActionResult Manage([Bind(Include = "ClientId,ClientName,Address")] Client client)
+        {         
+            return base.BaseSave<Client>(client, client.ClientId>0);            
         }
-
-        //// GET: Clients/Edit/5
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Client client = db.Client.Find(id);
-        //    if (client == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(client);
-        //}
-
-        // POST: Clients/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "ClientId,ClientName,Address")] Client client)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        db.Entry(client).State = EntityState.Modified;
-        //        db.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View(client);
-        //}
-
-        //// GET: Clients/Delete/5
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    Client client = db.Clients.Find(id);
-        //    if (client == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(client);
-        //}
-
-        //// POST: Clients/Delete/5
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    Client client = db.Clients.Find(id);
-        //    db.Clients.Remove(client);
-        //    db.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
-
+        
         protected override void Dispose(bool disposing)
         {
             if (disposing)
