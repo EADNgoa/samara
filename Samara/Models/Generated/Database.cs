@@ -430,5 +430,683 @@ namespace Samara
 
 	}
 
+    
+
+	[TableName("dbo.ClientBill")]
+
+
+
+	[PrimaryKey("CBillID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class ClientBill  
+    {
+
+
+
+		[Column] public int CBillID { get; set; }
+
+
+
+
+
+		[Column] public int? ClientID { get; set; }
+
+
+
+
+
+		[Column] public DateTime? Tdate { get; set; }
+
+
+
+
+
+		[Column] public decimal? RetentionPerc { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.ClientBillDetail")]
+
+
+
+	[PrimaryKey("CBillDetailID", AutoIncrement=false)]
+
+
+	[ExplicitColumns]
+
+    public partial class ClientBillDetail  
+    {
+
+
+
+		[Column] public int CBillDetailID { get; set; }
+
+
+
+
+
+		[Column] public int? CBillID { get; set; }
+
+
+
+
+
+		[Column] public int? ItemID { get; set; }
+
+
+
+
+
+		[Column] public int? Qty { get; set; }
+
+
+
+
+
+		[Column] public decimal? UnitCostPrice { get; set; }
+
+
+
+
+
+		[Column] public decimal? UnitSellPrice { get; set; }
+
+
+
+
+
+		[Column] public decimal? TaxPerc { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.ClientViewBillDetail")]
+
+
+
+	[PrimaryKey("ClientViewBillDetailID", AutoIncrement=false)]
+
+
+	[ExplicitColumns]
+
+    public partial class ClientViewBillDetail  
+    {
+
+
+
+		[Column] public int ClientViewBillDetailID { get; set; }
+
+
+
+
+
+		[Column] public int? CBillID { get; set; }
+
+
+
+
+
+		[Column] public string Description { get; set; }
+
+
+
+
+
+		[Column] public decimal? Amount { get; set; }
+
+
+
+
+
+		[Column] public bool? DebitCredit { get; set; }
+
+
+
+
+
+		[Column] public string BeforeTax { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.Config")]
+
+
+
+	[PrimaryKey("ConfigID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class Config  
+    {
+
+
+
+		[Column] public int ConfigID { get; set; }
+
+
+
+
+
+		[Column] public string PANnumber { get; set; }
+
+
+
+
+
+		[Column] public string TANnumber { get; set; }
+
+
+
+
+
+		[Column] public int RowsPerPage { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.Item")]
+
+
+
+	[PrimaryKey("ItemID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class Item  
+    {
+
+
+
+		[Column] public int ItemID { get; set; }
+
+
+
+
+
+		[Column] public int? UnitID { get; set; }
+
+
+
+
+
+		[Column] public int? ReorderLevel { get; set; }
+
+
+
+
+
+		[Column] public decimal? TaxPerc { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.Project")]
+
+
+
+	[PrimaryKey("ProjectID", AutoIncrement=false)]
+
+
+	[ExplicitColumns]
+
+    public partial class Project  
+    {
+
+
+
+		[Column] public int ProjectID { get; set; }
+
+
+
+
+
+		[Column] public string Name { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.SiteCurrentStock")]
+
+
+
+	[PrimaryKey("SiteStockID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class SiteCurrentStock  
+    {
+
+
+
+		[Column] public int SiteStockID { get; set; }
+
+
+
+
+
+		[Column] public int? SiteID { get; set; }
+
+
+
+
+
+		[Column] public int? ItemID { get; set; }
+
+
+
+
+
+		[Column] public int? Qty { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.Sites")]
+
+
+
+	[PrimaryKey("SiteID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class Site  
+    {
+
+
+
+		[Column] public int SiteID { get; set; }
+
+
+
+
+
+		[Column] public int? ProjectID { get; set; }
+
+
+
+
+
+		[Column] public string SiteName { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.SiteTransasction")]
+
+
+
+	[PrimaryKey("SiteTransID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class SiteTransasction  
+    {
+
+
+
+		[Column] public int SiteTransID { get; set; }
+
+
+
+
+
+		[Column] public int? UserID { get; set; }
+
+
+
+
+
+		[Column] public DateTime? Tdate { get; set; }
+
+
+
+
+
+		[Column] public int? SiteID { get; set; }
+
+
+
+
+
+		[Column] public int? ItemID { get; set; }
+
+
+
+
+
+		[Column] public int? QtyAdded { get; set; }
+
+
+
+
+
+		[Column] public int? QtyRemoved { get; set; }
+
+
+
+
+
+		[Column] public int? ToSiteID { get; set; }
+
+
+
+
+
+		[Column] public int? SBillDetailID { get; set; }
+
+
+
+
+
+		[Column] public string Remarks { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.StockSummary")]
+
+
+
+	[PrimaryKey("StockSummaryID", AutoIncrement=false)]
+
+
+	[ExplicitColumns]
+
+    public partial class StockSummary  
+    {
+
+
+
+		[Column] public int StockSummaryID { get; set; }
+
+
+
+
+
+		[Column] public DateTime? Tdate { get; set; }
+
+
+
+
+
+		[Column] public int? ItemID { get; set; }
+
+
+
+
+
+		[Column] public int? SiteID { get; set; }
+
+
+
+
+
+		[Column] public int? Qty { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.Supervisor")]
+
+
+
+	[PrimaryKey("UserID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class Supervisor  
+    {
+
+
+
+		[Column] public int UserID { get; set; }
+
+
+
+
+
+		[Column] public string Name { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.SupervisorSites")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class SupervisorSite  
+    {
+
+
+
+		[Column] public int UserID { get; set; }
+
+
+
+
+
+		[Column] public int? SiteID { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.Supplier")]
+
+
+
+	[PrimaryKey("SupplierID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class Supplier  
+    {
+
+
+
+		[Column] public int SupplierID { get; set; }
+
+
+
+
+
+		[Column] public string SupplierName { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.SupplierBill")]
+
+
+
+	[PrimaryKey("SBillID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class SupplierBill  
+    {
+
+
+
+		[Column] public int SBillID { get; set; }
+
+
+
+
+
+		[Column] public int? SupplierID { get; set; }
+
+
+
+
+
+		[Column] public DateTime? Tdate { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.SupplierBillDetail")]
+
+
+
+	[PrimaryKey("SBillDetailID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class SupplierBillDetail  
+    {
+
+
+
+		[Column] public int SBillDetailID { get; set; }
+
+
+
+
+
+		[Column] public int? SBillID { get; set; }
+
+
+
+
+
+		[Column] public int? ItemID { get; set; }
+
+
+
+
+
+		[Column] public int? Qty { get; set; }
+
+
+
+
+
+		[Column] public decimal? UnitPrice { get; set; }
+
+
+
+
+
+		[Column] public int? QtyRec { get; set; }
+
+
+
+
+
+		[Column] public int? QtySold { get; set; }
+
+
+
+	}
+
+    
+
+	[TableName("dbo.Units")]
+
+
+
+	[PrimaryKey("UnitID")]
+
+
+
+
+	[ExplicitColumns]
+
+    public partial class Unit  
+    {
+
+
+
+		[Column] public int UnitID { get; set; }
+
+
+
+
+
+		[Column] public string UnitName { get; set; }
+
+
+
+	}
+
 
 }
