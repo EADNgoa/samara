@@ -21,6 +21,8 @@ namespace Samara.Controllers
         {
             var res= db.Query<T>($"Select * from {TableWithWhere}");
 
+
+            if (TableWithWhere.Contains("where")) page = 1;
             int pageSize = db.Fetch<int>("Select top 1 RowsPerPage from Config").FirstOrDefault();                
             int pageNumber = (page ?? 1);
             return res.ToPagedList(pageNumber, pageSize);
