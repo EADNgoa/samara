@@ -1,5 +1,5 @@
-﻿@model IEnumerable<Client>
-
+﻿@model PagedList.IPagedList<Client>
+@using PagedList.Mvc;
 @{
     ViewBag.Title = "Clients";
 }
@@ -12,10 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ClientName)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ClientName)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Address)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Address)
         </th>
         <th></th>
     </tr>
@@ -35,3 +35,11 @@
 }
 
 </table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+
+<div>
+    @Html.ActionLink("Back to Clients", "Index", "Clients")
+</div>

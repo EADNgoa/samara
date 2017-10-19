@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using PagedList;
 
 namespace Samara.Controllers
 {
@@ -16,9 +17,15 @@ namespace Samara.Controllers
         }
 
         // GET: Agents
-        protected IEnumerable<T> BaseIndex<T>(string TableWithWhere)
+        protected IPagedList<T> BaseIndex<T>(int? page, string TableWithWhere)
         {
-            return db.Query<T>($"Select * from {TableWithWhere}");
+            var res= db.Query<T>($"Select * from {TableWithWhere}");
+
+            int pageSize = db.Fetch<int>("Select top 1 RowsPerPage from Config").FirstOrDefault();                
+            int pageNumber = (page ?? 1);
+            return res.ToPagedList(pageNumber, pageSize);
+
+            //return db.Query<T>($"Select * from {TableWithWhere}");
         }
 
         protected T BaseCreateEdit<T>(int? id, string IDname)
