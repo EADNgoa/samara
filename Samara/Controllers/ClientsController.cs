@@ -14,9 +14,10 @@ namespace Samara.Controllers
     public class ClientsController : EAController
     {        
         // GET: Clients
-        public ActionResult Index(int? page)
+        public ActionResult Index(int? page, string PropName)
         {
-            return View("Index", base.BaseIndex<Client>(page, "Client"));
+            return View("Index", base.BaseIndex<Client>(page, "Client where ClientName like '%"+PropName+"%'"));
+            //return View("Index", base.BaseIndex<Client>(page, "Client"));
         }
 
        
