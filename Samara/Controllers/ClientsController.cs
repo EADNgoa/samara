@@ -15,9 +15,8 @@ namespace Samara.Controllers
     {        
         // GET: Clients
         public ActionResult Index(int? page, string PropName)
-        {
-            return View("Index", base.BaseIndex<Client>(page, "Client where ClientName like '%"+PropName+"%'"));
-            //return View("Index", base.BaseIndex<Client>(page, "Client"));
+        {            
+            return View("Index", base.BaseIndex<Client>(page, "Client where ClientName like '%"+PropName+"%'"));            
         }
 
        
@@ -35,7 +34,7 @@ namespace Samara.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Manage([Bind(Include = "ClientId,ClientName,Address")] Client client)
         {         
-            return base.BaseSave<Client>(client, client.ClientId>0);            
+            return base.BaseSave<Client>(client, client.ClientId >0);            
         }
         
         protected override void Dispose(bool disposing)
