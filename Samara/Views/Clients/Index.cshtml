@@ -4,7 +4,26 @@
     ViewBag.Title = "Clients";
 }
 
-<h2>@ViewBag.Title</h2>
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+    
+    @using (Html.BeginForm("Index", "Clients", FormMethod.Get))
+    {        
+        <div class="row section-to-Not-print">
+            <div>
+                <table>
+                    <tr style="text-align:center">
+                        <td>&nbsp; Client Name:</td>
+                        <td> @Html.TextBox("PropName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
+
+                        <td class="col-lg-1"></td>
+                        <td><input type="submit" value="Search" class="btn btn-default" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</center>
 
 <p>
     @Html.ActionLink("Create New", "Manage")
