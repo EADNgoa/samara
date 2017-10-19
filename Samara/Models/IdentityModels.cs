@@ -31,5 +31,7 @@ namespace Samara.Models
         }
 
         public System.Data.Entity.DbSet<Client> Clients { get; set; }
+
+        public System.Data.Entity.DbSet<Samara.Project> Projects { get; set; }
     }
 }
