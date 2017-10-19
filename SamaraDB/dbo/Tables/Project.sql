@@ -1,5 +1,5 @@
 ﻿CREATE TABLE [dbo].[Project]
 (
-	[ProjectID] INT NOT NULL PRIMARY KEY, 
+	[ProjectID] INT NOT NULL PRIMARY KEY IDENTITY, 
     [Name] VARCHAR(150) NULL
 )

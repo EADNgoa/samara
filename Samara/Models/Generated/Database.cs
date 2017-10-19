@@ -220,7 +220,7 @@ namespace Samara
 	}
     
 	[TableName("dbo.Project")]
-	[PrimaryKey("ProjectID", AutoIncrement=false)]
+	[PrimaryKey("ProjectID")]
 	[ExplicitColumns]
     public partial class Project  
     {
