@@ -214,6 +214,7 @@ namespace Samara
     public partial class Item  
     {
 		[Column] public int ItemID { get; set; }
+		[Column] public string ItemName { get; set; }
 		[Column] public int? UnitID { get; set; }
 		[Column] public int? ReorderLevel { get; set; }
 		[Column] public decimal? TaxPerc { get; set; }

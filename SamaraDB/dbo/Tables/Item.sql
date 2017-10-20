@@ -1,6 +1,7 @@
 ﻿CREATE TABLE [dbo].[Item]
 (
-	[ItemID] INT NOT NULL PRIMARY KEY IDENTITY, 
+	[ItemID] INT NOT NULL PRIMARY KEY IDENTITY,
+	[ItemName] VARCHAR(100) NULL, 
     [UnitID] INT NULL, 
     [ReorderLevel] INT NULL, 
     [TaxPerc] DECIMAL(18, 2) NULL, 
