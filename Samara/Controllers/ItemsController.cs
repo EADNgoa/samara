@@ -24,7 +24,8 @@ namespace Samara.Controllers
         // GET: Clients/Create
         public ActionResult Manage(int? id)
         {
-            ViewBag.UnitID = new SelectList(db.Fetch<Unit>("Select UnitID,UnitName from Units"));
+            ViewBag.UnitID = new SelectList(db.Fetch<Unit>("Select UnitID,UnitName from Units"), "UnitID", "UnitName");
+                        
             return View(base.BaseCreateEdit<Item>(id, "ItemID"));
         }
 
@@ -34,8 +35,7 @@ namespace Samara.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Manage([Bind(Include = "ItemID,ItemName,UnitID,ReorderLevel,TaxPerc")] Item item)
-        {
-            ViewBag.UnitID = new SelectList(db.Fetch<Unit>("Select UnitID,UnitName from Units"),item.UnitID);
+        {            
             return base.BaseSave<Item>(item, item.ItemID > 0);
         }
 
