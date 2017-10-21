@@ -11,13 +11,13 @@ using Samara.Models;
 
 namespace Samara.Controllers
 {
-    public class SupervisorsController : EAController
+    public class ItemsController : EAController
     {
         // GET: Clients
-        public ActionResult Index(int? page, string SupName)
+        public ActionResult Index(int? page ,string ItemName )
         {
-            if (SupName?.Length > 0) page = 1;
-            return View("Index", base.BaseIndex<Supervisor>(page, "Supervisor where Name like '%" + SupName + "%'"));
+            if (ItemName?.Length > 0) page = 1;
+            return View("Index", base.BaseIndex<ItemDetail>(page, "ItemId, ItemName, UnitName, ReorderLevel, TaxPerc", "Item inner join Units on item.unitId=Units.UnitId where ItemName like '%" + ItemName + "%'"));
         }
 
 
@@ -25,7 +25,9 @@ namespace Samara.Controllers
         // GET: Clients/Create
         public ActionResult Manage(int? id)
         {
-            return View(base.BaseCreateEdit<Supervisor>(id, "UserID"));
+            ViewBag.UnitID = new SelectList(db.Fetch<Unit>("Select UnitID,UnitName from Units"), "UnitID", "UnitName");
+                        
+            return View(base.BaseCreateEdit<Item>(id, "ItemID"));
         }
 
         // POST: Clients/Create
@@ -33,9 +35,9 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "UserID,Name")] Supervisor supervisor)
-        {
-            return base.BaseSave<Supervisor>(supervisor, supervisor.UserID > 0);
+        public ActionResult Manage([Bind(Include = "ItemID,ItemName,UnitID,ReorderLevel,TaxPerc")] Item item)
+        {            
+            return base.BaseSave<Item>(item, item.ItemID > 0);
         }
 
         protected override void Dispose(bool disposing)

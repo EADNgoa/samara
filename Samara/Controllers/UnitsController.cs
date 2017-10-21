@@ -16,6 +16,7 @@ namespace Samara.Controllers
         // GET: Clients
         public ActionResult Index(int? page, string UnitName)
         {
+            if (UnitName?.Length > 0) page = 1;
             return View("Index", base.BaseIndex<Unit>(page, "Units where UnitName like '%" + UnitName + "%'"));
         }
 
