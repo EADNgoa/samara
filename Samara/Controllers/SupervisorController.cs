@@ -16,6 +16,7 @@ namespace Samara.Controllers
         // GET: Clients
         public ActionResult Index(int? page, string SupName)
         {
+            if (SupName?.Length > 0) page = 1;
             return View("Index", base.BaseIndex<Supervisor>(page, "Supervisor where Name like '%" + SupName + "%'"));
         }
 

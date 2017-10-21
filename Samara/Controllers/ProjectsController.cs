@@ -16,6 +16,7 @@ namespace Samara.Controllers
         // GET: Clients
         public ActionResult Index(int? page, string ProjName)
         {
+            if (ProjName?.Length > 0) page = 1;
             return View("Index", base.BaseIndex<Project>(page, "Project where Name like '%" + ProjName + "%'"));
         }
 

@@ -16,18 +16,28 @@ namespace Samara.Controllers
             this.db = new Repository();
         }
 
-        // GET: Agents
-        protected IPagedList<T> BaseIndex<T>(int? page, string TableWithWhere)
+        /// <summary>
+        /// Used to access db for Index page
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="page">Set to 1 if filter present else just pass through</param>
+        /// <param name="FieldList">Select clause fields</param>
+        /// <param name="TableWithWhere">from, join, where and group</param>
+        /// <returns></returns>
+        protected IPagedList<T> BaseIndex<T>(int? page, string FieldList, string TableWithWhere)
         {
-            var res= db.Query<T>($"Select * from {TableWithWhere}");
+            var res = db.Query<T>($"Select {FieldList} from {TableWithWhere}");
+            //var res= FieldList?.Length>0 ? db.Query<T>($"Select {FieldList} from {TableWithWhere}") : db.Query<T>($"Select * from {TableWithWhere}");
 
-
-            if (TableWithWhere.Contains("where")) page = 1;
             int pageSize = db.Fetch<int>("Select top 1 RowsPerPage from Config").FirstOrDefault();                
             int pageNumber = (page ?? 1);
-            return res.ToPagedList(pageNumber, pageSize);
+            return res.ToPagedList(pageNumber, pageSize);                    
+        }
 
-            //return db.Query<T>($"Select * from {TableWithWhere}");
+        //Overload to support simple views that have no joins
+        protected IPagedList<T> BaseIndex<T>(int? page, string TableWithWhere)
+        {
+            return BaseIndex<T>(page, "*", TableWithWhere);
         }
 
         protected T BaseCreateEdit<T>(int? id, string IDname)

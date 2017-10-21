@@ -16,7 +16,8 @@ namespace Samara.Controllers
         // GET: Clients
         public ActionResult Index(int? page ,string ItemName )
         {
-            return View("Index", base.BaseIndex<Item>(page, "Item where ItemName like '%" + ItemName + "%'"));
+            if (ItemName?.Length > 0) page = 1;
+            return View("Index", base.BaseIndex<ItemDetail>(page, "ItemId, ItemName, UnitName, ReorderLevel, TaxPerc", "Item inner join Units on item.unitId=Units.UnitId where ItemName like '%" + ItemName + "%'"));
         }
 
 

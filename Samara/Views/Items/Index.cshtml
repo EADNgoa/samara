@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<Item>
+﻿@model PagedList.IPagedList<Samara.Models.ItemDetail>
 @using PagedList.Mvc;
 @{
     ViewBag.Title = "Items";
@@ -58,7 +58,7 @@
             @Html.DisplayFor(modelItem => item.ItemName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UnitID)
+            @Html.DisplayFor(modelItem => item.UnitName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.ReorderLevel)           
