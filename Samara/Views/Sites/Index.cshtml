@@ -1,20 +1,20 @@
-﻿@model PagedList.IPagedList<Samara.Models.ItemDetail>
+﻿@model PagedList.IPagedList<Samara.Models.SiteDetail>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Items";
+    ViewBag.Title = "Sites";
 }
 
 <center>
     <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
     
-    @using (Html.BeginForm("Index", "Items", FormMethod.Get))
+    @using (Html.BeginForm("Index", "Sites", FormMethod.Get))
     {        
         <div class="row section-to-Not-print">
             <div>
                 <table>
                     <tr style="text-align:center">
-                        <td>&nbsp; Item Name:</td>
-                        <td> @Html.TextBox("ItemName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
+                        <td>&nbsp; Project Name:</td>
+                        <td> @Html.TextBox("SiteName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
 
                         <td class="col-lg-1"></td>
                         <td><input type="submit" value="Search" class="btn btn-default" /></td>
@@ -34,17 +34,12 @@
             Sr No
         </th>
         <th>
-            Item 
+            Project Name 
         </th>
         <th>
-           Units
+           Site Name
         </th>
-        <th>
-            Reorder Level
-        </th>
-        <th>
-            TaxPerc
-        </th>
+    
         <th></th>
 
     </tr>
@@ -55,19 +50,14 @@
            @i
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.ItemName)
+            @Html.DisplayFor(modelItem => item.SiteName)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UnitName)
+            @Html.DisplayFor(modelItem => item.Name)
         </td>
+      
         <td>
-            @Html.DisplayFor(modelItem => item.ReorderLevel)           
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TaxPerc)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Manage", new { id=item.ItemID }) 
+            @Html.ActionLink("Edit", "Manage", new { id=item.SiteID }) 
         </td>
     </tr>
     i++;
@@ -78,4 +68,3 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-
