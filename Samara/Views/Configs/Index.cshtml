@@ -1,0 +1,43 @@
+﻿@model PagedList.IPagedList<Config>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Configuration";
+}
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+</center>
+<br />
+
+
+<table class="table">
+    <tr>
+        <th>
+           Pan Number
+        </th>
+        <th>
+          Tan Number
+        </th>
+        <th>
+          Rows Per Page
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.PANnumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TANnumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.RowsPerPage)
+        </td>
+        <td>
+            @Html.ActionLink("Change Configuration", "Manage", new { id=item.ConfigID }) 
+        </td>
+    </tr>
+}
+
+</table>
