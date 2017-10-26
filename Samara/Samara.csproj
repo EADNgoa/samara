@@ -196,11 +196,11 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
+    <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\EAController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
-    <Compile Include="Controllers\SiteTransController.cs" />
     <Compile Include="Controllers\SitesController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
@@ -219,7 +219,6 @@
     <Compile Include="Models\ItemDetail.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PetaPoco.cs" />
-    <Compile Include="Models\SiteTrans.cs" />
     <Compile Include="Models\SiteDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -320,8 +319,8 @@
     <Content Include="Views\Items\Manage.cshtml" />
     <Content Include="Views\Sites\Index.cshtml" />
     <Content Include="Views\Sites\Manage.cshtml" />
-    <Content Include="Views\SiteTrans\Index.cshtml" />
-    <Content Include="Views\SiteTrans\Manage.cshtml" />
+    <Content Include="Views\Configs\Index.cshtml" />
+    <Content Include="Views\Configs\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
