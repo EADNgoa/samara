@@ -1,9 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using PagedList;
+using System;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
-using PagedList;
 
 namespace Samara.Controllers
 {
