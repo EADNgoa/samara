@@ -5,10 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - EEAA Tech</title>
     @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/themes/base/css")
     @Scripts.Render("~/bundles/modernizr")
-
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/jqueryui")
+  
 </head>
 <body>
+   
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
@@ -25,6 +29,8 @@
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#">Masters<span class="caret"></span></a>
                         <ul class="dropdown-menu">
+                            <li><a href="~/SupervisorSites/Index">Assign Supervisors</a></li>
+
                             <li><a href="~/Projects/Index">Add Projects</a></li>
                             <li><a href="~/Units/Index">Add Units</a></li>
                             <li><a href="~/Items/Index">Add Items</a></li>
@@ -35,7 +41,17 @@
                             <li>@Html.ActionLink("Client", "Index", "Clients")</li>
                         </ul>
                     </li>
-                   
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Inventory<span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="~/SiteTrans/Index">Add Stock</a></li>
+                            <li><a href="~/SiteTrans/IssueIndex">Use Stock</a></li>
+                            <li><a href="~/SiteTrans/TransferIndex">Transfer Stock</a></li>
+
+
+                            
+                        </ul>
+                    </li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                 </ul>
                 @Html.Partial("_LoginPartial")
@@ -50,8 +66,24 @@
         </footer>
     </div>
 
-    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
+
+    <script>
+        //Autocomplete on any view with id
+        $(document).ready(function () {
+            $('*[data-autocombo-url]')
+                .each(function () {
+                    $(this).autocomplete({
+                        source: $(this).data("autocombo-url"),
+                        minLenght: 3,
+                        delay: 500,
+                        select: function (event, ui) {
+                            $($(this).data("autocomplete-idholder")).val(ui.item.id);
+                        }
+                    });
+                });
+        });
+    </script>
 </body>
 </html>
