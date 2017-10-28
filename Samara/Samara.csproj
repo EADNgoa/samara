@@ -201,10 +201,8 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
-
     <Compile Include="Controllers\SiteTransController.cs" />
     <Compile Include="Controllers\SupervisorSitesController .cs" />
-
     <Compile Include="Controllers\SitesController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
@@ -227,11 +225,9 @@
     <Compile Include="Models\ItemDetail.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\PetaPoco.cs" />
-
     <Compile Include="Models\BossTransDet.cs" />
-    <Compile Include="Models\SiteIDdropdwon.cs" />
+    <Compile Include="Models\AutoCompleteData.cs" />
     <Compile Include="Models\SupervisorSitesDet.cs" />
-
     <Compile Include="Models\SiteDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
@@ -375,7 +371,6 @@
     <Content Include="Views\Items\Manage.cshtml" />
     <Content Include="Views\Sites\Index.cshtml" />
     <Content Include="Views\Sites\Manage.cshtml" />
-
     <Content Include="Views\SiteTrans\Index.cshtml" />
     <Content Include="Views\SiteTrans\Manage.cshtml" />
     <Content Include="Views\SupervisorSites\Index.cshtml" />
@@ -384,10 +379,8 @@
     <Content Include="Views\SiteTrans\IssueIndex.cshtml" />
     <Content Include="Views\SiteTrans\TransferIndex.cshtml" />
     <Content Include="Views\SiteTrans\ManageTransfer.cshtml" />
-
     <Content Include="Views\Configs\Index.cshtml" />
     <Content Include="Views\Configs\Manage.cshtml" />
-
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

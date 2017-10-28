@@ -11,7 +11,11 @@
 {
    
     @Html.AntiForgeryToken()
- 
+    @Html.HiddenFor(model => model.SiteID)
+    @Html.HiddenFor(model => model.UserID)
+    @Html.HiddenFor(model => model.ItemID)
+    @Html.HiddenFor(model => model.QtyRemoved)
+
     <div class="form-horizontal">
         <h4>Appoint Goods To Site</h4>
         <hr />
@@ -32,7 +36,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ItemID, "Item", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ItemID, null, new { @class = "form-control" })
+                <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
                 @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
             </div>
         </div>

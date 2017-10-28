@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 
 
-namespace GoaQuickTrips
+namespace Samara
 {
 
     public class ConfigMetadata
@@ -83,8 +83,7 @@ namespace GoaQuickTrips
         public int UserID;
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
-        [Required]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]        
         public DateTime Tdate;
 
         [Required]
@@ -95,19 +94,13 @@ namespace GoaQuickTrips
 
         [Required]
         public int QtyAdded;
-
-        [Required]
+                
         public int QtyRemoved;
-
-        
+                
         public int ToSiteID;
 
-        [StringLength(250)]
-        [Required]
+        [StringLength(250)]        
         public string Remarks;
-
-
-
     }
 
 
