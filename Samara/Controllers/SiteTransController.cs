@@ -40,7 +40,7 @@ namespace Samara.Controllers
             ViewBag.SiteID = new SelectList(db.Fetch<Site>("Select SiteID,SiteName from Sites"), "SiteID", "SiteName");
             ViewBag.ToSiteID = new SelectList(db.Fetch<Site>("Select SiteID,SiteName from Sites"), "SiteID", "SiteName");
             ViewBag.ItemID = new SelectList(db.Fetch<Item>("Select ItemID,ItemName from Item"), "ItemID", "ItemName");
-
+            
             return View(base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID"));
         }
         [HttpPost]
@@ -124,43 +124,50 @@ namespace Samara.Controllers
             ViewBag.ItemID = new SelectList(db.Fetch<Item>("Select ItemID,ItemName from Item"), "ItemID", "ItemName");
             var rec = base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID");
 
-            //Since UserID is [required] we have to set it beofre loading the form
-            rec = rec ?? new SiteTransasction { UserID = User.Identity.GetUserId() , QtyRemoved=0};
+            //Since UserID and QtyRemoved is [required] we have to set it beofre loading the form
+            if (rec == null) //We are in create mode
+            {
+                rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyRemoved = 0 };
+                ViewBag.OriginalQty = 0;
+            }
+            else
+            {
+                //In edit mode We need to fetch the name values of the autocomplete boxes
+                ViewBag.FromSiteName = db.SingleOrDefault<string>("Select SiteName from Sites where SiteID = @0", rec.SiteID);
+                ViewBag.ItemName = db.SingleOrDefault<string>("Select ItemName from Item where ItemID = @0", rec.ItemID);
+                ViewBag.OriginalQty = rec.QtyAdded;
+            }
             
+
             return View(rec);
         }
 
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,Remarks,QtyRemoved")] SiteTransasction siteTransaction)
+        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,Remarks,QtyRemoved")] SiteTransasction siteTransaction, int OriginalQty)
       {
            
             siteTransaction.Tdate = DateTime.Now;            
-            var checkItem = db.Exists<SiteCurrentStock>(" SiteID = @0 and ItemID= @1",siteTransaction.SiteID,siteTransaction.ItemID);
+            var currentStock = db.SingleOrDefault<SiteCurrentStock>("select * from SiteCurrentStock where SiteID = @0 and ItemID= @1", siteTransaction.SiteID,siteTransaction.ItemID);
 
             using (var transaction = db.GetTransaction())
             {
                 try
-                {
-                    if (siteTransaction.SiteTransID == 0)
+                {                    
+                    if (currentStock ==null)//this is the first purchase of the item at thissite
                     {
-                        if (checkItem == false)
-                        {
-                            var item = new SiteCurrentStock { SiteID = siteTransaction.SiteID, ItemID = siteTransaction.ItemID, Qty = siteTransaction.QtyAdded };
-                            db.Save(item);
-                        }
-                        else
-                        {
-                            var getStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.SiteID, siteTransaction.ItemID);
-                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty + siteTransaction.QtyAdded }, getStock.SiteStockID);
-                        }
+                        var item = new SiteCurrentStock { SiteID = siteTransaction.SiteID, ItemID = siteTransaction.ItemID, Qty = siteTransaction.QtyAdded };
+                        db.Save(item);
                     }
                     else
                     {
-                        int id = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID From SiteCurrentStock Where SiteID=@0 and ItemID =@1", siteTransaction.SiteID, siteTransaction.ItemID).SiteStockID;
-                        db.Update("SiteCurrentStock", "SiteStockID", new { Qty = siteTransaction.QtyAdded }, id);
+                        if (siteTransaction.SiteTransID > 0) //Edit mode
+                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty - OriginalQty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
+                        else
+                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
                     }
+
                     var res = base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
                     transaction.Complete();
                     return res;
