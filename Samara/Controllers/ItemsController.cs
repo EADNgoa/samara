@@ -1,12 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
+//using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
+//using System.Web;
 using System.Web.Mvc;
-
 using Samara.Models;
 
 namespace Samara.Controllers
@@ -26,7 +25,7 @@ namespace Samara.Controllers
         public ActionResult Manage(int? id)
         {
             ViewBag.UnitID = new SelectList(db.Fetch<Unit>("Select UnitID,UnitName from Units"), "UnitID", "UnitName");
-                        
+            
             return View(base.BaseCreateEdit<Item>(id, "ItemID"));
         }
 
