@@ -256,7 +256,7 @@ namespace Samara
     public partial class SiteTransasction  
     {
 		[Column] public int SiteTransID { get; set; }
-		[Column] public int? UserID { get; set; }
+		[Column] public string UserID { get; set; }
 		[Column] public DateTime? Tdate { get; set; }
 		[Column] public int? SiteID { get; set; }
 		[Column] public int? ItemID { get; set; }
@@ -268,7 +268,7 @@ namespace Samara
 	}
     
 	[TableName("dbo.StockSummary")]
-	[PrimaryKey("StockSummaryID", AutoIncrement=false)]
+	[PrimaryKey("StockSummaryID")]
 	[ExplicitColumns]
     public partial class StockSummary  
     {
@@ -289,11 +289,12 @@ namespace Samara
 	}
     
 	[TableName("dbo.SupervisorSites")]
+	[PrimaryKey("UserID", AutoIncrement=false)]
 	[ExplicitColumns]
     public partial class SupervisorSite  
     {
-		[Column] public int UserID { get; set; }
-		[Column] public int? SiteID { get; set; }
+		[Column] public string UserID { get; set; }
+		[Column] public int SiteID { get; set; }
 	}
     
 	[TableName("dbo.Supplier")]

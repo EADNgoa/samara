@@ -1,0 +1,101 @@
+﻿@model PagedList.IPagedList<Samara.Models.IssueTransDet>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Issue Goods From Site";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+    
+    @using (Html.BeginForm("IssueIndex", "SiteTrans", FormMethod.Get))
+    {        
+        <div class="row section-to-Not-print">
+            <div>
+                <table>
+                    <tr style="text-align:center">
+                        <td>&nbsp; Site Name:</td>
+                        <td> @Html.TextBox("SiteName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
+
+                        <td class="col-lg-1"></td>
+                        <td><input type="submit" value="Search" class="btn btn-default" /></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    }
+</center>
+
+<p>
+    @Html.ActionLink("Create New", "ManageIssue")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Sr No
+        </th>
+        <th>
+            Date
+        </th>
+        <th>
+            User Name 
+        </th>
+        <th>
+           Site Name
+        </th>
+        <th>
+            Item Name
+        </th>
+        <th>
+            Quantity Issued
+        </th>
+        <th>
+           After Issue
+        </th>
+        <th>
+            Remarks
+        </th>
+    <th>
+
+    </th>
+        <th></th>
+
+    </tr>
+    @{int i = 1; }
+@foreach (var item in Model) {
+    <tr>
+        <td>
+           @i
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.SiteName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QtyRemoved)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QtyAdded)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Remarks)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Manage", new { id=item.SiteTransID }) 
+        </td>
+    </tr>
+    i++;
+}
+
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

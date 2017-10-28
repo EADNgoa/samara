@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[StockSummary]
 (
-	[StockSummaryID] INT NOT NULL PRIMARY KEY, 
+	[StockSummaryID] INT NOT NULL PRIMARY KEY IDENTITY, 
     [Tdate] DATE NULL, 
     [ItemID] INT NULL, 
     [SiteID] INT NULL, 
