@@ -5,12 +5,12 @@ using System.Web;
 
 namespace Samara
 {
-    public class SupervisorSitesDet
+    public class AutoCompleteData
     {
        
-        public string Email { get; set; }
+        public string id { get; set; }
 
-        public string SiteName { get; set; }
+        public string value { get; set; }
 
        
     }

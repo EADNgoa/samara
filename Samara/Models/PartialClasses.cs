@@ -6,10 +6,9 @@ using System.Web;
 
 //using System.Web.Mvc; for dynamic roles
 //using Microsoft.AspNet.Identity;for dynamic roles
-//using GoaQuickTrips.Models;for dynamic roles
-//using Microsoft.AspNet.Identity.EntityFramework;for dynamic roles
 
-namespace GoaQuickTrips
+
+namespace Samara
 {
 
     [MetadataType(typeof(ConfigMetadata))]
