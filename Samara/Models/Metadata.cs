@@ -94,7 +94,8 @@ namespace Samara
 
         [Required]
         public int QtyAdded;
-                
+
+        [Required]
         public int QtyRemoved;
                 
         public int ToSiteID;

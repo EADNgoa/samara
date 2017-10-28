@@ -15,6 +15,7 @@
     @Html.HiddenFor(model => model.UserID)
     @Html.HiddenFor(model => model.ItemID)
     @Html.HiddenFor(model => model.QtyRemoved)
+    @Html.Hidden("OriginalQty", (int) ViewBag.OriginalQty)
 
     <div class="form-horizontal">
         <h4>Appoint Goods To Site</h4>
@@ -27,7 +28,13 @@
       <div class="form-group">
             @Html.LabelFor(model => model.SiteID, "Site", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" id="SiteName" name="SiteName" style="color:black;" data-autocomplete-idholder="#SiteID" data-autocombo-url="@Url.Action("AutoCompleteSite")" class="form-control" />
+                @if (ViewBag.FromSiteName !=null)
+                {
+                    @Html.Label((string)ViewBag.FromSiteName, new { @class = "form-control" })                    
+                } else
+                {
+                <input type="text" id="SiteName" name="SiteName"  style="color:black;" data-autocomplete-idholder="#SiteID" data-autocombo-url="@Url.Action("AutoCompleteSite")" class="form-control" />
+                }
                 @Html.ValidationMessageFor(model => model.SiteID, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -36,7 +43,13 @@
         <div class="form-group">
             @Html.LabelFor(model => model.ItemID, "Item", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
+                @if (ViewBag.ItemName !=null)
+                {
+                    @Html.Label((string)ViewBag.ItemName, new { @class = "form-control"})
+                } else
+                {
+                    <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
+                }
                 @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
             </div>
         </div>
