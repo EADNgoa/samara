@@ -199,12 +199,12 @@
     <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\EAController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\SupplierBillController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\SiteTransController.cs" />
     <Compile Include="Controllers\SupervisorSitesController .cs" />
     <Compile Include="Controllers\SitesController.cs" />
-    <Compile Include="Controllers\SupplierBillController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
@@ -213,6 +213,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\SuppDet.cs" />
     <Compile Include="Models\Metadata.cs" />
     <Compile Include="Models\PartialClasses.cs" />
     <Compile Include="Models\SiteTranfers.cs" />
@@ -382,11 +383,13 @@
     <Content Include="Views\SiteTrans\ManageTransfer.cshtml" />
     <Content Include="Views\Configs\Index.cshtml" />
     <Content Include="Views\Configs\Manage.cshtml" />
+    <Content Include="Views\SupplierBill\Manage.cshtml" />
+    <Content Include="Views\SupplierBill\Index.cshtml" />
+    <Content Include="Views\SupplierBill\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\EA\" />
-    <Folder Include="Views\SupplierBill\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />

@@ -37,58 +37,95 @@ namespace Samara.Controllers
 
         public ActionResult ManageTransfer(int? id)
         {
-            ViewBag.SiteID = new SelectList(db.Fetch<Site>("Select SiteID,SiteName from Sites"), "SiteID", "SiteName");
-            ViewBag.ToSiteID = new SelectList(db.Fetch<Site>("Select SiteID,SiteName from Sites"), "SiteID", "SiteName");
-            ViewBag.ItemID = new SelectList(db.Fetch<Item>("Select ItemID,ItemName from Item"), "ItemID", "ItemName");
-            
-            return View(base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID"));
+            var rec = base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID");
+
+            //Since UserID and QtyRemoved is [required] we have to set it beofre loading the form
+            if (rec == null) //We are in create mode
+            {
+                rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyAdded = 0 };
+                ViewBag.OriginalQty = 0;
+            }
+            else
+            {
+                //In edit mode We need to fetch the name values of the autocomplete boxes
+                ViewBag.FromSiteName = db.SingleOrDefault<string>("Select SiteName from Sites where SiteID = @0", rec.SiteID);
+                ViewBag.ItemName = db.SingleOrDefault<string>("Select ItemName from Item where ItemID = @0", rec.ItemID);
+                ViewBag.ToSiteName = db.SingleOrDefault<string>("Select SiteName from Sites where SiteID = @0", rec.SiteID);
+
+                ViewBag.OriginalQty = rec.QtyRemoved;
+            }
+            return View(rec);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageTransfer([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,QtyRemoved,ToSiteID,Remarks")] SiteTransasction siteTransaction)
+        public ActionResult ManageTransfer([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,QtyRemoved,ToSiteID,Remarks")] SiteTransasction siteTransaction,int OriginalQty)
         {
-
-
             siteTransaction.Tdate = DateTime.Now;
-            siteTransaction.UserID = User.Identity.GetUserId();
+         
 
 
-            var checkItem = db.Exists<SiteCurrentStock>(" SiteID = @0 and ItemID= @1", siteTransaction.SiteID, siteTransaction.ItemID);
-            var checkSite = db.Exists<SiteCurrentStock>(" SiteID = @0 and ItemID= @1", siteTransaction.ToSiteID, siteTransaction.ItemID);
-           
-            if (siteTransaction.SiteTransID == 0 && checkItem == true)
+            var getStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.SiteID, siteTransaction.ItemID);
+            var TransferStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.ToSiteID, siteTransaction.ItemID);
+            using (var transaction = db.GetTransaction())
             {
-
-                var getStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.SiteID, siteTransaction.ItemID);
-                db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
-                siteTransaction.QtyAdded = getStock.Qty - siteTransaction.QtyRemoved;
-
-                if (checkSite == true)
+                try
                 {
-                    var TransferStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.ToSiteID, siteTransaction.ItemID);
-                    db.Update("SiteCurrentStock", "SiteStockID", new { Qty = TransferStock.Qty + siteTransaction.QtyRemoved }, TransferStock.SiteStockID);
-                   
+                    if (getStock != null)
+                    {
+                        if(siteTransaction.SiteTransID>0)
+                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty + OriginalQty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
+                        else  
+                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
+                       
+                        if (TransferStock != null)
+                        {
+                            if (siteTransaction.SiteTransID > 0)
+                                db.Update("SiteCurrentStock", "SiteStockID", new { Qty = TransferStock.Qty - OriginalQty + siteTransaction.QtyRemoved }, TransferStock.SiteStockID);
+                            else
+                                db.Update("SiteCurrentStock", "SiteStockID", new { Qty = TransferStock.Qty + siteTransaction.QtyRemoved }, TransferStock.SiteStockID);
+                        }
+                        else
+                        {
+                            var item = new SiteCurrentStock { SiteID = siteTransaction.ToSiteID, ItemID = siteTransaction.ItemID, Qty = siteTransaction.QtyRemoved };
+                            db.Save(item);
+                        }
+                        base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
+                        transaction.Complete();
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-
-                    var item = new SiteCurrentStock { SiteID = siteTransaction.ToSiteID, ItemID = siteTransaction.ItemID, Qty = siteTransaction.QtyRemoved };
-                   
-                    db.Save(item);
-
+                    db.AbortTransaction();
+                    throw ex;
                 }
-                base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
-                return RedirectToAction("TransferIndex");
+            
+            return RedirectToAction("TransferIndex");
             }
+
             return RedirectToAction("ManageTransfer");
         }
 
         public ActionResult ManageIssue(int? id)
         {
-            ViewBag.SiteID = new SelectList(db.Fetch<Site>("Select SiteID,SiteName from Sites"), "SiteID", "SiteName");
-            ViewBag.ItemID = new SelectList(db.Fetch<Item>("Select ItemID,ItemName from Item"), "ItemID", "ItemName");
-          
-            return View(base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID"));
+
+            var rec = base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID");
+
+            //Since UserID and QtyRemoved is [required] we have to set it beofre loading the form
+            if (rec == null) //We are in create mode
+            {
+                rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyAdded = 0 };
+                ViewBag.OriginalQty = 0;
+            }
+            else
+            {
+                //In edit mode We need to fetch the name values of the autocomplete boxes
+                ViewBag.FromSiteName = db.SingleOrDefault<string>("Select SiteName from Sites where SiteID = @0", rec.SiteID);
+                ViewBag.ItemName = db.SingleOrDefault<string>("Select ItemName from Item where ItemID = @0", rec.ItemID);
+                ViewBag.OriginalQty = rec.QtyRemoved;
+            }
+
+
+            return View(rec);
         }
 
         // POST: Clients/Create
@@ -96,32 +133,49 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageIssue([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,QtyRemoved,Remarks")] SiteTransasction siteTransaction)
+        public ActionResult ManageIssue([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,QtyRemoved,Remarks")] SiteTransasction siteTransaction,int OriginalQty)
         {
 
             siteTransaction.Tdate = DateTime.Now;
-            siteTransaction.UserID = User.Identity.GetUserId();
            
 
-            var checkItem = db.Exists<SiteCurrentStock>(" SiteID = @0 and ItemID= @1", siteTransaction.SiteID, siteTransaction.ItemID);
-          
-                if (siteTransaction.SiteTransID == 0 && checkItem == true)
+
+            var getStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.SiteID, siteTransaction.ItemID);
+            using (var transaction = db.GetTransaction())
+            {
+                try
                 {
-                
-                        var getStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.SiteID, siteTransaction.ItemID);
-                        db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
-                        siteTransaction.QtyAdded = getStock.Qty - siteTransaction.QtyRemoved;
-                        base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
-                       return RedirectToAction("IssueIndex");
-            }
+                    if (getStock != null)
+                    {
+                        if (siteTransaction.SiteTransID > 0)
+                        {
+                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty + OriginalQty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
+
+                        }
+                        else
+                        {
+
+                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    db.AbortTransaction();
+                    throw ex;
+                }
+            
+                base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
+                transaction.Complete();
+                return RedirectToAction("IssueIndex");
+              }
 
             return RedirectToAction("Manage");
         }
 
         public ActionResult Manage(int? id)
         {
-            ViewBag.SiteID = new SelectList(db.Fetch<Site>("Select SiteID,SiteName from Sites"), "SiteID", "SiteName");
-            ViewBag.ItemID = new SelectList(db.Fetch<Item>("Select ItemID,ItemName from Item"), "ItemID", "ItemName");
+
             var rec = base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID");
 
             //Since UserID and QtyRemoved is [required] we have to set it beofre loading the form
@@ -183,6 +237,11 @@ namespace Samara.Controllers
         public ActionResult AutoCompleteItem(string term)
         {        
             var h = db.Fetch<AutoCompleteData>($"Select ItemID as id, ItemName as value from Item where ItemName like '%{term}%'" ).ToList();
+            return Json(h, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult AutoCompleteToSite(string term)
+        {
+            var h = db.Fetch<AutoCompleteData>($"Select SiteID as id, SiteName as value from Sites where SiteName like '%{term}%'").ToList();
             return Json(h, JsonRequestBehavior.AllowGet);
         }
 
