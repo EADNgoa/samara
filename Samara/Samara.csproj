@@ -204,6 +204,7 @@
     <Compile Include="Controllers\SiteTransController.cs" />
     <Compile Include="Controllers\SupervisorSitesController .cs" />
     <Compile Include="Controllers\SitesController.cs" />
+    <Compile Include="Controllers\SupplierBillController.cs" />
     <Compile Include="Controllers\SuppliersController.cs" />
     <Compile Include="Controllers\SupervisorController.cs" />
     <Compile Include="Controllers\UnitsController.cs" />
@@ -385,6 +386,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\EA\" />
+    <Folder Include="Views\SupplierBill\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
