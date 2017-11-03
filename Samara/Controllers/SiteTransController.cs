@@ -20,7 +20,7 @@ namespace Samara.Controllers
 
         {
            if(SiteName?.Length >0) page = 1;
-           return View("Index", base.BaseIndex<BossTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ItemName,QtyAdded,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID  Where SiteName like '%" + SiteName + "%' and  QtyRemoved = 0"));
+           return View("Index", base.BaseIndex<BossTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ItemName,SupplierName,QtyAdded,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join Supplier on Supplier.SupplierID = SiteTransasction.SupplierID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID  Where SiteName like '%" + SiteName + "%' and  QtyRemoved = 0"));
         }
         public ActionResult IssueIndex(int? page , string SiteName)
         {
@@ -183,15 +183,21 @@ namespace Samara.Controllers
             {
                 rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyRemoved = 0 };
                 ViewBag.OriginalQty = 0;
+               
+                ViewBag.SupplierID = new SelectList(db.Fetch<Supplier>("Select SupplierID,SupplierName from Supplier"), "SupplierID", "SupplierName");
+
             }
             else
             {
                 //In edit mode We need to fetch the name values of the autocomplete boxes
                 ViewBag.FromSiteName = db.SingleOrDefault<string>("Select SiteName from Sites where SiteID = @0", rec.SiteID);
                 ViewBag.ItemName = db.SingleOrDefault<string>("Select ItemName from Item where ItemID = @0", rec.ItemID);
+                ViewBag.SupplierName = db.SingleOrDefault<string>("Select SupplierName from Supplier where SupplierID = @0", rec.SupplierID);
                 ViewBag.OriginalQty = rec.QtyAdded;
+                ViewBag.SupplierID = new SelectList(db.Fetch<Supplier>("Select SupplierID,SupplierName from Supplier"), "SupplierID", "SupplierName");
+                
             }
-            
+
 
             return View(rec);
         }
@@ -199,7 +205,7 @@ namespace Samara.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,Remarks,QtyRemoved")] SiteTransasction siteTransaction, int OriginalQty)
+        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,SupplierID,ItemID,QtyAdded,Remarks,QtyRemoved")] SiteTransasction siteTransaction, int OriginalQty)
       {
            
             siteTransaction.Tdate = DateTime.Now;            
@@ -211,6 +217,9 @@ namespace Samara.Controllers
                 {                    
                     if (currentStock ==null)//this is the first purchase of the item at thissite
                     {
+                        // var getSupBill = db.FirstOrDefault<SupplierBillDetail>("SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec","Supplier as sp inner join SupplierBillDetail as sbd on sp.SBillID = sbd.SBillID where Supplier Where ItemID= @0 and SupplierID=@0",siteTransaction.ItemID,siteTransaction.SupplierID);
+                       
+
                         var item = new SiteCurrentStock { SiteID = siteTransaction.SiteID, ItemID = siteTransaction.ItemID, Qty = siteTransaction.QtyAdded };
                         db.Save(item);
                     }
@@ -220,6 +229,37 @@ namespace Samara.Controllers
                             db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty - OriginalQty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
                         else
                             db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
+                    }
+                    if(siteTransaction.SiteTransID>0)
+                    {
+                        var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
+
+                        var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
+                        if (getSupBill != null)
+                        {
+                           
+                                db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec = siteTransaction.QtyAdded - OriginalQty + getSupBill.QtyRec }, getSupBill.SBillDetailID);
+                            
+
+                            siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
+                        }
+                    }
+                    else
+                    {
+                        //get SBillID USing SuplierID
+                        var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
+                        //get bill details using SBillID
+                        var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
+                        if (getSupBill != null)
+                        {
+                            if (getSupBill.Qty != getSupBill.QtyRec)
+                            {
+                                db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec = siteTransaction.QtyAdded + getSupBill.QtyRec }, getSupBill.SBillDetailID);
+                            }
+
+                            siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
+                        }
+
                     }
 
                     var res = base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
@@ -244,7 +284,7 @@ namespace Samara.Controllers
             var h = db.Fetch<AutoCompleteData>($"Select SiteID as id, SiteName as value from Sites where SiteName like '%{term}%'").ToList();
             return Json(h, JsonRequestBehavior.AllowGet);
         }
-
+ 
 
         public ActionResult AutoCompleteSite(string term)
         {

@@ -14,6 +14,8 @@
     @Html.HiddenFor(model => model.SiteID)
     @Html.HiddenFor(model => model.UserID)
     @Html.HiddenFor(model => model.ItemID)
+    @Html.HiddenFor(model => model.SupplierID)
+
     @Html.HiddenFor(model => model.QtyRemoved)
     @Html.Hidden("OriginalQty", (int) ViewBag.OriginalQty)
 
@@ -39,7 +41,21 @@
             </div>
         </div>
 
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.SupplierID, "Supplier Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @if (ViewBag.SupplierName != null)
+                {
+                    @Html.Label((string)ViewBag.SupplierName, new { @class = "form-control" })
+                }
+                else
+                {
+                    
+                            @Html.DropDownListFor(model => model.SupplierID, null, new { @class = "form-control" })
+                }
+                @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.ItemID, "Item", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

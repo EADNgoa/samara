@@ -1,0 +1,130 @@
+﻿@model Samara.Suplier_Bill
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Supplier Detaills";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+
+
+
+    <table class="table-condensed">
+        <tr><td class="col-md-4">Supplier Name:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.SupplierName)</td></tr>
+        <tr><td class="col-md-4">Date:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.Tdate)</td></tr>
+        @using (@Html.BeginForm())
+        {
+            if (ViewBag.supBillDets != null)
+            {        
+                   @Html.Hidden("SBillID", (int)ViewBag.SupBillDets.SBillID)
+                   @Html.Hidden("ItemID", (int)ViewBag.SupBillDets.ItemID)
+                   @Html.Hidden("SBillDetailID", (int)ViewBag.SupBillDets.SBillDetailID)
+             <tr>
+               <td>@Html.Label("Item")</td>
+               <td>@Html.Label((string)ViewBag.ItemName, new { @class = "form-control" })</td>                    
+            </tr>
+            <tr>
+                <td>@Html.Label("Quantity")</td>
+                <td>@Html.TextBox("Qty", (int)ViewBag.SupBillDets.Qty, new { @class = "form-control"  } )</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Unit Price")</td>
+
+                <td>@Html.TextBox("UnitPrice",(decimal)ViewBag.SupBillDets.UnitPrice, new { @class = "form-control"} )</td>
+            </tr>
+            }
+            else
+            {
+                if (ViewBag.SBillID != null)
+                {
+                    @Html.Hidden("SBillID", (int)ViewBag.SBillID)
+                }
+                @Html.Hidden("ItemID")
+                <tr>
+                    <td>@Html.Label("Item Name")</td>
+                    <td>
+                        <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Quantity")</td>
+                    <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Unit Price")</td>
+                    <td>@Html.Editor("UnitPrice", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+
+                <td><input type="submit" value="Submit" /></td>
+            </tr>
+        }
+    </table>
+</center>
+<br />
+  @if (ViewBag.supBillDets == null)
+  {
+<table class="table">
+    <tr>
+        <th>
+            Sr No
+        </th>
+    
+        <th>
+           ItemID
+        </th>
+        <th>
+          Qty
+        </th>
+        <th>
+          Unit Price
+        </th>
+        <th>
+          Quantity Recieved
+        </th>
+      
+        <th>
+
+        </th>
+        <th></th>
+
+    </tr>
+    @{int i = 1; }
+    @foreach (var item in Model.SuplierBillDets)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+       
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.QtyRec)
+            </td>
+          
+            @if (item.Qty == item.QtyRec)
+            {
+
+                <td>Recieved</td>
+            }
+          
+            <td>
+                @Html.ActionLink("Edit", "ManageDetails", new { id = item.SBillDetailID })
+            </td>
+        </tr>
+        i++;
+    }
+</table>
+
+
+        }

@@ -213,6 +213,9 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\GetSupDet.cs" />
+    <Compile Include="Models\SuppBillDet.cs" />
+    <Compile Include="Models\Suplier_Bill.cs" />
     <Compile Include="Models\SuppDet.cs" />
     <Compile Include="Models\Metadata.cs" />
     <Compile Include="Models\PartialClasses.cs" />
