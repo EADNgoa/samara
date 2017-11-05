@@ -157,6 +157,9 @@ namespace Samara.Controllers
 
                             db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
                         }
+                        base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
+                        transaction.Complete();
+                        return RedirectToAction("IssueIndex");
                     }
                 }
                 catch (Exception ex)
@@ -165,9 +168,7 @@ namespace Samara.Controllers
                     throw ex;
                 }
             
-                base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
-                transaction.Complete();
-                return RedirectToAction("IssueIndex");
+
               }
 
             return RedirectToAction("Manage");

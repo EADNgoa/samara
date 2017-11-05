@@ -1,0 +1,134 @@
+﻿@model Samara.Client_Bill
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Client Bill Details";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+
+
+
+    <table class="table-condensed">
+        <tr><td class="col-md-4">Client Name:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.ClientName)</td></tr>
+        <tr><td class="col-md-4">Date:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.Tdate)</td></tr>
+        <tr><td class="col-md-4">Retention Percantage:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td></tr>
+
+        @using (@Html.BeginForm())
+        {
+            if (ViewBag.ClientBillDets != null)
+            {        
+                   @Html.Hidden("CBillID", (int)ViewBag.ClientBillDets.CBillID)
+                   @Html.Hidden("ItemID", (int)ViewBag.ClientBillDets.ItemID)
+                   @Html.Hidden("CBillDetailID", (int)ViewBag.ClientBillDets.CBillDetailID)
+             <tr>
+               <td>@Html.Label("Item")</td>
+               <td>@Html.Label((string)ViewBag.ItemName, new { @class = "form-control" })</td>                    
+            </tr>
+            <tr>
+                <td>@Html.Label("Quantity")</td>
+                <td>@Html.TextBox("Qty", (int)ViewBag.ClientBillDets.Qty, new { @class = "form-control"  } )</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Unit Price")</td>
+
+                <td>@Html.TextBox("UnitSellPrice",(decimal)ViewBag.ClientBillDets.UnitSellPrice, new { @class = "form-control"} )</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Tax Perc")</td>
+
+                <td>@Html.TextBox("TaxPerc", (decimal)ViewBag.ClientBillDets.TaxPerc, new { @class = "form-control" })</td>
+            </tr>
+            }
+            else
+            {
+                if (ViewBag.CBillID != null)
+                {
+                    @Html.Hidden("CBillID", (int)ViewBag.CBillID)
+                }
+                @Html.Hidden("ItemID")
+                <tr>
+                    <td>@Html.Label("Item Name")</td>
+                    <td>
+                        <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Quantity")</td>
+                    <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Unit Sell Price")</td>
+                    <td>@Html.Editor("UnitSellPrice", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Tax Perc")</td>
+                    <td>@Html.Editor("TaxPerc", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+            }
+            <tr>
+                <td></td>
+
+                <td><input type="submit" value="Submit" /></td>
+            </tr>
+        }
+    </table>
+</center>
+<br />
+  @if (ViewBag.supBillDets == null)
+  {
+<table class="table">
+    <tr>
+        <th>
+            Sr No
+        </th>
+    
+        <th>
+           ItemID
+        </th>
+        <th>
+          Qty
+        </th>
+        <th>
+          Unit Sell Price
+        </th>
+        <th>
+         Tax Percantage
+        </th>
+      
+        <th>
+
+        </th>
+        <th></th>
+
+    </tr>
+    @{int i = 1; }
+    @foreach (var item in Model.ClientBillDets)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+       
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitSellPrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TaxPerc)
+            </td>          
+            <td>
+                @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+            </td>
+        </tr>
+        i++;
+    }
+</table>
+
+
+        }
