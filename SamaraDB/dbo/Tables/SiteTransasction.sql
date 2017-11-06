@@ -4,6 +4,7 @@
     [UserID] NVARCHAR(128) NULL, 
     [Tdate] DATE NULL, 
     [SiteID] INT NULL, 
+    [SupplierID] INT NULL, 
     [ItemID] INT NULL, 
     [QtyAdded] INT NULL, 
     [QtyRemoved] INT NULL, 

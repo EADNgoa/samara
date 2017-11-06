@@ -1,20 +1,20 @@
-﻿@model PagedList.IPagedList<Samara.IssueTransDet>
+﻿@model PagedList.IPagedList<Samara.ClientDet>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Issue Goods From Site";
+    ViewBag.Title = "Client Bills";
 }
 
 <center>
     <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
     
-    @using (Html.BeginForm("IssueIndex", "SiteTrans", FormMethod.Get))
+    @using (Html.BeginForm("Index", "ClientBill", FormMethod.Get))
     {        
         <div class="row section-to-Not-print">
             <div>
                 <table>
                     <tr style="text-align:center">
-                        <td>&nbsp; Site Name:</td>
-                        <td> @Html.TextBox("SiteName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
+                        <td>&nbsp; Client Name:</td>
+                        <td> @Html.TextBox("ClientName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
 
                         <td class="col-lg-1"></td>
                         <td><input type="submit" value="Search" class="btn btn-default" /></td>
@@ -26,7 +26,7 @@
 </center>
 
 <p>
-    @Html.ActionLink("Create New", "ManageIssue")
+    @Html.ActionLink("Create New", "Manage")
 </p>
 <table class="table">
     <tr>
@@ -34,27 +34,15 @@
             Sr No
         </th>
         <th>
-            Date
+            Client Name
         </th>
         <th>
-            User Name 
+           Date
         </th>
         <th>
-           Site Name
+            Retention Perc(%)
         </th>
-        <th>
-            Item Name
-        </th>
-        <th>
-            Quantity Issued
-        </th>
-    
-        <th>
-            Remarks
-        </th>
-    <th>
-
-    </th>
+       
         <th></th>
 
     </tr>
@@ -65,26 +53,18 @@
            @i
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.ClientName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Tdate)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Email)
+            @Html.DisplayFor(modelItem => item.RetentionPerc)
         </td>
+ 
         <td>
-            @Html.DisplayFor(modelItem => item.SiteName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ItemName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.QtyRemoved)
-        </td>
-
-        <td>
-            @Html.DisplayFor(modelItem => item.Remarks)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "ManageIssue", new { id=item.SiteTransID }) 
+            @Html.ActionLink("Edit", "Manage", new { id=item.CBillID }) |@Html.ActionLink("Details", "Details", new { id = item.CBillID })
+            
         </td>
     </tr>
     i++;
@@ -95,3 +75,4 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+

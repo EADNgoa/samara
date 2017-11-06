@@ -15,6 +15,8 @@ namespace Samara
 
         public string SiteName { get; set; }
 
+        public string SupplierName { get; set; }
+
         public string ItemName { get; set; }
 
         public int QtyAdded { get; set; }
