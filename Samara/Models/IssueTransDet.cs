@@ -14,6 +14,8 @@ namespace Samara
         public string Email { get; set; }
 
         public string SiteName { get; set; }
+        public string ClientName { get; set; }
+
 
         public string ItemName { get; set; }
 

@@ -259,12 +259,14 @@ namespace Samara
 		[Column] public string UserID { get; set; }
 		[Column] public DateTime? Tdate { get; set; }
 		[Column] public int? SiteID { get; set; }
+		[Column] public int? ClientID { get; set; }
 		[Column] public int? SupplierID { get; set; }
 		[Column] public int? ItemID { get; set; }
 		[Column] public int? QtyAdded { get; set; }
 		[Column] public int? QtyRemoved { get; set; }
 		[Column] public int? ToSiteID { get; set; }
 		[Column] public int? SBillDetailID { get; set; }
+		[Column] public int? CBillDetailID { get; set; }
 		[Column] public string Remarks { get; set; }
 	}
     
