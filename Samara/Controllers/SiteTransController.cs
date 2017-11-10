@@ -161,10 +161,7 @@ namespace Samara.Controllers
                         {
 
                             db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
-                            var Client = db.FirstOrDefault<ClientBill>("Select CBillID,ClientID from ClientBill Where ClientID = @0", siteTransaction.ClientID);
-
-                            var getClientBill = db.FirstOrDefault<ClientBillDetail>("Select CBillDetailID,CBillID,ItemID,Qty,UnitSellPrice,TaxPerc from ClientBillDetail Where ItemID= @0 and CBillID = @1", siteTransaction.ItemID, Client.CBillID);
-                            siteTransaction.CBillDetailID = getClientBill.CBillDetailID;
+                          
                         }
                         base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
                         transaction.Complete();

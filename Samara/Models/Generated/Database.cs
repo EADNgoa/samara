@@ -266,7 +266,6 @@ namespace Samara
 		[Column] public int? QtyRemoved { get; set; }
 		[Column] public int? ToSiteID { get; set; }
 		[Column] public int? SBillDetailID { get; set; }
-		[Column] public int? CBillDetailID { get; set; }
 		[Column] public string Remarks { get; set; }
 	}
     
