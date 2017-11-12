@@ -1,0 +1,96 @@
+﻿@model PagedList.IPagedList<Samara.StockSummaryDet>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Stock Balance ";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title For the Year: @ViewBag.Yr </b></h2>
+    
+
+</center>
+<center>
+    <table class="table-striped" width="100%">
+        <thead>
+            <b> Opening Balance For Month @ViewBag.lmd </b>
+        </thead>
+        <tr>
+            <th>
+                Sr No
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+                Quantity
+            </th>
+
+            <th>
+
+            </th>
+            <th></th>
+
+        </tr>
+        @{int i = 1; }
+        @foreach (var item in ViewBag.OpeningBalance)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @item.ItemName
+                </td>
+                <td>
+                    @item.Qty
+                </td>
+
+
+            </tr>
+            i++;
+        }
+
+    </table>
+
+    <br />
+    <table class="table-striped" width="100%">
+        <thead>
+            <b>Closing Balance For Month @ViewBag.cmd </b>
+        </thead>
+        <tr>
+            <th>
+                Sr No
+            </th>
+          
+            <th>
+                Item
+            </th>
+
+            <th>
+                Quantity
+            </th>
+            <th></th>
+
+        </tr>
+        @{int a = 1; }
+        @foreach (var item in ViewBag.ClosingBalance)
+        {
+            <tr>
+                <td>
+                    @a
+                </td>
+              
+                <td>
+                    @item.ItemName
+                </td>
+                <td>
+                  @item.Qty
+                </td>
+
+
+            </tr>
+            a++;
+        }
+
+    </table>
+</center>
