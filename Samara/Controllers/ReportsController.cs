@@ -39,8 +39,8 @@ namespace Samara.Controllers
             ViewBag.lmd = lastMonDate;
             ViewBag.cmd = CurrMonDate;
             ViewBag.Yr = RptYr;
-            ViewBag.OpeningBalance = db.Fetch<StockSummaryDet>("Select ItemName,sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By ItemName,Qty",lastMonDate);
-            ViewBag.ClosingBalance = db.Fetch<StockSummaryDet>(" Select ItemName,Sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By ItemName,Qty", CurrMonDate);
+            ViewBag.OpeningBalance = db.Fetch<StockSummaryDet>("Select i.itemId, ItemName,sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By ItemName",lastMonDate).ToDictionary(i => i.ItemId);
+            ViewBag.ClosingBalance = db.Fetch<StockSummaryDet>(" Select i.itemId, ItemName,Sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By ItemName", CurrMonDate).ToDictionary(i => i.ItemId);
             return View("OCbalance");
         }
 

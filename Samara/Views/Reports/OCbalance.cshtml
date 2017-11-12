@@ -22,11 +22,11 @@
                 Item
             </th>
             <th>
-                Quantity
+               Opening Balance
             </th>
 
             <th>
-
+                
             </th>
             <th></th>
 
@@ -34,6 +34,9 @@
         @{int i = 1; }
         @foreach (var item in ViewBag.OpeningBalance)
         {
+            @foreach (var item in ViewBag.OpeningBalance)
+            { @foreach (var item2 in ViewBag.OpeningBalance)
+            {
             <tr>
                 <td>
                     @i
@@ -44,12 +47,15 @@
                 <td>
                     @item.Qty
                 </td>
+                <td>
 
+                </td>
 
             </tr>
-            i++;
-        }
-
+              
+            }
+                i++;
+            }
     </table>
 
     <br />

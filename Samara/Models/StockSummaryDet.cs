@@ -7,8 +7,8 @@ namespace Samara
 {
     public class StockSummaryDet
     {
-   
 
+        public int ItemId { get; set; }
 
         public string Tdate { get; set; }
 
