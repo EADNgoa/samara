@@ -36,11 +36,11 @@ namespace Samara.Controllers
             DateTime lastMonDate = DateTime.Parse($"01/{RptMon}/{RptYr}").AddDays(-1);
             int LastDate = DateTime.DaysInMonth(RptYr, RptMon);
             DateTime CurrMonDate = DateTime.Parse($"{LastDate}/{RptMon}/{RptYr}");
-            ViewBag.lmd = lastMonDate;
-            ViewBag.cmd = CurrMonDate;
+            ViewBag.RptMon = MyExtensions.MonthFromInt(RptMon);
+            ViewBag.RptYr = RptYr;
             ViewBag.Yr = RptYr;
-            ViewBag.OpeningBalance = db.Fetch<StockSummaryDet>("Select i.itemId, ItemName,sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By ItemName",lastMonDate).ToDictionary(i => i.ItemId);
-            ViewBag.ClosingBalance = db.Fetch<StockSummaryDet>(" Select i.itemId, ItemName,Sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By ItemName", CurrMonDate).ToDictionary(i => i.ItemId);
+            ViewBag.OpeningBalance = db.Fetch<StockSummaryDetails>("Select i.itemId, ItemName,sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By i.itemId, ItemName", lastMonDate).ToDictionary(i => i.ItemId);
+            ViewBag.ClosingBalance = db.Fetch<StockSummaryDetails>(" Select i.itemId, ItemName,Sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By i.itemId, ItemName", CurrMonDate).ToDictionary(i => i.ItemId);
             return View("OCbalance");
         }
 

@@ -5,9 +5,8 @@ using System.Web;
 
 namespace Samara
 {
-    public class StockSummaryDet
+    public class StockSummaryDetails
     {
-
         public int ItemId { get; set; }
 
         public string Tdate { get; set; }

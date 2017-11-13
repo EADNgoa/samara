@@ -1,19 +1,17 @@
-﻿@model PagedList.IPagedList<Samara.StockSummaryDet>
+﻿@model PagedList.IPagedList<StockSummaryDetails>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Stock Balance ";
+    ViewBag.Title = "OB /CB Stock Balance";
 }
 
 <center>
-    <h2 class="section-to-print"><b>@ViewBag.Title For the Year: @ViewBag.Yr </b></h2>
+    <h2 class="section-to-print"><b>@ViewBag.Title For : @ViewBag.RptMon @ViewBag.RptYr </b></h2>
     
 
 </center>
 <center>
     <table class="table-striped" width="100%">
-        <thead>
-            <b> Opening Balance For Month @ViewBag.lmd </b>
-        </thead>
+        <thead>            
         <tr>
             <th>
                 Sr No
@@ -24,79 +22,34 @@
             <th>
                Opening Balance
             </th>
-
             <th>
-                
+                Closing Balance
             </th>
-            <th></th>
-
         </tr>
-        @{int i = 1; }
-        @foreach (var item in ViewBag.OpeningBalance)
-        {
-            @foreach (var item in ViewBag.OpeningBalance)
-            { @foreach (var item2 in ViewBag.OpeningBalance)
-            {
-            <tr>
-                <td>
-                    @i
-                </td>
-                <td>
-                    @item.ItemName
-                </td>
-                <td>
-                    @item.Qty
-                </td>
-                <td>
-
-                </td>
-
-            </tr>
-              
-            }
-                i++;
-            }
-    </table>
-
-    <br />
-    <table class="table-striped" width="100%">
-        <thead>
-            <b>Closing Balance For Month @ViewBag.cmd </b>
         </thead>
-        <tr>
-            <th>
-                Sr No
-            </th>
-          
-            <th>
-                Item
-            </th>
-
-            <th>
-                Quantity
-            </th>
-            <th></th>
-
-        </tr>
-        @{int a = 1; }
-        @foreach (var item in ViewBag.ClosingBalance)
+        @{var CB = (IDictionary<int, StockSummaryDetails>)ViewBag.ClosingBalance;
+          var OB = (IDictionary<int, StockSummaryDetails>)ViewBag.OpeningBalance;
+            }
+        @foreach ( KeyValuePair<int, StockSummaryDetails> item in CB )
         {
+
             <tr>
                 <td>
-                    @a
-                </td>
-              
-                <td>
-                    @item.ItemName
+                    @item.Key
                 </td>
                 <td>
-                  @item.Qty
+                    @item.Value.ItemName
                 </td>
-
-
+                <td>
+                    @if (OB.ContainsKey(item.Key))
+                    {
+                        @(((Samara.StockSummaryDetails)OB[item.Key]).Qty)
+                    }
+                </td>
+                <td>@item.Value.Qty</td>
             </tr>
-            a++;
-        }
+         }              
+          
+</table>
 
-    </table>
 </center>

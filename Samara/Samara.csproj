@@ -220,7 +220,7 @@
     <Compile Include="Models\Client_Bill.cs" />
     <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\GetSupDet.cs" />
-    <Compile Include="Models\StockSummaryDet.cs" />
+    <Compile Include="Models\StockSummaryDetails.cs" />
     <Compile Include="Models\SiteCurrentStockDet.cs" />
     <Compile Include="Models\SuppBillDet.cs" />
     <Compile Include="Models\Suplier_Bill.cs" />
