@@ -259,6 +259,7 @@ namespace Samara
 		[Column] public string UserID { get; set; }
 		[Column] public DateTime? Tdate { get; set; }
 		[Column] public int? SiteID { get; set; }
+		[Column] public int? ClientID { get; set; }
 		[Column] public int? SupplierID { get; set; }
 		[Column] public int? ItemID { get; set; }
 		[Column] public int? QtyAdded { get; set; }

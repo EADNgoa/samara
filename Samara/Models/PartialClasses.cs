@@ -21,15 +21,32 @@ namespace Samara
     {
     }
 
+    [MetadataType(typeof(SupplierBillMetadata))]
+    public partial class SupplierBill
+    {
+    }
+
+    [MetadataType(typeof(SupplierBillDetailMetadata))]
+    public partial class SupplierBillDetail
+    {
+    }
+    [MetadataType(typeof(ClientBillMetadata))]
+    public partial class ClientBill
+    {
+    }
+    [MetadataType(typeof(ClientBillDetailMetadata))]
+    public partial class ClientBillDetail
+    {
+    }
     [MetadataType(typeof(ClientMetadata))]
     public partial class Client
     {
     }
 
-        [MetadataType(typeof(ItemMetadata))]
-        public partial class Item
-        {   
-        }
+   [MetadataType(typeof(ItemMetadata))]
+   public partial class Item
+   {   
+   }
 
 
     [MetadataType(typeof(ProjectMetadata))]

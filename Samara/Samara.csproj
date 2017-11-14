@@ -195,10 +195,12 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ClientBillController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\EAController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SupplierBillController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
@@ -213,7 +215,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ClientBillDet.cs" />
+    <Compile Include="Models\ClientDet.cs" />
+    <Compile Include="Models\Client_Bill.cs" />
+    <Compile Include="Models\Extensions.cs" />
     <Compile Include="Models\GetSupDet.cs" />
+    <Compile Include="Models\StockSummaryDetails.cs" />
+    <Compile Include="Models\SiteCurrentStockDet.cs" />
     <Compile Include="Models\SuppBillDet.cs" />
     <Compile Include="Models\Suplier_Bill.cs" />
     <Compile Include="Models\SuppDet.cs" />
@@ -389,6 +397,12 @@
     <Content Include="Views\SupplierBill\Manage.cshtml" />
     <Content Include="Views\SupplierBill\Index.cshtml" />
     <Content Include="Views\SupplierBill\Details.cshtml" />
+    <Content Include="Views\ClientBill\Details.cshtml" />
+    <Content Include="Views\ClientBill\Index.cshtml" />
+    <Content Include="Views\ClientBill\Manage.cshtml" />
+    <Content Include="Views\Reports\Stock.cshtml" />
+    <Content Include="Views\Reports\RptRq.cshtml" />
+    <Content Include="Views\Reports\OCbalance.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

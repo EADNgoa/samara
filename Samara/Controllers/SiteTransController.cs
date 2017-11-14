@@ -25,12 +25,12 @@ namespace Samara.Controllers
         public ActionResult IssueIndex(int? page , string SiteName)
         {
             if (SiteName?.Length > 0) page = 1;
-            return View("IssueIndex", base.BaseIndex<IssueTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ItemName, QtyAdded, QtyRemoved,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID Where SiteName like '%" + SiteName + "%' and QtyRemoved >= 0 and ToSiteID IS Null"));
+            return View("IssueIndex", base.BaseIndex<IssueTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ClientName,ItemName, QtyAdded, QtyRemoved,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID Inner join Client on Client.ClientID =SiteTransasction.ClientID Where SiteName like '%" + SiteName + "%' and QtyRemoved > 0"));
         }
         public ActionResult TransferIndex(int? page, string SiteName)
         {
             page = 1;
-            return View("TransferIndex", base.BaseIndex<SiteTransfers>(page, "SiteTransID,Tdate,Email,sf.SiteName as CurrentSite,ItemName, QtyAdded, QtyRemoved,st.SiteName as ToSite,Remarks ", " SiteTransasction stf Inner Join Sites sf on stf.SiteID = sf.SiteID Inner Join Item i on i.ItemID = stf.ItemID inner join Sites as st on st.SiteID = stf.ToSiteID Inner Join AspNetUsers ans on ans.Id = stf.UserID Where sf.SiteName like '%" + SiteName + "%' and ToSiteID > 0"));
+            return View("TransferIndex", base.BaseIndex<SiteTransfers>(page, "SiteTransID,Tdate,Email,sf.SiteName as CurrentSite,ItemName, QtyAdded, QtyRemoved,st.SiteName as ToSite,Remarks ", " SiteTransasction stf Inner Join Sites sf on stf.SiteID = sf.SiteID Inner Join Item i on i.ItemID = stf.ItemID inner join Sites as st on st.SiteID = stf.ToSiteID Inner Join AspNetUsers ans on ans.Id = stf.UserID Where sf.SiteName like '%" + SiteName + "%' and ToSiteID IS NOT NULL"));
         }
 
 
@@ -91,6 +91,7 @@ namespace Samara.Controllers
                         }
                         base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
                         transaction.Complete();
+
                     }
                 }
                 catch (Exception ex)
@@ -99,7 +100,7 @@ namespace Samara.Controllers
                     throw ex;
                 }
             
-            return RedirectToAction("TransferIndex");
+         
             }
 
             return RedirectToAction("ManageTransfer");
@@ -115,12 +116,16 @@ namespace Samara.Controllers
             {
                 rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyAdded = 0 };
                 ViewBag.OriginalQty = 0;
+                ViewBag.ClientID = new SelectList(db.Fetch<Client>("Select ClientID,ClientName from Client"), "ClientID", "ClientName");
+
             }
             else
             {
                 //In edit mode We need to fetch the name values of the autocomplete boxes
                 ViewBag.FromSiteName = db.SingleOrDefault<string>("Select SiteName from Sites where SiteID = @0", rec.SiteID);
                 ViewBag.ItemName = db.SingleOrDefault<string>("Select ItemName from Item where ItemID = @0", rec.ItemID);
+                ViewBag.ClientName = db.SingleOrDefault<string>("Select ClientName from Client where ClientID = @0", rec.ClientID);
+
                 ViewBag.OriginalQty = rec.QtyRemoved;
             }
 
@@ -130,10 +135,10 @@ namespace Samara.Controllers
 
         // POST: Clients/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598y
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ManageIssue([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,QtyRemoved,Remarks")] SiteTransasction siteTransaction,int OriginalQty)
+        public ActionResult ManageIssue([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ClientID,ItemID,QtyAdded,QtyRemoved,Remarks")] SiteTransasction siteTransaction,int OriginalQty)
         {
 
             siteTransaction.Tdate = DateTime.Now;
@@ -156,6 +161,7 @@ namespace Samara.Controllers
                         {
 
                             db.Update("SiteCurrentStock", "SiteStockID", new { Qty = getStock.Qty - siteTransaction.QtyRemoved }, getStock.SiteStockID);
+                          
                         }
                         base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
                         transaction.Complete();
@@ -231,31 +237,25 @@ namespace Samara.Controllers
                         else
                             db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
                     }
-                    if(siteTransaction.SiteTransID>0)
-                    {
-                        var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
 
-                        var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
+
+                    var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
+                    var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
+                    if (siteTransaction.SiteTransID>0)
+                    {
                         if (getSupBill != null)
                         {
-                           
-                                db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec = siteTransaction.QtyAdded - OriginalQty + getSupBill.QtyRec }, getSupBill.SBillDetailID);
-                            
-
+                            db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =  siteTransaction.QtyAdded + getSupBill.QtyRec - OriginalQty }, getSupBill.SBillDetailID);
                             siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
                         }
                     }
                     else
                     {
-                        //get SBillID USing SuplierID
-                        var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
-                        //get bill details using SBillID
-                        var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
-                        if (getSupBill != null)
+                      if (getSupBill != null)
                         {
                             if (getSupBill.Qty != getSupBill.QtyRec)
                             {
-                                db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec = siteTransaction.QtyAdded + getSupBill.QtyRec }, getSupBill.SBillDetailID);
+                                db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =siteTransaction.QtyAdded+getSupBill.QtyRec}, getSupBill.SBillDetailID);
                             }
 
                             siteTransaction.SBillDetailID = getSupBill.SBillDetailID;

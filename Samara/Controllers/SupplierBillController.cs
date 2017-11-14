@@ -58,12 +58,14 @@ namespace Samara.Controllers
             var GetItem = db.FirstOrDefault<SupplierBillDetail>("Select * From SupplierBillDetail Where ItemID=@0 and SBillID =@0",supplierBillDetail.ItemID,supplierBillDetail.SBillID);
             if(GetItem ==  null)
             {
+                supplierBillDetail.QtyRec = 0;
                 base.BaseSave<SupplierBillDetail>(supplierBillDetail, supplierBillDetail.SBillDetailID > 0);
             }
             else
             {
                 db.Update("SupplierBillDetail", "SBillDetailID", new { Qty = GetItem.Qty + supplierBillDetail.Qty ,UnitPrice =supplierBillDetail.UnitPrice }, GetItem.SBillDetailID);
             }
+           
 
             return RedirectToAction("Details",new {id=supplierBillDetail.SBillID });
         }
