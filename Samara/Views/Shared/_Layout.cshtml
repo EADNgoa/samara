@@ -3,106 +3,102 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - EEAA Tech</title>
-    @Styles.Render("~/Content/css")
+    <title>@ViewBag.Title - </title>
+	<link rel="icon" href="~/Custom/BBS.ico">
     @Styles.Render("~/Content/themes/base/css")
     @Scripts.Render("~/bundles/modernizr")
-    @Scripts.Render("~/bundles/jquery")
-    @Scripts.Render("~/bundles/jqueryui")
-  
+    @Styles.Render("~/Content/css")
+    @Styles.Render("~/Content/dtpic")
+
+    
 </head>
-<body>
-   
-    <div class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Hamara Samara ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Masters<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-
-                            <li><a href="~/SupervisorSites/Index">Assign Supervisors</a></li>
-                           
-                            <li><a href="~/Configs/Index">Configuration</a></li>
+<body >
+    @Html.Partial("_MenuPartial")
+    
+    @Scripts.Render("~/bundles/jquery")
+    
+    @Scripts.Render("~/bundles/jqueryui")
 
 
-                            <li><a href="~/Projects/Index">Add Projects</a></li>
-                            <li><a href="~/Units/Index">Add Units</a></li>
-                            <li><a href="~/Items/Index">Add Items</a></li>
-                            <li><a href="~/Sites/Index">Add Sites</a></li>
-
-                            
-                            <li><a href="~/Suppliers/Index">Add Suppliers</a></li>
-                            <li>@Html.ActionLink("Client", "Index", "Clients")</li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Inventory<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/SiteTrans/Index">Add Stock</a></li>
-                            <li><a href="~/SiteTrans/IssueIndex">Use Stock</a></li>
-                            <li><a href="~/SiteTrans/TransferIndex">Transfer Stock</a></li>                    
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bills<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/SupplierBill/Index">Supplier Bill</a></li>
-                            <li><a href="~/ClientBill/Index">Client Bill</a></li>
-
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
-                        <ul class="dropdown-menu">
-                            <li><a href="~/Reports/Stock">Stock Report</a></li>
-                            <li><a href="~/Reports/RptRq">Ob/Cb Report</a></li>
-
-                         
-                        </ul>
-                    </li>
-         
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
-        </div>
-    </div>
-    <div class="container body-content">
+    @Scripts.Render("~/bundles/jquerydtpicker")
+    <div id="TopBody" class="container body-content">
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - EEAAtech</p>
         </footer>
     </div>
 
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)
 
-    <script>
-        //Autocomplete on any view with id
-        $(document).ready(function () {
-            $('*[data-autocombo-url]')
-                .each(function () {
-                    $(this).autocomplete({
-                        source: $(this).data("autocombo-url"),
-                        minLenght: 3,
-                        delay: 500,
-                        select: function (event, ui) {
-                            $($(this).data("autocomplete-idholder")).val(ui.item.id);
-                        }
-                    });
+<script>
+    $(function () {
+        //Change the "a" in menu and body
+        var sel = $('.dropdown-menu a');
+        sel.addClass('myamenu');
+
+        var bdy = $("#TopBody a");
+        bdy.addClass('myatag');
+
+        
+
+        //DateTime picker
+        $('input[type=date]').datepicker({
+            dateFormat: "dd-M-yy",
+            showButtonPanel: true,
+            changeMonth: true,
+            changeYear: true
+        }).attr('type', 'text').attr('autocomplete', 'off');
+
+        //Disable teh browsers default date picker
+        jQuery.validator.methods["date"] = function (value, element) { return true; }
+
+
+    });
+
+   //autocomplete on any view without id
+	//<input type="text" id="Item" name="Item" data-autocomplete-url="@@Url.Action("AutoComplete")" />
+ //   $(document).ready(function () {
+ //       $('*[data-autocomplete-url]')
+ //           .each(function () {
+ //               $(this).autocomplete({
+ //                   source: $(this).data("autocomplete-url")
+ //               });
+ //           });
+ //   });
+
+
+//Autocomplete on any view with id
+// @@Html.HiddenFor(model => model.CustomerID) //choose the ID field of your model
+// <input type="text" id="Customer" name="Customer" style="color:black;" data-autocomplete-idholder="#CustomerID" data-autocombo-url="@@Url.Action("AutoCompleteCusts")"  class="form-control" />  //for Create View
+// <input type="text"  value="@@Model.Customer.Name" id="Customer" name="Customer" style="color:black;" data-autocomplete-idholder="#CustomerID" data-autocombo-url="@@Url.Action("AutoCompleteCusts")" class="form-control" />  //for edit view
+//sample controller
+// public ActionResult AutoCompleteCusts(string term)
+//        {
+//            var filteredItems = db.Customers.Where(c => c.Name.Contains(term)).Select(c => new { id = c.CustomerID, value = c.Name });
+
+//           return Json(filteredItems, JsonRequestBehavior.AllowGet);
+//        }
+
+    
+ $(document).ready(function () {
+        $('*[data-autocombo-url]')
+            .each(function () {
+                $(this).autocomplete({
+                    source: $(this).data("autocombo-url"),
+                    minLenght: 3,
+                    delay: 500,
+                    select: function (event, ui) {
+                        $($(this).data("autocomplete-idholder")).val(ui.item.id);
+                    }
                 });
-        });
-    </script>
+            });
+    });
+
+</script>
+
+   
 </body>
+
 </html>

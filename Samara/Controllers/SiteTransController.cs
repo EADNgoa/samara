@@ -25,7 +25,7 @@ namespace Samara.Controllers
         public ActionResult IssueIndex(int? page , string SiteName)
         {
             if (SiteName?.Length > 0) page = 1;
-            return View("IssueIndex", base.BaseIndex<IssueTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ClientName,ItemName, QtyAdded, QtyRemoved,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID Inner join Client on Client.ClientID =SiteTransasction.ClientID Where SiteName like '%" + SiteName + "%' and QtyRemoved > 0"));
+            return View("IssueIndex", base.BaseIndex<IssueTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ClientName,ItemName, QtyRemoved,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID Inner join Client on Client.ClientID =SiteTransasction.ClientID Where SiteName like '%" + SiteName + "%' and QtyRemoved >= 0 and ToSiteID IS Null and COALESCE(QtyRemoved,0)>0 and TositeID is null"));
         }
         public ActionResult TransferIndex(int? page, string SiteName)
         {
@@ -262,6 +262,7 @@ namespace Samara.Controllers
                         }
 
                     }
+
 
                     var res = base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
                     transaction.Complete();
