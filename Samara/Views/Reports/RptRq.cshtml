@@ -1,0 +1,53 @@
+﻿@model SiteTransasction
+
+@{
+    ViewBag.Title = "Manage";
+}
+
+<h2>Manage</h2>
+
+
+@using (Html.BeginForm((string)ViewBag.ReturnAction, "Reports", FormMethod.Post)) 
+{
+   
+    @Html.AntiForgeryToken()
+   
+    <div class="form-horizontal">
+        <h4>Appoint Goods To Site</h4>
+        <hr />
+     
+        @if (ViewBag.MonthBox != null)
+        {
+            <div class="form-group">
+                @Html.Label("Month", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("RptMonth", (IEnumerable<SelectListItem>)ViewBag.MonthBox, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+        }
+
+        @if (ViewBag.YearBox != null)
+        {
+            <div class="form-group">
+                @Html.Label("Year", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.DropDownList("RptYear", (IEnumerable<SelectListItem>)ViewBag.YearBox, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+        }
+     
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}
+

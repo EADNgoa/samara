@@ -16,7 +16,7 @@
     @Html.HiddenFor(model => model.QtyAdded)
     @Html.Hidden("OriginalQty", (int)ViewBag.OriginalQty)
     <div class="form-horizontal">
-        <h4>Transfer Of Goods</h4>
+        <h4>ISsue Of Goods</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @if (Model?.SiteTransID >0)
@@ -38,8 +38,21 @@
                 @Html.ValidationMessageFor(model => model.SiteID, "", new { @class = "text-danger" })
             </div>
         </div>
-
-
+        <div class="form-group">
+            @Html.LabelFor(model => model.ClientID, "Client Name", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @if (ViewBag.ClientName != null)
+                {
+                    @Html.Label((string)ViewBag.ClientName, new { @class = "form-control" })
+                    @Html.HiddenFor(model => model.ClientID)
+                }
+                else
+                {
+                    @Html.DropDownListFor(model => model.ClientID, null, new { @class = "form-control" })
+                }
+                @Html.ValidationMessageFor(model => model.ClientID, "", new { @class = "text-danger" })
+            </div>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.ItemID, "Item", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

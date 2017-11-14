@@ -75,7 +75,7 @@
     </table>
 </center>
 <br />
-  @if (ViewBag.supBillDets == null)
+  @if (ViewBag.ClientBillDets == null)
   {
 <table class="table">
     <tr>
@@ -121,7 +121,8 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.TaxPerc)
-            </td>          
+            </td> 
+   
             <td>
                 @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
             </td>
