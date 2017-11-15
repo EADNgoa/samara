@@ -185,7 +185,7 @@ namespace Samara.Controllers
 
             var rec = base.BaseCreateEdit<SiteTransasction>(id, "SiteTransID");
 
-            //Since UserID and QtyRemoved is [required] we have to set it beofre loading the form
+            //Since UserID and QtyRemoved is [required] we have to set it before loading the form
             if (rec == null) //We are in create mode
             {
                 rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyRemoved = 0 };
@@ -238,30 +238,30 @@ namespace Samara.Controllers
                             db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
                     }
 
+                    //on 14 Nov 2017 stanley said suppliers would make their own bills, hence the below was commented out
+                        //var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
+                        //var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
+                        //if (siteTransaction.SiteTransID>0)
+                        //{
+                        //    if (getSupBill != null)
+                        //    {
+                        //        db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =  siteTransaction.QtyAdded + getSupBill.QtyRec - OriginalQty }, getSupBill.SBillDetailID);
+                        //        siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
+                        //    }
+                        //}
+                        //else
+                        //{
+                        //  if (getSupBill != null)
+                        //    {
+                        //        if (getSupBill.Qty != getSupBill.QtyRec)
+                        //        {
+                        //            db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =siteTransaction.QtyAdded+getSupBill.QtyRec}, getSupBill.SBillDetailID);
+                        //        }
 
-                    var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
-                    var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
-                    if (siteTransaction.SiteTransID>0)
-                    {
-                        if (getSupBill != null)
-                        {
-                            db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =  siteTransaction.QtyAdded + getSupBill.QtyRec - OriginalQty }, getSupBill.SBillDetailID);
-                            siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
-                        }
-                    }
-                    else
-                    {
-                      if (getSupBill != null)
-                        {
-                            if (getSupBill.Qty != getSupBill.QtyRec)
-                            {
-                                db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =siteTransaction.QtyAdded+getSupBill.QtyRec}, getSupBill.SBillDetailID);
-                            }
+                        //        siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
+                        //    }
 
-                            siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
-                        }
-
-                    }
+                        //}
 
 
                     var res = base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
