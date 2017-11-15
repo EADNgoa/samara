@@ -1,0 +1,140 @@
+﻿@model Samara.MAsterWork_Details
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Work Details";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+
+
+
+    <table class="table-condensed">
+      
+        @using (@Html.BeginForm())
+        {
+            if (ViewBag.WorkDets != null)
+            {        
+                   @Html.Hidden("WorkID", (int)ViewBag.WorkDets.WorkID)
+                   @Html.Hidden("ItemID", (int)ViewBag.WorkDets.ItemID)
+                   @Html.Hidden("WorkDetailID", (int)ViewBag.WorkDets.WorkDetailID)
+                   @Html.Hidden("or", (decimal)ViewBag.WorkDets.Rate)
+
+             <tr>
+               <td>@Html.Label("Item")</td>
+               <td>@Html.Label((string)ViewBag.WorkName, new { @class = "form-control" })</td>                    
+            </tr>
+      
+            <tr>
+                <td>@Html.Label("Quantity")</td>
+                <td>@Html.TextBox("Qty", (int)ViewBag.WorkDets.Qty, new { @class = "form-control"  } )</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Rate")</td>
+
+                <td>@Html.TextBox("Rate",(decimal)ViewBag.WorkDets.Rate, new { @class = "form-control"} )</td>
+            </tr>
+
+            }
+            else
+            {
+                <tr><td class="col-md-4">Work Name:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.Work.WorkName)</td></tr>
+                <tr><td class="col-md-4">Unit:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.Work.UnitName)</td></tr>
+                <tr><td class="col-md-4">Rate:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.Work.Rate)</td></tr>
+
+                if (ViewBag.WorkID != null)
+                {
+                    @Html.Hidden("WorkID", (int)ViewBag.WorkID)
+                }
+                @Html.Hidden("ItemID")
+              
+                <tr>
+                    <td>@Html.Label("Item Name")</td>
+                    <td>
+                        <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Quantity")</td>
+                    <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+   
+                <tr>
+                    <td>@Html.Label("Rate")</td>
+                    <td>@Html.Editor("Rate", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+           
+            }
+            <tr>
+                <td></td>
+
+                <td><input type="submit" value="Submit" /></td>
+            </tr>
+        }
+    </table>
+</center>
+<br />
+  @if (ViewBag.WorkDets == null)
+  {
+<table class="table">
+    <tr>
+        <th>
+            Sr No
+        </th>
+    
+        <th>
+           Item
+        </th>
+        <th>
+         Unit
+        </th>
+        <th>
+         Quantity
+        </th>
+        <th>
+         Rate
+        </th>
+      
+        <th>
+            Amount
+        </th>
+        <th></th>
+
+    </tr>
+    @{int i = 1; }
+    @foreach (var item in Model.WorkDets)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+       
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.UnitName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rate)
+            </td>
+          
+            @if (item.Qty == item.Amount)
+            {
+
+                <td>Recieved</td>
+            }
+          
+            <td>
+                @Html.ActionLink("Edit", "ManageDetails", new { id = item.WorkDetailID })
+            </td>
+        </tr>
+        i++;
+    }
+</table>
+
+
+        }

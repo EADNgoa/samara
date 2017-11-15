@@ -88,6 +88,19 @@ namespace Samara
 		[Column] public Guid OperationKey { get; set; }
 	}
     
+	[TableName("dbo.AbstractSheet")]
+	[PrimaryKey("AbstractID", AutoIncrement=false)]
+	[ExplicitColumns]
+    public partial class AbstractSheet  
+    {
+		[Column] public int AbstractID { get; set; }
+		[Column] public int? WorkID { get; set; }
+		[Column] public int? UnitID { get; set; }
+		[Column] public int? Qty { get; set; }
+		[Column] public decimal? RatePerUnit { get; set; }
+		[Column] public decimal? Amount { get; set; }
+	}
+    
 	[TableName("dbo.AspNetRoles")]
 	[PrimaryKey("Id", AutoIncrement=false)]
 	[ExplicitColumns]
@@ -168,6 +181,7 @@ namespace Samara
 		[Column] public int? ClientID { get; set; }
 		[Column] public DateTime? Tdate { get; set; }
 		[Column] public decimal? RetentionPerc { get; set; }
+		[Column] public decimal? TaxPerc { get; set; }
 	}
     
 	[TableName("dbo.ClientBillDetail")]
@@ -177,11 +191,11 @@ namespace Samara
     {
 		[Column] public int CBillDetailID { get; set; }
 		[Column] public int? CBillID { get; set; }
-		[Column] public int? ItemID { get; set; }
-		[Column] public int? Qty { get; set; }
-		[Column] public decimal? UnitCostPrice { get; set; }
-		[Column] public decimal? UnitSellPrice { get; set; }
-		[Column] public decimal? TaxPerc { get; set; }
+		[Column] public int? AbstractID { get; set; }
+		[Column] public string Description { get; set; }
+		[Column] public decimal? Amount { get; set; }
+		[Column] public bool? DebitCredit { get; set; }
+		[Column] public bool? BeforeTax { get; set; }
 	}
     
 	[TableName("dbo.ClientViewBillDetail")]
@@ -339,5 +353,29 @@ namespace Samara
     {
 		[Column] public int UnitID { get; set; }
 		[Column] public string UnitName { get; set; }
+	}
+    
+	[TableName("dbo.Work")]
+	[PrimaryKey("WorkID")]
+	[ExplicitColumns]
+    public partial class Work  
+    {
+		[Column] public int WorkID { get; set; }
+		[Column] public string WorkName { get; set; }
+		[Column] public int? UnitID { get; set; }
+		[Column] public decimal? Rate { get; set; }
+	}
+    
+	[TableName("dbo.WorkDetails")]
+	[PrimaryKey("WorkDetailID")]
+	[ExplicitColumns]
+    public partial class WorkDetail  
+    {
+		[Column] public int WorkDetailID { get; set; }
+		[Column] public int? WorkID { get; set; }
+		[Column] public int? ItemID { get; set; }
+		[Column] public int? Qty { get; set; }
+		[Column] public decimal? Rate { get; set; }
+		[Column] public decimal? Amount { get; set; }
 	}
 }
