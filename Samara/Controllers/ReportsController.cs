@@ -38,7 +38,7 @@ namespace Samara.Controllers
             DateTime CurrMonDate = DateTime.Parse($"{LastDate}/{RptMon}/{RptYr}");
             ViewBag.RptMon = MyExtensions.MonthFromInt(RptMon);
             ViewBag.RptYr = RptYr;
-            ViewBag.Yr = RptYr;
+            
             ViewBag.OpeningBalance = db.Fetch<StockSummaryDetails>("Select i.itemId, ItemName,sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By i.itemId, ItemName", lastMonDate).ToDictionary(i => i.ItemId);
             ViewBag.ClosingBalance = db.Fetch<StockSummaryDetails>(" Select i.itemId, ItemName,Sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By i.itemId, ItemName", CurrMonDate).ToDictionary(i => i.ItemId);
             return View("OCbalance");
