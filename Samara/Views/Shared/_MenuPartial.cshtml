@@ -1,0 +1,58 @@
+﻿
+
+<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            @*<a id="emblem" href="~/"><img src="~/Custom/Emblem.png" height=100px; alt="Samara Constructions" /> </a>*@
+            @Html.ActionLink("Hamara Samara ", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+        </div>
+        
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">                
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Masters<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="~/Units/Index">Units</a></li>
+                        <li><a href="~/Items/Index">Items</a></li>
+                        <li><a href="~/Sites/Index">Sites</a></li>
+                        <li><a href="~/Projects/Index">Projects</a></li>
+                        <li>@Html.ActionLink("Client", "Index", "Clients")</li>
+                        <li><a href="~/Suppliers/Index">Suppliers</a></li>
+                        <li><a href="~/SupervisorSites/Index">Assign Supervisors</a></li>
+                        <li><a href="~/Configs/Index">Configuration</a></li>
+                        <li>@Html.ActionLink("Give Privilage", "GivePrivilage", "Account")</li>                        
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Inventory<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="~/SiteTrans/Index">Add Stock</a></li>
+                        <li><a href="~/SiteTrans/IssueIndex">Use Stock</a></li>
+                        <li><a href="~/SiteTrans/TransferIndex">Transfer Stock</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Bills<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="~/SupplierBill/Index">Supplier Bill</a></li>
+                        <li><a href="~/ClientBill/Index">Client Bill</a></li>
+                    </ul>
+                </li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">Reports<span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="~/Reports/Stock">Stock Report</a></li>
+                        <li><a href="~/Reports/RptRq">Ob/Cb Report</a></li>
+                    </ul>
+                </li>
+                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+            </ul>
+            @Html.Partial("_LoginPartial")
+        </div>
+    </div>
+</div>

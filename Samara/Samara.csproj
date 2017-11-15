@@ -254,6 +254,7 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\EA.css" />
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\themes\base\accordion.css" />
     <Content Include="Content\themes\base\all.css" />
@@ -296,6 +297,8 @@
     <Content Include="Content\themes\base\tabs.css" />
     <Content Include="Content\themes\base\theme.css" />
     <Content Include="Content\themes\base\tooltip.css" />
+    <Content Include="Custom\EAwell.jpg" />
+    <Content Include="Custom\HeaderRaised.jpg" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -401,15 +404,23 @@
     <Content Include="Views\SupplierBill\Manage.cshtml" />
     <Content Include="Views\SupplierBill\Index.cshtml" />
     <Content Include="Views\SupplierBill\Details.cshtml" />
+    <Content Include="Views\Account\GivePrivilage.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\DateTime.cshtml" />
+    <Content Include="Views\Shared\DisplayTemplates\Decimal.cshtml" />
+    <Content Include="Views\Shared\pli.cshtml" />
+    <Content Include="Views\Shared\_MenuPartial.cshtml" />
+    <Content Include="Views\Shared\_ReportsLayout.cshtml" />
     <Content Include="Views\ClientBill\Details.cshtml" />
     <Content Include="Views\ClientBill\Index.cshtml" />
     <Content Include="Views\ClientBill\Manage.cshtml" />
     <Content Include="Views\Reports\Stock.cshtml" />
     <Content Include="Views\Reports\RptRq.cshtml" />
     <Content Include="Views\Reports\OCbalance.cshtml" />
+
     <Content Include="Views\Works\Details.cshtml" />
     <Content Include="Views\Works\Index.cshtml" />
     <Content Include="Views\Works\Manage.cshtml" />
+
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
