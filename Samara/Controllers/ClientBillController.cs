@@ -7,7 +7,7 @@ using System.Net;
 //using System.Web;
 using System.Web.Mvc;
 
-
+/*
 namespace Samara.Controllers
 {
     public class ClientBillController : EAController
@@ -109,3 +109,4 @@ namespace Samara.Controllers
         }
     }
 }
+*/

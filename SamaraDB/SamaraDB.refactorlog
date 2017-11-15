@@ -133,4 +133,67 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="ItemName" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="24dac250-36aa-4ca4-b1da-cb0709b1f0b4" ChangeDateTime="11/13/2017 14:17:04">
+    <Property Name="ElementName" Value="[dbo].[Work].[Id]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Work]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="WorkID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f4b3657d-a238-4b2b-8cfb-e7bd7168c608" ChangeDateTime="11/13/2017 14:19:15">
+    <Property Name="ElementName" Value="[dbo].[Work].[UnitID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Work]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ItemID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="5e3f0fe2-2a04-40a3-b7a1-368c34c6b3b2" ChangeDateTime="11/13/2017 14:23:06">
+    <Property Name="ElementName" Value="[dbo].[WorkDetails].[Qty]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WorkDetails]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="ItemID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="cff4eef7-b1e8-4b65-9836-562c1812dae9" ChangeDateTime="11/13/2017 14:23:22">
+    <Property Name="ElementName" Value="[dbo].[WorkDetails].[ItemID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WorkDetails]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="UnitID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="a99882d6-34bd-4113-9a87-ae85a3f8be55" ChangeDateTime="11/13/2017 14:23:44">
+    <Property Name="ElementName" Value="[dbo].[WorkDetails].[UnitID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WorkDetails]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="WorkID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="3958dc9a-786d-4949-a0d8-5a9332c2af14" ChangeDateTime="11/13/2017 14:24:13">
+    <Property Name="ElementName" Value="[dbo].[WorkDetails].[Amount]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[WorkDetails]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="Rate" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="fb5070d1-5b0a-427b-b2b7-82fc3fc05cd7" ChangeDateTime="11/13/2017 14:28:01">
+    <Property Name="ElementName" Value="[dbo].[AbstractSheet].[Qty]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[AbstractSheet]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="RatePerUnit" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="71e2d91d-fc4c-4d7d-bb12-b3bc740a0b18" ChangeDateTime="11/13/2017 14:32:23">
+    <Property Name="ElementName" Value="[dbo].[ClientBillDetail].[CBillID]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ClientBillDetail]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="AbstractID" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="1c09635a-845f-4c00-a722-4a08c485019d" ChangeDateTime="11/13/2017 14:32:45">
+    <Property Name="ElementName" Value="[dbo].[ClientBillDetail].[Description]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[ClientBillDetail]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="NameOfWork" />
+  </Operation>
 </Operations>
