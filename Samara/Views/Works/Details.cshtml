@@ -47,7 +47,8 @@
                     @Html.Hidden("WorkID", (int)ViewBag.WorkID)
                 }
                 @Html.Hidden("ItemID")
-              
+                @Html.Hidden("or", (decimal)ViewBag.or)
+
                 <tr>
                     <td>@Html.Label("Item Name")</td>
                     <td>

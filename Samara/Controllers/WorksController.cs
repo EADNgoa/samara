@@ -58,13 +58,13 @@ namespace Samara.Controllers
         }
   
         [HttpPost]     
-        public ActionResult Details([Bind(Include = "WorkDetailID,WorkID,UnitID,ItemID,Qty,Rate,Amount")] WorkDetail workDetail,int? or)
+        public ActionResult Details([Bind(Include = "WorkDetailID,WorkID,UnitID,ItemID,Qty,Rate,Amount")] WorkDetail workDetail,Decimal? or)
         {
             var GetItem = db.FirstOrDefault<WorkDetail>("Select * From WorkDetails Where ItemID=@0 and WorkID =@1",workDetail.ItemID,workDetail.WorkID);
             var getWR = db.FirstOrDefault<Work>("Select Rate From Work Where WorkID= @0",workDetail.WorkID);
             if(GetItem ==  null)
             {
-                db.Update("Work", "WorkID", new  { Rate =workDetail.Rate + or });
+                db.Update("Work", "WorkID", new  { Rate =workDetail.Rate + or },workDetail.WorkID);
                 workDetail.Amount = workDetail.Qty * workDetail.Rate;
                 base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
                 
