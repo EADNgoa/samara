@@ -30,7 +30,9 @@ namespace Samara
     {
         [StringLength(150)]
         [Required]
+        [Display(Name ="Client Name")]
         public string ClientName;
+
         [StringLength(300)]
         [Required]
         public string Address;

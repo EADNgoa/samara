@@ -8,10 +8,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Samara.Models;
 
+//made in the new NTHR
 namespace Samara.Controllers
 {
     [Authorize]
-    public class ManageController : Controller
+    public class ManageController : EAController
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
