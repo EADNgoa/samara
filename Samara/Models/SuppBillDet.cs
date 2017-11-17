@@ -9,8 +9,8 @@ namespace Samara
     {
         public int SBillDetailID { get; set; }
         public int SBillID { get; set; }
-        public int ItemID { get; set; }
-        public string ItemName { get; set; }
+        public int LabourID { get; set; }
+        public string LabourName { get; set; }
         public int Qty { get; set; }
         public decimal UnitPrice { get; set; }
         public int QtyRec { get; set; }

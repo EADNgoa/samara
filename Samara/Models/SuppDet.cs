@@ -11,6 +11,8 @@ namespace Samara
 
         public string SupplierName { get; set; }
         public string Tdate { get; set; }
+        public decimal TDSperc { get; set; }
+
 
 
     }

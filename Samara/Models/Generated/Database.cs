@@ -220,6 +220,7 @@ namespace Samara
 		[Column] public string PANnumber { get; set; }
 		[Column] public string TANnumber { get; set; }
 		[Column] public int RowsPerPage { get; set; }
+		[Column] public decimal? TDSperc { get; set; }
 	}
     
 	[TableName("dbo.Item")]
@@ -232,6 +233,16 @@ namespace Samara
 		[Column] public int? UnitID { get; set; }
 		[Column] public decimal? ReorderLevel { get; set; }
 		[Column] public decimal? TaxPerc { get; set; }
+	}
+    
+	[TableName("dbo.Labour")]
+	[PrimaryKey("LabourID")]
+	[ExplicitColumns]
+    public partial class Labour  
+    {
+		[Column] public int LabourID { get; set; }
+		[Column] public string LabourName { get; set; }
+		[Column] public decimal? Rate { get; set; }
 	}
     
 	[TableName("dbo.Project")]
@@ -330,6 +341,7 @@ namespace Samara
 		[Column] public int SBillID { get; set; }
 		[Column] public int? SupplierID { get; set; }
 		[Column] public DateTime? Tdate { get; set; }
+		[Column] public decimal? TDSperc { get; set; }
 	}
     
 	[TableName("dbo.SupplierBillDetail")]
@@ -339,6 +351,7 @@ namespace Samara
     {
 		[Column] public int SBillDetailID { get; set; }
 		[Column] public int? SBillID { get; set; }
+		[Column] public int? LabourID { get; set; }
 		[Column] public int? ItemID { get; set; }
 		[Column] public int? Qty { get; set; }
 		[Column] public decimal? UnitPrice { get; set; }

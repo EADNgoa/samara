@@ -10,10 +10,7 @@
 
 
     <table class="table-condensed">
-        <tr><td class="col-md-4">Client Name:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.ClientName)</td></tr>
-        <tr><td class="col-md-4">Date:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.Tdate)</td></tr>
-        <tr><td class="col-md-4">Retention Percantage:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td></tr>
-
+      
         @using (@Html.BeginForm())
         {
             if (ViewBag.ClientBillDets != null)
@@ -47,6 +44,16 @@
                     @Html.Hidden("CBillID", (int)ViewBag.CBillID)
                 }
                 @Html.Hidden("ItemID")
+                <tr>
+                     <td class="col-md-4">Client Name:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.ClientName)</td>
+                </tr>
+                <tr>
+                     <td class="col-md-4">Date:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.Tdate)</td>
+                </tr>
+                <tr>
+                     <td class="col-md-4">Retention Percantage:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td>
+                </tr>
+
                 <tr>
                     <td>@Html.Label("Item Name")</td>
                     <td>
