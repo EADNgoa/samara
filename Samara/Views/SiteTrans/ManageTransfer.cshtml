@@ -10,7 +10,13 @@
 @using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-    
+    @Html.HiddenFor(model => model.SiteID)
+    @Html.HiddenFor(model => model.UserID)
+    @Html.HiddenFor(model => model.ItemID)
+    @Html.HiddenFor(model => model.QtyAdded)
+
+    @Html.HiddenFor(model => model.ToSiteID)
+    @Html.Hidden("OriginalQty", (int)ViewBag.OriginalQty)
     <div class="form-horizontal">
         <h4>Transfer Goods To Site</h4>
         <hr />
@@ -21,20 +27,36 @@
         }
   
         <div class="form-group">
-            @Html.LabelFor(model => model.SiteID, "Site", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.SiteID, " From Site", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.SiteID,null, new { @class = "form-control" })
+                @if (ViewBag.FromSiteName != null)
+                {
+                    @Html.Label((string)ViewBag.FromSiteName, new { @class = "form-control" })
+                }
+                else
+                {
+                    <input type="text" id="SiteName" name="SiteName" style="color:black;" data-autocomplete-idholder="#SiteID" data-autocombo-url="@Url.Action("AutoCompleteSite")" class="form-control" />
+                }
                 @Html.ValidationMessageFor(model => model.SiteID, "", new { @class = "text-danger" })
             </div>
         </div>
+
+
         <div class="form-group">
             @Html.LabelFor(model => model.ItemID, "Item", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ItemID, null, new { @class = "form-control" })
+                @if (ViewBag.ItemName != null)
+                {
+                    @Html.Label((string)ViewBag.ItemName, new { @class = "form-control" })
+                }
+                else
+                {
+                    <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
+                }
                 @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
             </div>
         </div>
-  
+
         <div class="form-group">
             @Html.LabelFor(model => model.QtyRemoved, "Quantity", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -42,10 +64,18 @@
                 @Html.ValidationMessageFor(model => model.QtyRemoved, "", new { @class = "text-danger" })
             </div>
         </div>
+
         <div class="form-group">
-            @Html.LabelFor(model => model.ToSiteID, "Site", htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ToSiteID, "To Site", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ToSiteID, null, new { @class = "form-control" })
+                @if (ViewBag.ToSiteName != null)
+                {
+                    @Html.Label((string)ViewBag.ToSiteName, new { @class = "form-control" })
+                }
+                else
+                {
+                    <input type="text" id="SiteName" name="SiteName" style="color:black;" data-autocomplete-idholder="#ToSiteID" data-autocombo-url="@Url.Action("AutoCompleteToSite")" class="form-control" />
+                }
                 @Html.ValidationMessageFor(model => model.ToSiteID, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -30,7 +30,9 @@ namespace Samara
     {
         [StringLength(150)]
         [Required]
+        [Display(Name ="Client Name")]
         public string ClientName;
+
         [StringLength(300)]
         [Required]
         public string Address;
@@ -104,6 +106,73 @@ namespace Samara
         public string Remarks;
     }
 
+    public class SupplierBillMetadata
+    {
+
+        [Required]
+        public int SupplierID;
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime Tdate;
+    }
+
+
+    public class SupplierBillDetailMetadata
+    {
+
+        [Required]
+        public int SBillID;
+
+
+        [Required]
+        public int ItemID;
+
+
+        [Required]
+        public int Qty;
+            
+        [Required]
+        [Range(0.0, Double.MaxValue)]
+        public decimal UnitPrice;
+
+
+
+
+    }
+    public class ClientBillMetadata
+    {
+
+        [Required]
+        public int ClientID;
+
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        public DateTime Tdate;
+
+        [Required]
+        [Range(0.0, Double.MaxValue)]
+        public decimal RetentionPerc;
+    }
+
+    public class ClientBillDetailMetadata
+    {
+
+        [Required]
+        public int ItemID;
+
+        [Required]
+        public int Qty;
+
+        [Required]
+        [Range(0.0, Double.MaxValue)]
+        public decimal UnitSellPrice;
+
+        [Required]
+        [Range(0.0, Double.MaxValue)]
+        public decimal TaxPerc;
+
+    }
 
 
     //public class ConfigMetadata

@@ -51,9 +51,7 @@
         <th>
             Quantity Transfered
         </th>
-        <th>
-           After Transfer
-        </th>
+
         <th>
             Remarks
         </th>
@@ -85,14 +83,12 @@
         <td>
             @Html.DisplayFor(modelItem => item.QtyRemoved)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.QtyAdded)
-        </td>
+    
         <td>
             @Html.DisplayFor(modelItem => item.Remarks)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Manage", new { id=item.SiteTransID }) 
+            @Html.ActionLink("Edit", "ManageTransfer", new { id=item.SiteTransID }) 
         </td>
     </tr>
     i++;

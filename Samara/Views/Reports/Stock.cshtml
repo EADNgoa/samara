@@ -1,0 +1,94 @@
+﻿@model PagedList.IPagedList<Samara.SiteCurrentStockDet>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Stock Balance";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+    
+
+</center>
+<center>
+    <table class="table" width="100%">
+        <tr>
+            <th>
+                Sr No
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+                Quantity
+            </th>
+
+            <th>
+
+            </th>
+            <th></th>
+
+        </tr>
+        @{int i = 1; }
+        @foreach (var item in ViewBag.ItemStock)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @item.ItemName
+                </td>
+                <td>
+                    @item.Qty
+                </td>
+
+
+            </tr>
+            i++;
+        }
+
+    </table>
+
+    <br />
+    <table class="table-bordered" width="100%">
+        <tr>
+            <th>
+                Sr No
+            </th>
+            <th>
+                Site
+            </th>
+            <th>
+                Item
+            </th>
+
+            <th>
+                Quantity
+            </th>
+            <th></th>
+
+        </tr>
+        @{int a = 1; }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @a
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SiteName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ItemName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Qty)
+                </td>
+
+
+            </tr>
+            a++;
+        }
+
+    </table>
+</center>

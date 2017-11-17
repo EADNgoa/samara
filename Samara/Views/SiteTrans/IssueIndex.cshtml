@@ -43,14 +43,15 @@
            Site Name
         </th>
         <th>
+            Client Name
+        </th>
+        <th>
             Item Name
         </th>
         <th>
             Quantity Issued
         </th>
-        <th>
-           After Issue
-        </th>
+    
         <th>
             Remarks
         </th>
@@ -76,19 +77,20 @@
             @Html.DisplayFor(modelItem => item.SiteName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.ClientName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.ItemName)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.QtyRemoved)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.QtyAdded)
-        </td>
+
         <td>
             @Html.DisplayFor(modelItem => item.Remarks)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Manage", new { id=item.SiteTransID }) 
+            @Html.ActionLink("Edit", "ManageIssue", new { id=item.SiteTransID }) 
         </td>
     </tr>
     i++;

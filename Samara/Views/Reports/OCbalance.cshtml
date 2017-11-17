@@ -1,0 +1,55 @@
+﻿@model PagedList.IPagedList<Samara.StockSummaryDetails>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "OB /CB Stock Balance";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title For : @ViewBag.RptMon @ViewBag.RptYr </b></h2>
+    
+
+</center>
+<center>
+    <table class="table" width="100%">
+        <thead>            
+        <tr>
+            <th>
+                Sr No
+            </th>
+            <th>
+                Item
+            </th>
+            <th>
+               Opening Balance
+            </th>
+            <th>
+                Closing Balance
+            </th>
+        </tr>
+        </thead>
+        @{var CB = (IDictionary<int, StockSummaryDetails>)ViewBag.ClosingBalance;
+          var OB = (IDictionary<int, StockSummaryDetails>)ViewBag.OpeningBalance;
+            }
+        @foreach ( KeyValuePair<int, StockSummaryDetails> item in CB )
+        {
+
+            <tr>
+                <td>
+                    @item.Key
+                </td>
+                <td>
+                    @item.Value.ItemName
+                </td>
+                <td>
+                    @if (OB.ContainsKey(item.Key))
+                    {
+                        @(((Samara.StockSummaryDetails)OB[item.Key]).Qty)
+                    }
+                </td>
+                <td>@item.Value.Qty</td>
+            </tr>
+         }              
+          
+</table>
+
+</center>
