@@ -34,8 +34,9 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "SBillID,SupplierID,Tdate")] SupplierBill supplierBill)
+        public ActionResult Manage([Bind(Include = "SBillID,SupplierID,Tdate,TDSperc")] SupplierBill supplierBill)
         {
+            supplierBill.TDSperc =(decimal) db.FirstOrDefault<Config>("Select TDSperc from Config").TDSperc;
             return base.BaseSave<SupplierBill>(supplierBill, supplierBill.SBillID > 0);
         }
 
@@ -44,16 +45,18 @@ namespace Samara.Controllers
             
              var viewdata = new Suplier_Bill
              {
-                        SuplierDets = db.FirstOrDefault<SuppDet>("Select SBillID,SupplierName,Tdate from SupplierBill as sb Inner Join Supplier as s on sb.SupplierID =s.SupplierID where SBillID = @0", id),
-                        SuplierBillDets = db.Fetch<SuppBillDet>("Select * From SupplierBillDetail  Where SBillID = @0", id)
+                        SuplierDets = db.FirstOrDefault<SuppDet>("Select SBillID,SupplierName,Tdate,TDSperc from SupplierBill as sb Inner Join Supplier as s on sb.SupplierID =s.SupplierID where SBillID = @0", id),
+                        SuplierBillDets = db.Fetch<SuppBillDet>("Select * From SupplierBillDetail sbd inner join Labour l on sbd.LabourID = l.LabourID Where SBillID = @0", id)
                  
             };
-                ViewBag.SBillID = id;
-                return View("Details", viewdata);            
+            ViewBag.LabourID = new SelectList(db.Fetch<Labour>("Select LabourID,LabourName from Labour"), "LabourID", "LabourName");
+
+            ViewBag.SBillID = id;
+            return View("Details", viewdata);            
         }
   
         [HttpPost]     
-        public ActionResult Details([Bind(Include = "SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
+        public ActionResult Details([Bind(Include = "SBillDetailID,SBillID,LabourID,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
         {
             var GetItem = db.FirstOrDefault<SupplierBillDetail>("Select * From SupplierBillDetail Where ItemID=@0 and SBillID =@0",supplierBillDetail.ItemID,supplierBillDetail.SBillID);
             if(GetItem ==  null)
@@ -73,11 +76,11 @@ namespace Samara.Controllers
         public ActionResult ManageDetails(int? id)
         {
             ViewBag.SupBillDets = base.BaseCreateEdit<SupplierBillDetail>(id, "SBillDetailID");
-            ViewBag.ItemName = db.FirstOrDefault<SuppBillDet>("Select itemName From SupplierBillDetail sbd inner  join  Item as i on sbd.ItemID = i.ItemID where SBillDetailID= @0", id).ItemName;
+            ViewBag.LabourName = db.FirstOrDefault<SuppBillDet>("Select LabourName From SupplierBillDetail sbd inner  join  labour as l on sbd.LabourID = l.LabourID where SBillDetailID= @0", id).LabourName;
 
             var viewdata = new Suplier_Bill
                 {
-                    SuplierDets = db.FirstOrDefault<SuppDet>("Select SBillID,SupplierName,Tdate from SupplierBill as sb Inner Join Supplier as s on sb.SupplierID =s.SupplierID where SBillID = @0", id),
+                    SuplierDets = db.FirstOrDefault<SuppDet>("Select SBillID,SupplierName,Tdate,TDSperc from SupplierBill as sb Inner Join Supplier as s on sb.SupplierID =s.SupplierID where SBillID = @0", id),
                     SuplierBillDets = db.Fetch<SuppBillDet>("Select * From SupplierBillDetail  Where SBillID = @0", id)
                 };
               
@@ -86,7 +89,7 @@ namespace Samara.Controllers
         }
   
         [HttpPost]     
-        public ActionResult ManageDetails([Bind(Include = "SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
+        public ActionResult ManageDetails([Bind(Include = "SBillDetailID,SBillID,LabourID,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
         {
             base.BaseSave<SupplierBillDetail>(supplierBillDetail, supplierBillDetail.SBillDetailID > 0);
        
@@ -94,11 +97,6 @@ namespace Samara.Controllers
         }
 
 
-        public ActionResult AutoCompleteItem(string term)
-        {
-            var h = db.Fetch<AutoCompleteData>($"Select ItemID as id, ItemName as value from Item where ItemName like '%{term}%'").ToList();
-            return Json(h, JsonRequestBehavior.AllowGet);
-        }
 
         protected override void Dispose(bool disposing)
         {

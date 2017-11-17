@@ -1,7 +1,7 @@
 ﻿@model Samara.Suplier_Bill
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Supplier Detaills";
+    ViewBag.Title = "Contractor Detaills";
 }
 
 <center>
@@ -10,18 +10,17 @@
 
 
     <table class="table-condensed">
-        <tr><td class="col-md-4">Supplier Name:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.SupplierName)</td></tr>
-        <tr><td class="col-md-4">Date:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.Tdate)</td></tr>
+
         @using (@Html.BeginForm())
         {
             if (ViewBag.supBillDets != null)
             {        
                    @Html.Hidden("SBillID", (int)ViewBag.SupBillDets.SBillID)
-                   @Html.Hidden("ItemID", (int)ViewBag.SupBillDets.ItemID)
+                 
                    @Html.Hidden("SBillDetailID", (int)ViewBag.SupBillDets.SBillDetailID)
              <tr>
-               <td>@Html.Label("Item")</td>
-               <td>@Html.Label((string)ViewBag.ItemName, new { @class = "form-control" })</td>                    
+               <td>@Html.Label("Labour")</td>
+               <td>@Html.Label((string)ViewBag.LabourName, new { @class = "form-control" })</td>                    
             </tr>
             <tr>
                 <td>@Html.Label("Quantity")</td>
@@ -39,12 +38,18 @@
                 {
                     @Html.Hidden("SBillID", (int)ViewBag.SBillID)
                 }
-                @Html.Hidden("ItemID")
                 <tr>
-                    <td>@Html.Label("Item Name")</td>
-                    <td>
-                        <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
-                    </td>
+                    <td class="col-md-4">Supplier Name:</td>
+                   <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.SupplierName)</td>
+                </tr>
+                 <tr>
+                    <td class="col-md-4">Date:</td>
+                    <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.Tdate)</td>
+                 </tr>
+                <tr>
+                    <td>@Html.Label("Labour")</td>
+                    <td>@Html.DropDownList("LabourID",null,new { @class = "form-control" } )</td>
+
                 </tr>
                 <tr>
                     <td>@Html.Label("Quantity")</td>
@@ -64,7 +69,8 @@
     </table>
 </center>
 <br />
-  @if (ViewBag.supBillDets == null)
+
+  @if(ViewBag.supBillDets == null)
   {
 <table class="table">
     <tr>
@@ -73,7 +79,7 @@
         </th>
     
         <th>
-           ItemID
+           Labour
         </th>
         <th>
           Qty
@@ -82,7 +88,7 @@
           Unit Price
         </th>
         <th>
-          Quantity Recieved
+          Quantity Sold
         </th>
       
         <th>
@@ -92,7 +98,8 @@
 
     </tr>
     @{int i = 1; }
-    @foreach (var item in Model.SuplierBillDets)
+
+    @foreach(var item in Model.SuplierBillDets)
     {
         <tr>
             <td>
@@ -100,7 +107,7 @@
             </td>
        
             <td>
-                @Html.DisplayFor(modelItem => item.ItemID)
+                @Html.DisplayFor(modelItem => item.LabourName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Qty)
@@ -109,7 +116,7 @@
                 @Html.DisplayFor(modelItem => item.UnitPrice)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.QtyRec)
+                @Html.DisplayFor(modelItem => item.QtySold)
             </td>
           
             @if (item.Qty == item.QtyRec)

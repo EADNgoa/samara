@@ -126,7 +126,7 @@ namespace Samara
 
 
         [Required]
-        public int ItemID;
+        public int LabourID;
 
 
         [Required]

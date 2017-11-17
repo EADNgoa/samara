@@ -196,6 +196,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClientBillController.cs" />
+    <Compile Include="Controllers\LabourController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\ConfigsController.cs" />
     <Compile Include="Controllers\EAController.cs" />
@@ -416,11 +417,11 @@
     <Content Include="Views\Reports\Stock.cshtml" />
     <Content Include="Views\Reports\RptRq.cshtml" />
     <Content Include="Views\Reports\OCbalance.cshtml" />
-
     <Content Include="Views\Works\Details.cshtml" />
     <Content Include="Views\Works\Index.cshtml" />
     <Content Include="Views\Works\Manage.cshtml" />
-
+    <Content Include="Views\Labour\Index.cshtml" />
+    <Content Include="Views\Labour\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
