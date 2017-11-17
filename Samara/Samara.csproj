@@ -216,6 +216,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\ReorderDet.cs" />
     <Compile Include="Models\ClientBillDet.cs" />
     <Compile Include="Models\ClientDet.cs" />
     <Compile Include="Models\Client_Bill.cs" />

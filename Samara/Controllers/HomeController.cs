@@ -6,11 +6,14 @@ using System.Web.Mvc;
 
 namespace Samara.Controllers
 {
-    public class HomeController : Controller
+    public class HomeController : EAController
     {
-        public ActionResult Index()
+        public ActionResult Index(int? page)
         {
-            return View();
+            page = 1;
+          //  return View("Index", db.Fetch<ReorderDet>("Select ItemName,SiteName,Qty,ReorderLevel from Item as i inner join SiteCurrentStock as scs on i.ItemID = scs.ItemID inner join Sites s on s.SiteID = scs.SiteID Where Qty < ReorderLevel "));
+            return View("Index", base.BaseIndex<ReorderDet>(page, "ItemName,SiteName,Qty,ReorderLevel", " Item as i inner join SiteCurrentStock as scs on i.ItemID = scs.ItemID inner join Sites s on s.SiteID = scs.SiteID Where Qty < ReorderLevel"));
+
         }
 
         public ActionResult About()

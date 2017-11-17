@@ -1,8 +1,63 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model PagedList.IPagedList<Samara.ReorderDet>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Reorder Level Alerts";
 }
 <p>&nbsp;</p>
 <div class="jumbotron" style="background-image: url(../Custom/HeaderRaised.jpg); background-size: 100% 100%; background-repeat: no-repeat; height:300px;">
+
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+
+
+</center>
+<br />
+
+<table class="table">
+    <tr>
+        <th>
+            Sr No
+        </th>
+        <th>
+            Site Name
+        </th>
+        <th>
+            Item Name
+        </th>
+        <th>
+          Current Stock
+        </th>
+        <th>
+          Reorder Level
+        </th>
+        <th></th>
+
+    </tr>
+    @{int i = 1; }
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @i
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.SiteName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ItemName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Qty)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReorderLevel)
+            </td>
+        </tr>
+        i++;
+    }
+
+</table>
 
     <p>&nbsp;</p>
     <p>&nbsp;</p>
@@ -11,3 +66,4 @@
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     <p>&nbsp;</p>
+
