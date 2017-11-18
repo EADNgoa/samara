@@ -9,7 +9,7 @@ namespace Samara
     {
         public int SiteTransID { get; set; }
 
-        public string Tdate { get; set; }
+        public DateTime Tdate { get; set; }
 
         public string Email { get; set; }
 

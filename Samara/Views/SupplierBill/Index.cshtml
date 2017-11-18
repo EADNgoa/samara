@@ -1,7 +1,7 @@
 ﻿@model PagedList.IPagedList<Samara.SuppDet>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Supplier Bills";
+    ViewBag.Title = "Contractor Bills";
 }
 
 <center>
@@ -37,7 +37,7 @@
             Supplier Name
         </th>
         <th>
-           Date
+           @Html.DisplayNameFor(modelItem => modelItem.FirstOrDefault().Tdate)
         </th>
        
         <th></th>

@@ -1,7 +1,7 @@
 ﻿@model Samara.Suplier_Bill
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Contractor Detaills";
+    ViewBag.Title = "Contractor Details";
 }
 
 <center>
@@ -61,7 +61,7 @@
                 </tr>
             }
             <tr>
-                <td></td>
+                <td><input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" /></td>
 
                 <td><input type="submit" value="Submit" /></td>
             </tr>
@@ -88,12 +88,10 @@
           Unit Price
         </th>
         <th>
-          Quantity Sold
+          Amount
         </th>
       
-        <th>
-
-        </th>
+       
         <th></th>
 
     </tr>
@@ -115,15 +113,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.UnitPrice)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.QtySold)
-            </td>
+            
           
-            @if (item.Qty == item.QtyRec)
-            {
-
-                <td>Recieved</td>
-            }
+           <td>
+               @(item.Qty*item.UnitPrice)
+           </td>
           
             <td>
                 @Html.ActionLink("Edit", "ManageDetails", new { id = item.SBillDetailID })

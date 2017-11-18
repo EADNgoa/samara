@@ -49,6 +49,11 @@ input[type=checkbox] {
     zoom: 1.5;
  }
 
+input[type=submit], input[type=button] {
+    zoom: 1.5;
+    color: black;
+}
+
 /* Emblem
 <a id="emblem" href="~/"><img src="~/Emblem.png" height=100px; alt="Nunes HR System" /> </a>
  */
@@ -165,7 +170,7 @@ input[type=checkbox] {
         visibility: visible;
     }
 
-    .section-to-print {
+    .section-to-print-top {
         position: absolute;
         left: 0;
         top: 50px;
