@@ -9,6 +9,6 @@
     [QtyRec] INT NULL, 
     [QtySold] INT NULL, 
     CONSTRAINT [FK_SupplierBillDetail_SupplierBill] FOREIGN KEY ([SBillID]) REFERENCES [SupplierBill]([SBillID]), 
-    CONSTRAINT [FK_SupplierBillDetail_Labour] FOREIGN KEY ([LabourID]) REFERENCES [Labour]([LabourID]), 
+    CONSTRAINT [FK_SupplierBillDetail_Labour] FOREIGN KEY ([LabourID]) REFERENCES [Labour]([LabourID])
 
 )

@@ -352,7 +352,6 @@ namespace Samara
 		[Column] public int SBillDetailID { get; set; }
 		[Column] public int? SBillID { get; set; }
 		[Column] public int? LabourID { get; set; }
-		[Column] public int? ItemID { get; set; }
 		[Column] public int? Qty { get; set; }
 		[Column] public decimal? UnitPrice { get; set; }
 		[Column] public int? QtyRec { get; set; }
@@ -387,6 +386,7 @@ namespace Samara
 		[Column] public int WorkDetailID { get; set; }
 		[Column] public int? WorkID { get; set; }
 		[Column] public int? ItemID { get; set; }
+		[Column] public int? LabourID { get; set; }
 		[Column] public int? Qty { get; set; }
 		[Column] public decimal? Rate { get; set; }
 		[Column] public decimal? Amount { get; set; }

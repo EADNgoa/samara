@@ -62,7 +62,8 @@
             @Html.DisplayFor(modelItem => item.Rate)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Manage", new { id=item.WorkID }) |@Html.ActionLink("Details", "Details", new { id = item.WorkID })
+            @Html.ActionLink("Edit", "Manage", new { id=item.WorkID }) |@Html.ActionLink("Items", "Details", new { id = item.WorkID })|@Html.ActionLink("Labour", "LabourDetails", new { id = item.WorkID })
+
             
         </td>
     </tr>
