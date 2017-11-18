@@ -12,7 +12,7 @@ namespace Samara
         public int ClientID { get; set; }
 
         public string ClientName { get; set; }
-        public string Tdate { get; set; }
+        public DateTime Tdate { get; set; }
         public decimal RetentionPerc { get; set; }
 
 

@@ -113,8 +113,14 @@ namespace Samara
         public int SupplierID;
 
         [DataType(DataType.Date)]
+        [Display(Name ="Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Tdate;
+
+        [Required]
+        [Range(0.0, 100)]
+        [Display(Name ="TDS Percentage")]
+        public decimal TDSperc;
     }
 
 
@@ -174,6 +180,13 @@ namespace Samara
 
     }
 
+    public class SuppDetMetadata
+    {
+        [DataType(DataType.Date)]
+        [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
+        [Display(Name ="Date")]
+        public DateTime Tdate;
+    }
 
     //public class ConfigMetadata
     //{

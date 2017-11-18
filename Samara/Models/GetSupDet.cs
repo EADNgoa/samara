@@ -9,7 +9,7 @@ namespace Samara
     {
         public int SBillDetailID { get; set; }
         public int SupplierID { get; set; }
-        public string Tdate { get; set; }
+        public DateTime Tdate { get; set; }
 
         public int SBillID { get; set; }
         public int ItemID { get; set; }
