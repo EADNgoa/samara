@@ -423,6 +423,7 @@
     <Content Include="Views\Works\Manage.cshtml" />
     <Content Include="Views\Labour\Index.cshtml" />
     <Content Include="Views\Labour\Manage.cshtml" />
+    <Content Include="Views\Works\LabourDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

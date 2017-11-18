@@ -161,11 +161,11 @@ input[type=checkbox] {
         top: 0;
     }
 
-    #section-to-print, #section-to-print * {
+    .section-to-print, .section-to-print * {
         visibility: visible;
     }
 
-    #section-to-print {
+    .section-to-print {
         position: absolute;
         left: 0;
         top: 50px;

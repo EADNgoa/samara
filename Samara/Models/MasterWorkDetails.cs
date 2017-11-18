@@ -10,6 +10,8 @@ namespace Samara
         public int WorkDetailID { get; set; }
         public string WorkName { get; set; }
         public string UnitName { get; set; }
+        public string LabourName { get; set; }
+
         public string ItemName { get; set; }
         public int Qty { get; set; }
 

@@ -58,7 +58,7 @@ namespace Samara.Controllers
         [HttpPost]     
         public ActionResult Details([Bind(Include = "SBillDetailID,SBillID,LabourID,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
         {
-            var GetItem = db.FirstOrDefault<SupplierBillDetail>("Select * From SupplierBillDetail Where ItemID=@0 and SBillID =@0",supplierBillDetail.ItemID,supplierBillDetail.SBillID);
+            var GetItem = db.FirstOrDefault<SupplierBillDetail>("Select * From SupplierBillDetail Where LabourID=@0 and SBillID =@0", supplierBillDetail.LabourID,supplierBillDetail.SBillID);
             if(GetItem ==  null)
             {
                 supplierBillDetail.QtyRec = 0;
