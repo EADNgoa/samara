@@ -16,7 +16,7 @@ namespace Samara.Controllers
         public ActionResult Index(int? page ,string ItemName )
         {
             if (ItemName?.Length > 0) page = 1;
-            return View("Index", base.BaseIndex<ItemDetail>(page, "ItemId, ItemName, UnitName, ReorderLevel, TaxPerc", "Item inner join Units on item.unitId=Units.UnitId where ItemName like '%" + ItemName + "%'"));
+            return View("Index", base.BaseIndex<ItemDetail>(page, "ItemId, ItemName, UnitName,Rate, ReorderLevel, TaxPerc", "Item inner join Units on item.unitId=Units.UnitId where ItemName like '%" + ItemName + "%'"));
         }
 
 
@@ -34,7 +34,7 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "ItemID,ItemName,UnitID,ReorderLevel,TaxPerc")] Item item)
+        public ActionResult Manage([Bind(Include = "ItemID,ItemName,UnitID,Rate,ReorderLevel,TaxPerc")] Item item)
         {            
             return base.BaseSave<Item>(item, item.ItemID > 0);
         }

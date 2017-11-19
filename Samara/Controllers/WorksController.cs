@@ -56,15 +56,16 @@ namespace Samara.Controllers
         }
   
         [HttpPost]     
-        public ActionResult Details([Bind(Include = "WorkDetailID,WorkID,UnitID,ItemID,Qty,Rate,Amount")] WorkDetail workDetail)
+        public ActionResult Details([Bind(Include = "WorkDetailID,WorkID,UnitID,Rate,ItemID,Qty,Amount")] WorkDetail workDetail)
         {            
             using (var transaction = db.GetTransaction())
             {
                 try
                 {
                     var getWR = db.FirstOrDefault<decimal>("Select Rate From Work Where WorkID= @0", workDetail.WorkID);
+                    var getItemRate = db.FirstOrDefault<decimal>("Select Rate From Item Where ItemID = @0",workDetail.ItemID);
 
-                    workDetail.Amount = workDetail.Qty * workDetail.Rate;
+                    workDetail.Amount = workDetail.Qty * getItemRate;
                     base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
                     db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR}, workDetail.WorkID);
                     transaction.Complete();
@@ -142,11 +143,12 @@ namespace Samara.Controllers
         public ActionResult LabourDetails([Bind(Include = "WorkDetailID,WorkID,UnitID,LabourID,Qty,Rate,Amount")] WorkDetail workDetail)
         {
             var getWR = db.FirstOrDefault<decimal>("Select Rate From Work Where WorkID= @0", workDetail.WorkID);
+            var labourRate = db.FirstOrDefault<decimal>("Select Rate From Labour where LabourID = @0", workDetail.LabourID);
             using (var transaction = db.GetTransaction())
             {
                 try
                 {
-                    workDetail.Amount = workDetail.Qty * workDetail.Rate;
+                    workDetail.Amount = workDetail.Qty * labourRate;
                     base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
                     db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR }, workDetail.WorkID);
                     transaction.Complete();

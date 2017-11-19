@@ -232,6 +232,7 @@ namespace Samara
 		[Column] public string ItemName { get; set; }
 		[Column] public int? UnitID { get; set; }
 		[Column] public decimal? ReorderLevel { get; set; }
+		[Column] public decimal? Rate { get; set; }
 		[Column] public decimal? TaxPerc { get; set; }
 	}
     
