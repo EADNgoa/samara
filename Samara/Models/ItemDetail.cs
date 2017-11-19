@@ -13,6 +13,8 @@ namespace Samara
 
         public string UnitName { get; set; }
 
+        public decimal Rate { get; set; }
+
         public decimal ReorderLevel{ get; set; }
 
         public decimal TaxPerc { get; set; }
