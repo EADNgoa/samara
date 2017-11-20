@@ -196,6 +196,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ClientBillController.cs" />
+    <Compile Include="Controllers\RateAdditionController.cs" />
     <Compile Include="Controllers\LabourController.cs" />
     <Compile Include="Controllers\ClientsController.cs" />
     <Compile Include="Controllers\ConfigsController.cs" />
@@ -426,6 +427,9 @@
     <Content Include="Views\Labour\Index.cshtml" />
     <Content Include="Views\Labour\Manage.cshtml" />
     <Content Include="Views\Works\LabourDetails.cshtml" />
+    <Content Include="Views\Works\RateAdditionDetails.cshtml" />
+    <Content Include="Views\RateAddition\Index.cshtml" />
+    <Content Include="Views\RateAddition\Manage.cshtml" />
     <Content Include="Views\SitePicture\Index.cshtml" />
     <Content Include="Views\SitePicture\Manage.cshtml" />
   </ItemGroup>

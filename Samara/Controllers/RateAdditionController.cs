@@ -11,13 +11,13 @@ using System.Web.Mvc;
 
 namespace Samara.Controllers
 {
-    public class ConfigsController : EAController
+    public class RateAdditionController : EAController
     {        
         // GET: Clients
-        public ActionResult Index()
+        public ActionResult Index(int? page, string PropName)
         {
-           
-            return View("Index", base.BaseIndex<Config>(null,"Config "));            
+            if (PropName?.Length > 0) page = 1;
+            return View("Index", base.BaseIndex<RateAddition>(page, "RateAdditions where RateAdditionDesc like '%" + PropName+"%'"));            
         }
 
        
@@ -25,7 +25,7 @@ namespace Samara.Controllers
         // GET: Clients/Create
         public ActionResult Manage(int? id)
         {
-            return View(base.BaseCreateEdit<Config>(id, "ConfigID"));
+            return View(base.BaseCreateEdit<RateAddition>(id, "RateAdditionID"));
         }
 
         // POST: Clients/Create
@@ -33,9 +33,9 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "ConfigID,PANnumber,TANnumber,RowsPerPage, TDSPerc")] Config config)
+        public ActionResult Manage([Bind(Include = "RateAdditionID,RateAdditionDesc,Percentage")] RateAddition rateAddition)
         {         
-            return base.BaseSave<Config>(config, config.ConfigID >0);            
+            return base.BaseSave<RateAddition>(rateAddition, rateAddition.RateAdditionID > 0);            
         }
         
         protected override void Dispose(bool disposing)

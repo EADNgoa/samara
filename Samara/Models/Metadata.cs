@@ -60,6 +60,17 @@ namespace Samara
 
     }
 
+
+    public class RateAdditionMetadata
+    {
+        [Required]
+        [Range(0.0, Double.MaxValue)]
+        public decimal Percentage;
+
+        [StringLength(100)]
+        public string RateAdditionDesc;
+    }
+
     public class ProjectMetadata
     {
         [StringLength(150)]

@@ -48,6 +48,10 @@ namespace Samara
    {   
    }
 
+    [MetadataType(typeof(RateAdditionMetadata))]
+    public partial class RateAddition
+    {
+    }
 
     [MetadataType(typeof(ProjectMetadata))]
     public partial class Project

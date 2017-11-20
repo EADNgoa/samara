@@ -1,7 +1,7 @@
 ﻿@model Samara.MAsterWork_Details
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Work Details: Labour";
+    ViewBag.Title = "Work Details: Rate Additions";
 }
 
 <center>
@@ -23,13 +23,13 @@
                    @Html.Hidden("or", (decimal)ViewBag.WorkDets.Amount)
 
              <tr>
-               <td>@Html.Label("Labour")</td>
+               <td>@Html.Label("Additions")</td>
                <td>@Html.Label((string)ViewBag.WorkName, new { @class = "form-control" })</td>                    
             </tr>
       
             <tr>
-                <td>@Html.Label("Quantity")</td>
-                <td>@Html.TextBox("Qty", (int)ViewBag.WorkDets.Qty, new { @class = "form-control"  } )</td>
+                <td>@Html.Label("Percentage")</td>
+                <td>@Html.TextBox("Percentage", (int)ViewBag.WorkDets.Percentage, new { @class = "form-control"  } )</td>
             </tr>
           
 
@@ -47,14 +47,14 @@
             
               
                 <tr>
-                    <td>@Html.Label("Labour Name")</td>
+                    <td>@Html.Label("Addition Description")</td>
                 
-                    <td>@Html.DropDownList("LabourID",null,new { @class = "form-control" })</td>
+                    <td>@Html.DropDownList("RateAdditionID",null,new { @class = "form-control" })</td>
                     
                 </tr>
                 <tr>
-                    <td>@Html.Label("Quantity")</td>
-                    <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    @*<td>@Html.Label("Percentage")</td>
+                    <td>@Html.Editor("Percentage", new { htmlAttributes = new { @class = "form-control" } })</td>*@
                 </tr>
    
           
@@ -79,19 +79,14 @@
         </th>
     
         <th>
-           Labour
+           Addition Description
         </th>
       
         <th>
-         Quantity
+         Percentage
         </th>
-        <th>
-         Rate
-        </th>
-      
-        <th>
-            Amount
-        </th>
+        <th>Amount</th>
+        
         <th></th>
 
     </tr>
@@ -104,20 +99,17 @@
             </td>
        
             <td>
-                @Html.DisplayFor(modelItem => item.LabourName)
+                @Html.DisplayFor(modelItem => item.RateAdditionDesc)
             </td>
      
             <td>
                 @Html.DisplayFor(modelItem => item.Qty)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Rate)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
-                @Html.ActionLink("Edit", "LabourManageDetails", new { id = item.WorkDetailID })
+                @Html.ActionLink("Edit", "RateAdditionManageDetails", new { id = item.WorkDetailID })
             </td>
         </tr>
         i++;

@@ -1,20 +1,20 @@
-﻿@model PagedList.IPagedList<Samara.MasterWork>
+﻿@model PagedList.IPagedList<RateAddition>
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Work";
+    ViewBag.Title = "Rate Additions";
 }
 
 <center>
     <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
     
-    @using (Html.BeginForm("Index", "Work", FormMethod.Get))
+    @using (Html.BeginForm("Index", "RateAddition", FormMethod.Get))
     {        
         <div class="row section-to-Not-print">
             <div>
                 <table>
                     <tr style="text-align:center">
-                        <td>&nbsp; Supplier Name:</td>
-                        <td> @Html.TextBox("WorkName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
+                        <td>&nbsp; Rate Addition Description:</td>
+                        <td> @Html.TextBox("PropName", ViewBag.CurrentFilter as string, new { @class = "form-control" })</td>
 
                         <td class="col-lg-1"></td>
                         <td><input type="submit" value="Search" class="btn btn-default" /></td>
@@ -34,39 +34,27 @@
             Sr No
         </th>
         <th>
-            Work Name
+            Rate Addition
         </th>
         <th>
-           Unit
+            Percentage
         </th>
-        <th>
-            Rate
-        </th>
-       
         <th></th>
-
     </tr>
     @{int i = 1; }
 @foreach (var item in Model) {
     <tr>
         <td>
-           @i   
+            @i
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.WorkName)
+            @Html.DisplayFor(modelItem => item.RateAdditionDesc)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.UnitName)
+            @Html.DisplayFor(modelItem => item.Percentage)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.Rate)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Manage", new { id=item.WorkID }) |
-            @Html.ActionLink("Items", "Details", new { id = item.WorkID })|
-            @Html.ActionLink("Labour", "LabourDetails", new { id = item.WorkID }) |
-            @Html.ActionLink("Additions", "RateAdditionDetails", new { id = item.WorkID })           
-            
+            @Html.ActionLink("Edit", "Manage", new { id=item.RateAdditionID}) 
         </td>
     </tr>
     i++;
@@ -77,4 +65,3 @@ Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.Page
 
 @Html.PagedListPager(Model, page => Url.Action("Index",
     new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
-
