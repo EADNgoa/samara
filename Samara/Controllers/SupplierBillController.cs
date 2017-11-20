@@ -25,7 +25,7 @@ namespace Samara.Controllers
         {
             ViewBag.SupplierID = new SelectList(db.Fetch<Supplier>("Select SupplierID,SupplierName from Supplier"), "SupplierID", "SupplierName");
 
-            return View(base.BaseCreateEdit<SupplierBill>(id, "SBillID"));
+            return View(base.BaseCreateEdit<SupplierBill>(id, "SBillID"));            
         }
 
 
@@ -34,7 +34,7 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "SBillID,SupplierID,Tdate,TDSperc")] SupplierBill supplierBill)
+        public ActionResult Manage([Bind(Include = "SBillID,SupplierID,Tdate")] SupplierBill supplierBill)
         {
             supplierBill.TDSperc =(decimal) db.FirstOrDefault<Config>("Select TDSperc from Config").TDSperc;
             return base.BaseSave<SupplierBill>(supplierBill, supplierBill.SBillID > 0);
