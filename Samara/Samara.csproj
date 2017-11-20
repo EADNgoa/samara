@@ -203,6 +203,7 @@
     <Compile Include="Controllers\EAController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
+    <Compile Include="Controllers\SitePictureController.cs" />
     <Compile Include="Controllers\WorksController.cs" />
     <Compile Include="Controllers\SupplierBillController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
@@ -218,6 +219,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\SitePictureDet.cs" />
     <Compile Include="Models\ReorderDet.cs" />
     <Compile Include="Models\ClientBillDet.cs" />
     <Compile Include="Models\ClientDet.cs" />
@@ -428,6 +430,8 @@
     <Content Include="Views\Works\RateAdditionDetails.cshtml" />
     <Content Include="Views\RateAddition\Index.cshtml" />
     <Content Include="Views\RateAddition\Manage.cshtml" />
+    <Content Include="Views\SitePicture\Index.cshtml" />
+    <Content Include="Views\SitePicture\Manage.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
