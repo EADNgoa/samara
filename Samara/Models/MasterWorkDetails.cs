@@ -11,9 +11,10 @@ namespace Samara
         public string WorkName { get; set; }
         public string UnitName { get; set; }
         public string LabourName { get; set; }
+        public string RateAdditionDesc { get; set; }
 
         public string ItemName { get; set; }
-        public int Qty { get; set; }
+        public decimal Qty { get; set; }
 
         public decimal Rate { get; set; }
         public decimal Amount { get; set; }

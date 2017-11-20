@@ -35,13 +35,14 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.TDSperc, , htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.TDSperc, new { htmlAttributes = new { @class = "form-control"} })
-                @Html.ValidationMessageFor(model => model.TDSperc, "", new { @class = "text-danger" })
-            </div>
+       @*<div class="form-group"> it is defined in the config
+        @Html.LabelFor(model => model.TDSperc, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="col-md-10">
+            @Html.EditorFor(model => model.TDSperc, new { htmlAttributes = new { @class = "form-control" } })
+            @Html.ValidationMessageFor(model => model.TDSperc, "", new { @class = "text-danger" })
         </div>
+    </div>*@
+
 
 
 

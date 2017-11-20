@@ -19,7 +19,7 @@ namespace Samara.Controllers
         }
 
 
-
+        
         // GET: Clients/Create
         public ActionResult Manage(int? id)
         {
@@ -40,6 +40,20 @@ namespace Samara.Controllers
             return base.BaseSave<Work>(work, work.WorkID > 0);
         }
 
+        private void RefreshWorkAdditions(int WorkID, decimal NewAmt=0)
+        {
+            var WorkTotal = db.FirstOrDefault<decimal>("Select COALESCE(sum(Amount),0) from WorkDetails where workID=@0 and ItemID IS NOT NULL and LabourID IS NOT NULL", WorkID);
+            WorkTotal += NewAmt;
+
+            var wa = db.Query<WorkDetail>($"Select * from Workdetails where WorkID = @0 and RateAdditionID IS NOT NULL", WorkID).ToList();
+            wa.ForEach(w =>
+            {
+                w.Amount = WorkTotal * (w.Qty/100);
+                base.BaseSave<WorkDetail>(w, true);
+            });
+        }
+
+        #region Items        
         public ActionResult Details(int? id)
         {
             
@@ -68,6 +82,7 @@ namespace Samara.Controllers
                     workDetail.Amount = workDetail.Qty * getItemRate;
                     base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
                     db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR}, workDetail.WorkID);
+                    RefreshWorkAdditions(workDetail.WorkID.Value, workDetail.Amount.Value);
                     transaction.Complete();
 
                 }
@@ -113,6 +128,7 @@ namespace Samara.Controllers
                     workDetail.Amount = workDetail.Qty * getItemRate;
                     db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR.Rate -or },workDetail.WorkID);
                     base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
+                    RefreshWorkAdditions(workDetail.WorkID.Value, workDetail.Amount.Value);
                     transaction.Complete();
                 }
                 catch (Exception ex)
@@ -125,8 +141,15 @@ namespace Samara.Controllers
         }
 
 
+        public ActionResult AutoCompleteItem(string term)
+        {
+            var h = db.Fetch<AutoCompleteData>($"Select ItemID as id, ItemName as value from Item where ItemName like '%{term}%'").ToList();
+            return Json(h, JsonRequestBehavior.AllowGet);
+        }
+        #endregion
 
 
+        #region Labour
         public ActionResult LabourDetails(int? id)
         {
 
@@ -154,6 +177,7 @@ namespace Samara.Controllers
                     workDetail.Amount = workDetail.Qty * labourRate;
                     base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
                     db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR }, workDetail.WorkID);
+                    RefreshWorkAdditions(workDetail.WorkID.Value, workDetail.Amount.Value);
                     transaction.Complete();
 
                 }
@@ -195,6 +219,7 @@ namespace Samara.Controllers
                     workDetail.Amount = workDetail.Qty * labourRate;
                     db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR.Rate - or }, workDetail.WorkID);
                     base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
+                    RefreshWorkAdditions(workDetail.WorkID.Value, workDetail.Amount.Value);
                     transaction.Complete();
                 }
                 catch (Exception ex)
@@ -205,15 +230,101 @@ namespace Samara.Controllers
             }
             return RedirectToAction("LabourDetails", new { id = workDetail.WorkID });
         }
+        #endregion
 
 
-
-
-        public ActionResult AutoCompleteItem(string term)
+        #region RateAdditions
+        public ActionResult RateAdditionDetails(int? id)
         {
-            var h = db.Fetch<AutoCompleteData>($"Select ItemID as id, ItemName as value from Item where ItemName like '%{term}%'").ToList();
-            return Json(h, JsonRequestBehavior.AllowGet);
+
+            var viewdata = new MAsterWork_Details
+            {
+                Work = db.FirstOrDefault<MasterWork>("Select WorkID,WorkName,UnitName,Rate from Work w Inner Join Units u on w.UnitID =u.UnitID where WorkID = @0", id),
+                WorkDets = db.Fetch<MasterWorkDetails>("Select * From WorkDetails wd inner join RateAdditions l on wd.RateAdditionID = l.RateAdditionID  Where WorkID = @0", id)
+
+            };
+            ViewBag.RateAdditionID = new SelectList(db.Fetch<RateAddition>("Select RateAdditionID,RateAdditionDesc from RateAdditions"), "RateAdditionID", "RateAdditionDesc");
+            ViewBag.WorkID = id;
+
+            return View("RateAdditionDetails", viewdata);
         }
+
+        [HttpPost]
+        public ActionResult RateAdditionDetails([Bind(Include = "WorkDetailID,WorkID,RateAdditionID")] WorkDetail workDetail)
+        {
+            var getWR = db.FirstOrDefault<decimal>("Select Rate From Work Where WorkID= @0", workDetail.WorkID);
+            var RateAdditionRate = db.FirstOrDefault<decimal>("Select Percentage From RateAdditions where RateAdditionID = @0", workDetail.RateAdditionID);
+
+            //We have to find the total of this work record
+            var WorkTotal = db.FirstOrDefault<decimal>("Select sum(Amount) from WorkDetails where workID=@0 and (ItemID IS NOT NULL or LabourID IS NOT NULL)", workDetail.WorkID);
+
+            using (var transaction = db.GetTransaction())
+            {
+                try
+                {
+                    workDetail.Amount = WorkTotal * (RateAdditionRate/100);
+                    workDetail.Qty = RateAdditionRate;
+                    base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
+                    db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR }, workDetail.WorkID);
+                    transaction.Complete();
+
+                }
+
+                catch (Exception ex)
+                {
+                    db.AbortTransaction();
+                    throw ex;
+                }
+
+
+            }
+            return RedirectToAction("RateAdditionDetails", new { id = workDetail.WorkID });
+        }
+        public ActionResult RateAdditionManageDetails(int? id)
+        {
+            ViewBag.WorkDets = base.BaseCreateEdit<WorkDetail>(id, "WorkDetailID");
+            ViewBag.WorkName = db.FirstOrDefault<string>("Select RateAdditionDesc From WorkDetails wd inner  join  RateAdditions as l on wd.RateAdditionID = l.RateAdditionID where WorkDetailID= @0", id);
+
+            var viewdata = new MAsterWork_Details
+            {
+                Work = db.FirstOrDefault<MasterWork>("Select WorkID,WorkName,UnitName,Rate from Work w Inner Join Units u on w.UnitID =u.UnitID where WorkID = @0", id),
+                WorkDets = db.Fetch<MasterWorkDetails>("Select * From WorkDetails wd inner join RateAdditions l on l.RateAdditionID =  wd.RateAdditionID Where WorkID = @0", id)
+            };
+
+
+            return View("RateAdditionDetails", viewdata);
+        }
+
+        [HttpPost]
+        public ActionResult RateAdditionManageDetails([Bind(Include = "WorkDetailID,WorkID,RateAdditionID,Qty,Rate,Amount")] WorkDetail workDetail, Decimal? or)
+        {
+            var getWR = db.FirstOrDefault<Work>("Select Rate From Work Where WorkID= @0", workDetail.WorkID);
+
+            //We have to find the total of this work record
+            var WorkTotal = db.FirstOrDefault<decimal>("Select sum(Amount) from WorkDetail where workID=@0 and ItemID IS NOT NULL and LabourID IS NOT NULL", workDetail.WorkID);
+
+            using (var transaction = db.GetTransaction())
+            {
+                try
+                {
+                    var RateAdditionRate = db.FirstOrDefault<decimal>("Select Percentage From RateAdditions where RateAdditionID = @0", workDetail.RateAdditionID);
+                    workDetail.Amount = WorkTotal * (RateAdditionRate/100);
+                    workDetail.Qty = RateAdditionRate;
+                    db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR.Rate - or }, workDetail.WorkID);
+                    base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
+                    transaction.Complete();
+                }
+                catch (Exception ex)
+                {
+                    db.AbortTransaction();
+                    throw ex;
+                }
+            }
+            return RedirectToAction("RateAdditionDetails", new { id = workDetail.WorkID });
+        }
+        #endregion
+
+
 
         protected override void Dispose(bool disposing)
         {
