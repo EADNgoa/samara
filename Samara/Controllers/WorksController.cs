@@ -103,11 +103,14 @@ namespace Samara.Controllers
         public ActionResult ManageDetails([Bind(Include = "WorkDetailID,WorkID,ItemID,Qty,Rate,Amount")] WorkDetail workDetail,Decimal? or)
         {
             var getWR = db.FirstOrDefault<Work>("Select Rate From Work Where WorkID= @0", workDetail.WorkID);
+            var getItemRate = db.FirstOrDefault<decimal>("Select Rate From Item Where ItemID = @0", workDetail.ItemID);
+
+
             using (var transaction = db.GetTransaction())
             {
                 try
                 {
-                    workDetail.Amount = workDetail.Qty * workDetail.Rate;
+                    workDetail.Amount = workDetail.Qty * getItemRate;
                     db.Update("Work", "WorkID", new { Rate = workDetail.Amount + getWR.Rate -or },workDetail.WorkID);
                     base.BaseSave<WorkDetail>(workDetail, workDetail.WorkDetailID > 0);
                     transaction.Complete();

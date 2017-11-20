@@ -7,6 +7,7 @@
 	[ClientID] INT NULL, 
     [SupplierID] INT NULL, 
     [ItemID] INT NULL, 
+    [path] VARCHAR(100) NULL,
     [QtyAdded] INT NULL, 
     [QtyRemoved] INT NULL, 
     [ToSiteID] INT NULL, 

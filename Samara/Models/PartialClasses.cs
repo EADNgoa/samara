@@ -59,10 +59,38 @@ namespace Samara
     {
     }
 
- 
+    public class ChallanImg
+    {
+        public int SiteTransID { get; set; }
+        public string UserID { get; set; }
+        public string path { get; set; }
 
 
-   
+
+        public DateTime Tdate { get; set; }
+
+        public int SiteID { get; set; }
+
+        public int ItemID { get; set; }
+
+
+        public int SupplierID { get; set; }
+
+        public HttpPostedFileBase UploadedFile { get; set; }
+
+        public int QtyAdded { get; set; }
+
+        public int QtyRemoved { get; set; }
+
+
+        public string Remarks { get; set; }
+
+
+    }
+
+
+
+
     //[MetadataType(typeof(EmpTypeMetadata))]
     //public partial class EmpTypes
     //{
