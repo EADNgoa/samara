@@ -7,19 +7,19 @@
 <h2>Manage</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm()) 
 {
     @Html.AntiForgeryToken()
-
+    
     <div class="form-horizontal">
         <h4>Supplier Bill</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @if (Model?.SBillID > 0)
+        @if (Model?.SBillID >0)
         {
             @Html.HiddenFor(model => model.SBillID)
         }
-
+   
         <div class="form-group">
             @Html.LabelFor(model => model.SupplierID, "Supplier", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -27,21 +27,21 @@
                 @Html.ValidationMessageFor(model => model.SupplierID, "", new { @class = "text-danger" })
             </div>
         </div>
-        <div class="form-group">
+        <div class="form-group">            
             @Html.LabelFor(model => model.Tdate, "Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Tdate, new { htmlAttributes = new { @class = "form-control", @type = "date" } })
+                @Html.EditorFor(model => model.Tdate, new { htmlAttributes = new { @class = "form-control" ,@type ="date"} })
                 @Html.ValidationMessageFor(model => model.Tdate, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        @*<div class="form-group"> it is defined in the config
-            @Html.LabelFor(model => model.TDSperc, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.TDSperc, , htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.TDSperc, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.TDSperc, new { htmlAttributes = new { @class = "form-control"} })
                 @Html.ValidationMessageFor(model => model.TDSperc, "", new { @class = "text-danger" })
             </div>
-        </div>*@
+        </div>
 
 
 

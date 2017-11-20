@@ -20,9 +20,6 @@
         <th>
           Rows Per Page
         </th>
-        <th>
-            TDS %
-        </th>
         <th></th>
     </tr>
 
@@ -36,9 +33,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.RowsPerPage)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TDSperc)
         </td>
         <td>
             @Html.ActionLink("Change Configuration", "Manage", new { id=item.ConfigID }) 

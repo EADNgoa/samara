@@ -33,7 +33,7 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "ConfigID,PANnumber,TANnumber,RowsPerPage, TDSPerc")] Config config)
+        public ActionResult Manage([Bind(Include = "ConfigID,PANnumber,TANnumber,RowsPerPage")] Config config)
         {         
             return base.BaseSave<Config>(config, config.ConfigID >0);            
         }
