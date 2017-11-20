@@ -266,6 +266,19 @@ namespace Samara
 		[Column] public int? Qty { get; set; }
 	}
     
+	[TableName("dbo.SitePictures")]
+	[PrimaryKey("SitePictureID")]
+	[ExplicitColumns]
+    public partial class SitePicture  
+    {
+		[Column] public int SitePictureID { get; set; }
+		[Column] public int? SiteID { get; set; }
+		[Column] public string Picture { get; set; }
+		[Column] public string UserID { get; set; }
+		[Column] public DateTime? DTime { get; set; }
+		[Column] public string Comment { get; set; }
+	}
+    
 	[TableName("dbo.Sites")]
 	[PrimaryKey("SiteID")]
 	[ExplicitColumns]

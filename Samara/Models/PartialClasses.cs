@@ -88,6 +88,24 @@ namespace Samara
 
     }
 
+    public class SitePictureImg
+    {
+        public int SitePictureID { get; set; }
+
+        public int SiteID { get; set; }
+
+        public string UserID { get; set; }
+
+        public string Picture { get; set; }
+
+        public DateTime DTime { get; set; }
+
+        public HttpPostedFileBase UploadedFile { get; set; }
+
+        public string Comment { get; set; }
+
+    }
+
 
 
 
