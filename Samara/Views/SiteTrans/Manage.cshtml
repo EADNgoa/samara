@@ -1,4 +1,4 @@
-﻿@model SiteTransasction
+﻿@model  ChallanImg
 
 @{
     ViewBag.Title = "Manage";
@@ -7,7 +7,7 @@
 <h2>Manage</h2>
 
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm(null, null, FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
    
     @Html.AntiForgeryToken()
@@ -22,8 +22,10 @@
         <h4>Appoint Goods To Site</h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @if (Model?.SiteTransID >0)
+        @if (Model?.SiteTransID > 0)
         {
+            @Html.HiddenFor(model => model.path)
+
             @Html.HiddenFor(model => model.SiteTransID)
         }
       <div class="form-group">
@@ -68,7 +70,39 @@
                 @Html.ValidationMessageFor(model => model.ItemID, "", new { @class = "text-danger" })
             </div>
         </div>
-  
+        
+        @if (Model?.SiteTransID > 0)
+        {
+            if (Model.path != null)
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-2">Challan Picture</label>
+                    <div class="col-md-10">
+                        <img src="~/Images/@Model.path" height="400px;"/>                      
+                    </div>
+                </div>
+
+            }
+            else
+            {
+                <div class="form-group">
+                    <label class="control-label col-md-2">Challan Picture</label>
+                    <div class="col-md-10">
+                        <input class="form-control" type="file" id="UploadedFile" name="UploadedFile" />
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="form-group">
+                <label class="control-label col-md-2">Challan Picture</label>
+                <div class="col-md-10">
+                    <input class="form-control" type="file" id="UploadedFile" name="UploadedFile" />
+                </div>
+            </div>
+        }
+
         <div class="form-group">
             @Html.LabelFor(model => model.QtyAdded, "Quantity", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">

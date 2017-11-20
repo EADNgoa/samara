@@ -288,6 +288,7 @@ namespace Samara
 		[Column] public int? ClientID { get; set; }
 		[Column] public int? SupplierID { get; set; }
 		[Column] public int? ItemID { get; set; }
+		[Column] public string path { get; set; }
 		[Column] public int? QtyAdded { get; set; }
 		[Column] public int? QtyRemoved { get; set; }
 		[Column] public int? ToSiteID { get; set; }
@@ -389,7 +390,6 @@ namespace Samara
 		[Column] public int? ItemID { get; set; }
 		[Column] public int? LabourID { get; set; }
 		[Column] public int? Qty { get; set; }
-		[Column] public decimal? Rate { get; set; }
 		[Column] public decimal? Amount { get; set; }
 	}
 }

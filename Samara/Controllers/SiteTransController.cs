@@ -188,7 +188,7 @@ namespace Samara.Controllers
             //Since UserID and QtyRemoved is [required] we have to set it before loading the form
             if (rec == null) //We are in create mode
             {
-                rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyRemoved = 0 };
+                //rec = new SiteTransasction { UserID = User.Identity.GetUserId(), QtyRemoved = 0 };
                 ViewBag.OriginalQty = 0;
                
                 ViewBag.SupplierID = new SelectList(db.Fetch<Supplier>("Select SupplierID,SupplierName from Supplier"), "SupplierID", "SupplierName");
@@ -205,14 +205,34 @@ namespace Samara.Controllers
                 
             }
 
-
-            return View(rec);
+            if (id != null)
+            {
+                ChallanImg ci = new ChallanImg()
+                {
+                    ItemID = rec.ItemID.Value,
+                    QtyAdded = (int)rec.QtyAdded,
+                    QtyRemoved = (int)rec.QtyRemoved,
+                    Remarks = rec.Remarks,
+                    SiteID = (int)rec.SiteID,
+                    SiteTransID = rec.SiteTransID,
+                    SupplierID = (int)rec.SupplierID,
+                    Tdate = (DateTime)rec.Tdate,
+                    UserID = User.Identity.GetUserId(),
+                    path = rec.path                    
+                };
+                return View(ci);
+            } else
+            {
+                ChallanImg ci = new ChallanImg() { UserID = User.Identity.GetUserId(), QtyRemoved = 0 };
+                return View(ci);
+            }
+            
         }
 
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,SupplierID,ItemID,QtyAdded,Remarks,QtyRemoved")] SiteTransasction siteTransaction, int OriginalQty)
+        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,SupplierID,Path,UploadedFile,ItemID,QtyAdded,Remarks,QtyRemoved")] ChallanImg siteTransaction, int OriginalQty)
       {
            
             siteTransaction.Tdate = DateTime.Now;            
@@ -222,51 +242,87 @@ namespace Samara.Controllers
             {
                 try
                 {                    
-                    if (currentStock ==null)//this is the first purchase of the item at thissite
-                    {
-                        // var getSupBill = db.FirstOrDefault<SupplierBillDetail>("SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec","Supplier as sp inner join SupplierBillDetail as sbd on sp.SBillID = sbd.SBillID where Supplier Where ItemID= @0 and SupplierID=@0",siteTransaction.ItemID,siteTransaction.SupplierID);
-                       
-
-                        var item = new SiteCurrentStock { SiteID = siteTransaction.SiteID, ItemID = siteTransaction.ItemID, Qty = siteTransaction.QtyAdded };
-                        db.Save(item);
-                    }
-                    else
-                    {
-                        if (siteTransaction.SiteTransID > 0) //Edit mode
-                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty - OriginalQty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
-                        else
-                            db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
-                    }
+                    
 
                     //on 14 Nov 2017 stanley said suppliers would make their own bills, hence the below was commented out
-                        //var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
-                        //var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
-                        //if (siteTransaction.SiteTransID>0)
-                        //{
-                        //    if (getSupBill != null)
-                        //    {
-                        //        db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =  siteTransaction.QtyAdded + getSupBill.QtyRec - OriginalQty }, getSupBill.SBillDetailID);
-                        //        siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
-                        //    }
-                        //}
-                        //else
-                        //{
-                        //  if (getSupBill != null)
-                        //    {
-                        //        if (getSupBill.Qty != getSupBill.QtyRec)
-                        //        {
-                        //            db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =siteTransaction.QtyAdded+getSupBill.QtyRec}, getSupBill.SBillDetailID);
-                        //        }
+                    //var sup = db.FirstOrDefault<SupplierBill>("Select SBillID,SupplierID from SupplierBill Where SupplierID = @0", siteTransaction.SupplierID);
+                    //var getSupBill = db.FirstOrDefault<SupplierBillDetail>("Select SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec from SupplierBillDetail Where ItemID= @0 and SBillID = @1", siteTransaction.ItemID, sup.SBillID);
+                    //if (siteTransaction.SiteTransID>0)
+                    //{
+                    //    if (getSupBill != null)
+                    //    {
+                    //        db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =  siteTransaction.QtyAdded + getSupBill.QtyRec - OriginalQty }, getSupBill.SBillDetailID);
+                    //        siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
+                    //    }
+                    //}
+                    //else
+                    //{
+                    //  if (getSupBill != null)
+                    //    {
+                    //        if (getSupBill.Qty != getSupBill.QtyRec)
+                    //        {
+                    //            db.Update("SupplierBillDetail", "SBillDetailID", new { QtyRec =siteTransaction.QtyAdded+getSupBill.QtyRec}, getSupBill.SBillDetailID);
+                    //        }
 
-                        //        siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
-                        //    }
+                    //        siteTransaction.SBillDetailID = getSupBill.SBillDetailID;
+                    //    }
 
-                        //}
+                    //}
+
+                   
+                        if (currentStock == null)//this is the first purchase of the item at thissite
+                        {
+                            // var getSupBill = db.FirstOrDefault<SupplierBillDetail>("SBillDetailID,SBillID,ItemID,Qty,UnitPrice,QtyRec","Supplier as sp inner join SupplierBillDetail as sbd on sp.SBillID = sbd.SBillID where Supplier Where ItemID= @0 and SupplierID=@0",siteTransaction.ItemID,siteTransaction.SupplierID);
 
 
-                    var res = base.BaseSave<SiteTransasction>(siteTransaction, siteTransaction.SiteTransID > 0);
-                    transaction.Complete();
-                    return res;
+                            var item = new SiteCurrentStock { SiteID = siteTransaction.SiteID, ItemID = siteTransaction.ItemID, Qty = siteTransaction.QtyAdded };
+                            db.Save(item);
+                        }
+                        else
+                        {
+                            if (siteTransaction.SiteTransID > 0) //Edit mode
+                                db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty - OriginalQty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
+                            else
+                                db.Update("SiteCurrentStock", "SiteStockID", new { Qty = currentStock.Qty + siteTransaction.QtyAdded }, currentStock.SiteStockID);
+                        }
+
+
+                        SiteTransasction res = new SiteTransasction
+                        {
+                            ItemID = siteTransaction.ItemID,
+                            QtyAdded = siteTransaction.QtyAdded,
+                            QtyRemoved = siteTransaction.QtyRemoved,
+                            Remarks = siteTransaction.Remarks,
+                            SiteID = siteTransaction.SiteID,
+                            SiteTransID = siteTransaction.SiteTransID,
+                            SupplierID = siteTransaction.SupplierID,
+                            Tdate = siteTransaction.Tdate,
+                            UserID = siteTransaction.UserID
+                        };
+
+                        if (siteTransaction.UploadedFile != null)
+                        {
+                            string fn = siteTransaction.UploadedFile.FileName.Substring(siteTransaction.UploadedFile.FileName.LastIndexOf('\\') + 1);
+                            fn = siteTransaction.SiteID + "_" + fn;
+                            string SavePath = System.IO.Path.Combine(Server.MapPath("~/Images"), fn);
+                            siteTransaction.UploadedFile.SaveAs(SavePath);
+
+                            //System.Drawing.Bitmap upimg = new System.Drawing.Bitmap(siteTransaction.UploadedFile.InputStream);
+                            //System.Drawing.Bitmap svimg = MyExtensions.CropUnwantedBackground(upimg);
+                            //svimg.Save(System.IO.Path.Combine(Server.MapPath("~/Images"), fn));
+
+                            res.path = fn;
+                        }
+                        else
+                        {
+                            res.path = siteTransaction.path;
+                        }
+
+                        base.BaseSave<SiteTransasction>(res, siteTransaction.SiteTransID > 0);
+                        transaction.Complete();
+                        return RedirectToAction("Index");
+                                        
+                    
                 }
                 catch (Exception ex)
                 {
