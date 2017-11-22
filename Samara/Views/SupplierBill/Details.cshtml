@@ -9,7 +9,7 @@
 
 
 
-    <table class="table-condensed">
+    <table class="table-condensed section-to-NOT-print">
 
         @using (@Html.BeginForm())
         {
@@ -38,14 +38,16 @@
                 {
                     @Html.Hidden("SBillID", (int)ViewBag.SBillID)
                 }
-                <tr>
+            
+                <tr class="section-to-print">  
                     <td class="col-md-4">Supplier Name:</td>
                    <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.SupplierName)</td>
                 </tr>
-                 <tr>
+                 <tr class="section-to-print">
                     <td class="col-md-4">Date:</td>
                     <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.Tdate)</td>
                  </tr>
+                  
                 <tr>
                     <td>@Html.Label("Labour")</td>
                     <td>@Html.DropDownList("LabourID",null,new { @class = "form-control" } )</td>
@@ -69,10 +71,9 @@
     </table>
 </center>
 <br />
-
   @if(ViewBag.supBillDets == null)
   {
-<table class="table">
+<table class="table section-to-print">
     <tr>
         <th>
             Sr No
@@ -92,12 +93,13 @@
         </th>
       
        
-        <th></th>
+        <th class="section-to-Not-print"><input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
+</th>
 
     </tr>
-    @{int i = 1; }
+    @{int i = 1; decimal tot = 0; }
 
-    @foreach(var item in Model.SuplierBillDets)
+    @foreach (var item in Model.SuplierBillDets)
     {
         <tr>
             <td>
@@ -114,17 +116,51 @@
                 @Html.DisplayFor(modelItem => item.UnitPrice)
             </td>
             
-          
+         
            <td>
-               @(item.Qty*item.UnitPrice)
+               @{ decimal amt = item.Qty * item.UnitPrice; 
+                  tot = tot + amt;
+                      
+                   }
+               @amt
            </td>
           
-            <td>
+            <td class="section-to-Not-print">
                 @Html.ActionLink("Edit", "ManageDetails", new { id = item.SBillDetailID })
             </td>
         </tr>
+ 
         i++;
     }
+   
+    <tr>
+
+        <td>
+            Tax:
+        </td>
+        <td>
+        <td>
+        <td></td>
+        <td>
+            @{ decimal Tax = tot * ViewBag.tds / 100;}
+            @Tax
+        </td>
+    </tr>
+    <tr>
+
+        <td>
+            Total Amount:
+        </td>
+        <td>
+        <td>
+        <td></td>
+        <td>
+            @{decimal orig = tot - Tax;}
+
+
+            @orig
+        </td>
+    </tr>
 </table>
 
 
