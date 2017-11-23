@@ -179,30 +179,30 @@
         <tr>
             <td></td>
             <td>Total</td>
+            <td>@(String.Format("{0:#,##0.00}",bamt))</td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
-            <td>@bamt</td>
 
         </tr>
         <tr>
             @{ decimal GstAmt = bamt * (decimal)ViewBag.gst / 100; }
             <td>@i</td>
             <td>ADD GST @ViewBag.gst %</td>
+            <td>@(String.Format("{0:#,##0.00}", GstAmt))</td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
-            <td>@GstAmt</td>
 
         </tr>
         <tr>
             @{ decimal OrigGA = GstAmt + bamt; bamt = GstAmt + bamt; }
             <td></td>
             <td>Total</td>
+            <td>@(String.Format("{0:#,##0.00}", OrigGA))</td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
-            <td>@OrigGA</td>
 
         </tr>
         @foreach (var item in Model.ClientBillDets.Where(a => a.BeforeTax == 0))
@@ -255,10 +255,10 @@
         <tr>
             <td></td>
             <td><b>Total</b></td>
+            <td><b>@(String.Format("{0:#,##0.00}", bamt)) </b></td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
-            <td><b>@bamt </b></td>
 
         </tr>
            @{
@@ -268,7 +268,7 @@
 
         }
         <tr><td colspan="6">
-            <p>The Total Amount Due For Payment is <b>Rs @bamt/- Rupees @mtw</b></p>
+            <p>The Total Amount Due For Payment is <b>Rs @(String.Format("{0:#,##0.00}", bamt)) / -Rupees @mtw</b></p>
             <p>Please make the payment to <b>SWEDELL REALTORS PVT LTD,HDFC BANK,Caranzalem Branch,<br /> and A/c No. 03732320000191 RTGS/NFT IFCS:HDFC0000373</b></p>
             <p>Thanking You,</p>
             <br />
