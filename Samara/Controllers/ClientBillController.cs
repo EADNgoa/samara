@@ -52,6 +52,14 @@ namespace Samara.Controllers
                         ClientBillDets = db.Fetch<ClientBillDet>("Select * From ClientBillDetail  Where CBillID = @0", id)
                  
             };
+                 decimal RetPerc = viewdata.ClientDets.RetentionPerc;
+            decimal BefTaxDebit = db.FirstOrDefault<decimal>("select sum(Amount) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2",1,id,1);
+            decimal BefTaxCredit = db.FirstOrDefault<decimal>("select sum(Amount) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, id, 0);
+            decimal BefTax = BefTaxCredit - BefTaxDebit;
+
+            decimal RetAmt = BefTax * RetPerc / 100;
+            ViewBag.RetAmt = RetAmt;
+            ViewBag.RetPerc = RetPerc;
                 ViewBag.CBillID = id;
             ViewBag.gst = db.FirstOrDefault<decimal>("select TaxPerc From ClientBill",id);
 
@@ -78,6 +86,8 @@ namespace Samara.Controllers
                 ClientBillDets = db.Fetch<ClientBillDet>("Select * From ClientBillDetail  Where CBillID = @0", id)
 
             };
+       
+
 
             return View("Details", viewdata);            
         }

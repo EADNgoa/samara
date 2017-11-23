@@ -168,7 +168,7 @@ namespace Samara
         public DateTime Tdate;
 
         [Required]
-        [Range(0.0, Double.MaxValue)]
+        [Range(0.0, 100.00)]
         public decimal RetentionPerc;
     }
 

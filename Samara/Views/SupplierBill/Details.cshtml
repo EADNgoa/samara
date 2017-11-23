@@ -4,164 +4,165 @@
     ViewBag.Title = "Contractor Details";
 }
 
-<center>
-    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+    <center>
+        <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
 
 
 
-    <table class="table-condensed section-to-NOT-print">
+        <table class="table-condensed section-to-NOT-print">
 
-        @using (@Html.BeginForm())
-        {
-            if (ViewBag.supBillDets != null)
-            {        
-                   @Html.Hidden("SBillID", (int)ViewBag.SupBillDets.SBillID)
-                 
-                   @Html.Hidden("SBillDetailID", (int)ViewBag.SupBillDets.SBillDetailID)
-             <tr>
-               <td>@Html.Label("Labour")</td>
-               <td>@Html.Label((string)ViewBag.LabourName, new { @class = "form-control" })</td>                    
-            </tr>
-            <tr>
-                <td>@Html.Label("Quantity")</td>
-                <td>@Html.TextBox("Qty", (int)ViewBag.SupBillDets.Qty, new { @class = "form-control"  } )</td>
-            </tr>
-            <tr>
-                <td>@Html.Label("Unit Price")</td>
-
-                <td>@Html.TextBox("UnitPrice",(decimal)ViewBag.SupBillDets.UnitPrice, new { @class = "form-control"} )</td>
-            </tr>
-            }
-            else
+            @using (@Html.BeginForm())
             {
-                if (ViewBag.SBillID != null)
+                if (ViewBag.supBillDets != null)
                 {
-                    @Html.Hidden("SBillID", (int)ViewBag.SBillID)
-                }
-            
-                <tr class="section-to-print">  
-                    <td class="col-md-4">Supplier Name:</td>
-                   <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.SupplierName)</td>
-                </tr>
-                 <tr class="section-to-print">
-                    <td class="col-md-4">Date:</td>
-                    <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.Tdate)</td>
-                 </tr>
-                  
-                <tr>
-                    <td>@Html.Label("Labour")</td>
-                    <td>@Html.DropDownList("LabourID",null,new { @class = "form-control" } )</td>
+                    @Html.Hidden("SBillID", (int)ViewBag.SupBillDets.SBillID)
 
-                </tr>
+                    @Html.Hidden("SBillDetailID", (int)ViewBag.SupBillDets.SBillDetailID)
+                    <tr>
+                        <td>@Html.Label("Labour")</td>
+                        <td>@Html.Label((string)ViewBag.LabourName, new { @class = "form-control" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Quantity")</td>
+                        <td>@Html.TextBox("Qty", (int)ViewBag.SupBillDets.Qty, new { @class = "form-control" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Unit Price")</td>
+
+                        <td>@Html.TextBox("UnitPrice", (decimal)ViewBag.SupBillDets.UnitPrice, new { @class = "form-control" })</td>
+                    </tr>
+                }
+                else
+                {
+                    if (ViewBag.SBillID != null)
+                    {
+                        @Html.Hidden("SBillID", (int)ViewBag.SBillID)
+                    }
+
+                    <tr class="section-to-print">
+                        <td class="col-md-4">Contractor Name:</td>
+                        <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.SupplierName)</td>
+                    </tr>
+                    <tr class="section-to-print">
+                        <td class="col-md-4">Date:</td>
+                        <td class="col-md-4">@Html.DisplayFor(modelItem => Model.SuplierDets.Tdate)</td>
+                    </tr>
+
+                    <tr>
+                        <td>@Html.Label("Labour")</td>
+                        <td>@Html.DropDownList("LabourID", null, new { @class = "form-control" })</td>
+
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Quantity")</td>
+                        <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Unit Price")</td>
+                        <td>@Html.Editor("UnitPrice", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                }
                 <tr>
-                    <td>@Html.Label("Quantity")</td>
-                    <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
-                </tr>
-                <tr>
-                    <td>@Html.Label("Unit Price")</td>
-                    <td>@Html.Editor("UnitPrice", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    <td><input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" /></td>
+
+                    <td><input type="submit" value="Submit" /></td>
                 </tr>
             }
-            <tr>
-                <td><input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" /></td>
-
-                <td><input type="submit" value="Submit" /></td>
-            </tr>
-        }
-    </table>
-</center>
-<br />
-  @if(ViewBag.supBillDets == null)
-  {
-<table class="table section-to-print">
-    <tr>
-        <th>
-            Sr No
-        </th>
-    
-        <th>
-           Labour
-        </th>
-        <th>
-          Qty
-        </th>
-        <th>
-          Unit Price
-        </th>
-        <th>
-          Amount
-        </th>
-      
-       
-        <th class="section-to-Not-print"><input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
-</th>
-
-    </tr>
-    @{int i = 1; decimal tot = 0; }
-
-    @foreach (var item in Model.SuplierBillDets)
+        </table>
+    </center>
+    <br />
+    @if (ViewBag.supBillDets == null)
     {
-        <tr>
-            <td>
-                @i
-            </td>
-       
-            <td>
-                @Html.DisplayFor(modelItem => item.LabourName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Qty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitPrice)
-            </td>
-            
-         
-           <td>
-               @{ decimal amt = item.Qty * item.UnitPrice; 
-                  tot = tot + amt;
-                      
-                   }
-               @amt
-           </td>
-          
-            <td class="section-to-Not-print">
-                @Html.ActionLink("Edit", "ManageDetails", new { id = item.SBillDetailID })
-            </td>
-        </tr>
- 
-        i++;
-    }
-   
-    <tr>
+        <table class="table section-to-print">
+            <tr>
+                <th>
+                    Sr No
+                </th>
 
-        <td>
-            Tax:
-        </td>
-        <td>
-        <td>
-        <td></td>
-        <td>
-            @{ decimal Tax = tot * ViewBag.tds / 100;}
-            @Tax
-        </td>
-    </tr>
-    <tr>
-
-        <td>
-            Total Amount:
-        </td>
-        <td>
-        <td>
-        <td></td>
-        <td>
-            @{decimal orig = tot - Tax;}
+                <th>
+                    Labour
+                </th>
+                <th>
+                    Qty
+                </th>
+                <th>
+                    Unit Price
+                </th>
+                <th>
+                    Amount
+                </th>
 
 
-            @orig
-        </td>
-    </tr>
-</table>
+                <th class="section-to-Not-print">
+                    <input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
+                </th>
+
+            </tr>
+            @{int i = 1; decimal tot = 0; }
+
+            @foreach (var item in Model.SuplierBillDets)
+            {
+                <tr>
+                    <td>
+                        @i
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LabourName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Qty)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitPrice)
+                    </td>
 
 
-        }
+                    <td>
+                        @{ decimal amt = item.Qty * item.UnitPrice;
+                            tot = tot + amt;
+
+                        }
+                        @amt
+                    </td>
+
+                    <td class="section-to-Not-print">
+                        @Html.ActionLink("Edit", "ManageDetails", new { id = item.SBillDetailID })
+                    </td>
+                </tr>
+
+                                i++;
+                            }
+
+            <tr>
+
+                <td>
+                    Tax:
+                </td>
+                <td>
+                <td>
+                <td></td>
+                <td>
+                    @{ decimal Tax = tot * ViewBag.tds / 100;}
+                    @Tax
+                </td>
+            </tr>
+            <tr>
+
+                <td>
+                    Total Amount:
+                </td>
+                <td>
+                <td>
+                <td></td>
+                <td>
+                    @{decimal orig = tot - Tax;}
+
+
+                    @orig
+                </td>
+            </tr>
+        </table>
+
+
+     }

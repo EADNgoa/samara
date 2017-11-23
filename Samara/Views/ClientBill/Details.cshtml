@@ -3,283 +3,292 @@
 @{
     ViewBag.Title = "Invoice";
 }
+    <center>
+        <div class="section-to-print">
+            <br />
 
-<center>
-    <div class="section-to-print">
+            <p class="pull-left"><b>PAN:@ViewBag.pan</b></p><p class="pull-right"><b>TAN:@ViewBag.tan</b></p>
+            <br />
+            <h2><b>@ViewBag.Title</b></h2>
+        </div>
+        <div class=" pull-right section-to-print">
+            <p>
+                Bill Date: @Model.ClientDets.Tdate
+                <div style="border:dashed;padding:2px;">
+                    @Model.ClientDets.ClientName
+                </div>
+            </p>
+
+        </div>
+
         <br />
-
-    <p class="pull-left"><b>PAN:@ViewBag.pan</b></p><p class="pull-right"><b>TAN:@ViewBag.tan</b></p>
         <br />
-    <h2 ><b>@ViewBag.Title</b></h2>
-    </div>
-    <div class=" pull-right section-to-print">
-        <p>
-            Bill Date: @Model.ClientDets.Tdate
-            <div style="border:dashed;padding:2px;">
-                @Model.ClientDets.ClientName
-            </div>
-        </p>
+        @{int i = 1; decimal bamt = 0; }
+        <table class="table-condensed">
 
-    </div>
-
-<br />
-    <br />
-    @{int i = 1; decimal bamt = 0; }
-    <table class="table-condensed">
-
-        @using (@Html.BeginForm())
-        {
-            if (ViewBag.ClientBillDets != null)
+            @using (@Html.BeginForm())
             {
-                @Html.Hidden("CBillID", (int)ViewBag.ClientBillDets.CBillID)
+                if (ViewBag.ClientBillDets != null)
+                {
+                    @Html.Hidden("CBillID", (int)ViewBag.ClientBillDets.CBillID)
 
-                @Html.Hidden("CBillDetailID", (int)ViewBag.ClientBillDets.CBillDetailID)
+                    @Html.Hidden("CBillDetailID", (int)ViewBag.ClientBillDets.CBillDetailID)
 
-                <tr>
-                    <td>@Html.Label("Description")</td>
-                    <td>@Html.TextBox("Description", (string)ViewBag.ClientBillDets.Description, new { @class = "form-control" })</td>
-                </tr>
-                <tr>
-                    <td>@Html.Label("Amount")</td>
+                    <tr>
+                        <td>@Html.Label("Description")</td>
+                        <td>@Html.TextBox("Description", (string)ViewBag.ClientBillDets.Description, new { @class = "form-control" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Amount")</td>
 
-                    <td>@Html.TextBox("Amount", (decimal)ViewBag.ClientBillDets.Amount, new { @class = "form-control" })</td>
-                </tr>
-                <tr>
-                    <td>@Html.Label("Is Debit?")</td>
-                    <td>@Html.CheckBox("DebitCredit", (bool)ViewBag.ClientBillDets.DebitCredit, new { @class = "form-control" })</td>
-                </tr>
-                <tr>
-                    <td>@Html.Label("Before Tax")</td>
-                    <td>@Html.CheckBox("BeforeTax", (bool)ViewBag.ClientBillDets.BeforeTax, new { @class = "form-control" })</td>
+                        <td>@Html.TextBox("Amount", (decimal)ViewBag.ClientBillDets.Amount, new { @class = "form-control" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Is Debit?")</td>
+                        <td>@Html.CheckBox("DebitCredit", (bool)ViewBag.ClientBillDets.DebitCredit, new { @class = "form-control" })</td>
+                    </tr>
+                    <tr>
+                        <td>@Html.Label("Before Tax")</td>
+                        <td>@Html.CheckBox("BeforeTax", (bool)ViewBag.ClientBillDets.BeforeTax, new { @class = "form-control" })</td>
+                    </tr>
+                }
+                else
+                {
+                    if (ViewBag.CBillID != null)
+                    {
+                        @Html.Hidden("CBillID", (int)ViewBag.CBillID)
+                    }
+
+
+                    <tr class="section-to-Not-print">
+                        <td class="col-md-4">Retention Percantage:</td>
+                        <td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td>
+                    </tr>
+                    <tr class="section-to-Not-print">
+                        <td class="col-md-4">Tax Percantage:</td>
+                        <td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.TaxPerc)</td>
+                    </tr>
+                    <tr class="section-to-Not-print">
+                        <td>@Html.Label("Description")</td>
+                        <td>@Html.Editor("Description", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+
+                    <tr class="section-to-Not-print">
+                        <td>@Html.Label("Amount")</td>
+                        <td>@Html.Editor("Amount", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr class="section-to-Not-print">
+                        <td>@Html.Label("Is Debit?")</td>
+                        <td>@Html.CheckBox("DebitCredit", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+                    <tr class="section-to-Not-print">
+                        <td>@Html.Label("Before Tax")</td>
+                        <td>@Html.CheckBox("BeforeTax", new { htmlAttributes = new { @class = "form-control" } })</td>
+                    </tr>
+
+                }
+                <tr class="section-to-Not-print">
+                    <td></td>
+
+                    <td><input type="submit" value="Submit" /></td>
                 </tr>
             }
-            else
+        </table>
+    </center>
+    <br class="section-to-Not-print" />
+    @if (ViewBag.ClientBillDets == null)
+    {
+        <table class="table section-to-print">
+            <tr>
+                <th>
+                    Sr No
+                </th>
+
+                <th>
+                    Description
+                </th>
+                <th>
+                    Amount
+                </th>
+                <th class="section-to-Not-print">
+                    Is Debit?
+                </th>
+                <th class="section-to-Not-print">
+                    Before tax?
+                </th>
+
+                <th>
+
+                </th>
+                <th class="section-to-Not-print"><input type="button" onclick="javascript:window.print();" value="Print" class="btn-default section-to-not-print" />
+
+
+            </tr>
+
+            @foreach (var item in Model.ClientBillDets.Where(a => a.BeforeTax == 1))
             {
-                if (ViewBag.CBillID != null)
-                {
-                    @Html.Hidden("CBillID", (int)ViewBag.CBillID)
-                }
 
-          
-                <tr class="section-to-Not-print">
-                    <td class="col-md-4">Retention Percantage:</td>
-                    <td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td>
-                </tr>
-                <tr class="section-to-Not-print">
-                    <td class="col-md-4">Tax Percantage:</td>
-                    <td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.TaxPerc)</td>
-                </tr>
-                <tr class="section-to-Not-print">
-                    <td>@Html.Label("Description")</td>
-                    <td>@Html.Editor("Description", new { htmlAttributes = new { @class = "form-control" } })</td>
-                </tr>
+                <tr>
+                    <td>
+                        @i
+                    </td>
 
-                <tr class="section-to-Not-print">
-                    <td>@Html.Label("Amount")</td>
-                    <td>@Html.Editor("Amount", new { htmlAttributes = new { @class = "form-control" } })</td>
-                </tr>
-                <tr class="section-to-Not-print">
-                    <td>@Html.Label("Is Debit?")</td>
-                    <td>@Html.CheckBox("DebitCredit", new { htmlAttributes = new { @class = "form-control" } })</td>
-                </tr>
-                <tr class="section-to-Not-print">
-                    <td>@Html.Label("Before Tax")</td>
-                    <td>@Html.CheckBox("BeforeTax", new { htmlAttributes = new { @class = "form-control" } })</td>
-                </tr>
-
-            }
-            <tr class="section-to-Not-print">
-                <td></td>
-
-                <td><input type="submit" value="Submit" /></td>
-            </tr>
-        }
-    </table>
-</center>
-<br class="section-to-Not-print" />
-@if (ViewBag.ClientBillDets == null)
-{
-    <table class="table section-to-print">
-        <tr>
-            <th>
-                Sr No
-            </th>
-
-            <th>
-                Description
-            </th>
-            <th>
-                Amount
-            </th>
-            <th class="section-to-Not-print">
-                Is Debit?
-            </th>
-            <th class="section-to-Not-print">
-                Before tax?
-            </th>
-
-            <th>
-
-            </th>
-            <th class="section-to-Not-print"><input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
-
-
-</tr>
-      
-        @foreach (var item in Model.ClientBillDets.Where(a => a.BeforeTax == 1))
-        {
-
-            <tr>
-                <td>
-                    @i
-                </td>
-
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @{
-                        if (item.DebitCredit == 1)
-                        {
-                            bamt = bamt - item.Amount;
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @{
+                            if (item.DebitCredit == 1)
+                            {
+                                bamt = bamt - item.Amount;
+                            }
+                            else
+                            {
+                                bamt = item.Amount + bamt;
+                            }
                         }
-                        else
-                        {
-                            bamt = item.Amount + bamt;
-                        }
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+
+                    @if (item.DebitCredit == 0)
+                    {
+                        <td class="section-to-Not-print">False</td>
                     }
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
+                    else
+                    {
+                        <td class="section-to-Not-print">True</td>
+                    }
 
-                @if (item.DebitCredit == 0)
-                {
-                    <td class="section-to-Not-print">False</td>
-                }
-                else
-                {
-                    <td class="section-to-Not-print">True</td>
-                }
+                    @if (item.BeforeTax == 0)
+                    {
+                        <td class="section-to-Not-print">False</td>
+                    }
+                    else
+                    {
+                        <td class="section-to-Not-print">True</td>
+                    }
 
-                @if (item.BeforeTax == 0)
-                {
-                    <td class="section-to-Not-print">False</td>
-                }
-                else
-                {
-                    <td class="section-to-Not-print">True</td>
-                }
+                    <td class="section-to-Not-print">
+                        @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+                    </td>
+                </tr>
 
-                <td class="section-to-Not-print">
-                    @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
-                </td>
-            </tr>
-
-                            i++;
-                        }
-        <tr>
-            <td></td>
-            <td>Total</td>
-            <td class="section-to-Not-print"></td>
-            <td class="section-to-Not-print"></td>
-            <td></td>
-            <td>@bamt</td>
-
-        </tr>
-        <tr>
-            @{ decimal GstAmt = bamt * (decimal)ViewBag.gst / 100; }
-            <td>@i</td>
-            <td>ADD GST @ViewBag.gst %</td>
-            <td class="section-to-Not-print"></td>
-            <td class="section-to-Not-print"></td>
-            <td></td>
-            <td>@GstAmt</td>
-
-        </tr>
-        <tr>
-            @{ decimal OrigGA = GstAmt + bamt; bamt = GstAmt + bamt; }
-            <td></td>
-            <td>Total</td>
-            <td class="section-to-Not-print"></td>
-            <td class="section-to-Not-print"></td>
-            <td></td>
-            <td>@OrigGA</td>
-
-        </tr>
-        @foreach (var item in Model.ClientBillDets.Where(a => a.BeforeTax == 0))
-        {
-
+                                i++;
+                            }
             <tr>
                 <td></td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @{
-                        if (item.DebitCredit == 1)
-                        {
-                            bamt = bamt - item.Amount;
-                        }
-                        else
-                        {
-                            bamt = item.Amount + bamt;
-                        }
-                    }
-                    @Html.DisplayFor(modelItem => item.Amount)
-                </td>
+                <td>Total</td>
+                <td class="section-to-Not-print"></td>
+                <td class="section-to-Not-print"></td>
+                <td></td>
+                <td>@bamt</td>
 
-                @if (item.DebitCredit == 0)
-                {
-                    <td class="section-to-Not-print">False</td>
-                }
-                else
-                {
-                    <td class="section-to-Not-print">True</td>
-                }
-
-                @if (item.BeforeTax == 0)
-                {
-                    <td class="section-to-Not-print">False</td>
-                }
-                else
-                {
-                    <td class="section-to-Not-print">True</td>
-                }
-
-                <td class="section-to-Not-print">
-                    @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
-                </td>
             </tr>
+            <tr>
+                @{ decimal GstAmt = bamt * (decimal)ViewBag.gst / 100; }
+                <td>@i</td>
+                <td>ADD GST @ViewBag.gst %</td>
+                <td class="section-to-Not-print"></td>
+                <td class="section-to-Not-print"></td>
+                <td></td>
+                <td>@GstAmt</td>
 
-                            i++;
+            </tr>
+            <tr>
+                @{ decimal OrigGA = GstAmt + bamt; bamt = GstAmt + bamt; }
+                <td></td>
+                <td>Total</td>
+                <td class="section-to-Not-print"></td>
+                <td class="section-to-Not-print"></td>
+                <td></td>
+                <td>@OrigGA</td>
+
+            </tr>
+            @foreach (var item in Model.ClientBillDets.Where(a => a.BeforeTax == 0))
+            {
+
+                <tr>
+                    <td></td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Description)
+                    </td>
+                    <td>
+                        @{
+                            if (item.DebitCredit == 1)
+                            {
+                                bamt = bamt - item.Amount;
+                            }
+                            else
+                            {
+                                bamt = item.Amount + bamt;
+                            }
                         }
-        <tr>
-            <td></td>
-            <td><b>Total</b></td>
-            <td class="section-to-Not-print"></td>
-            <td class="section-to-Not-print"></td>
-            <td></td>
-            <td><b>@bamt </b></td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                    </td>
+
+                    @if (item.DebitCredit == 0)
+                    {
+                        <td class="section-to-Not-print">False</td>
+                    }
+                    else
+                    {
+                        <td class="section-to-Not-print">True</td>
+                    }
+
+                    @if (item.BeforeTax == 0)
+                    {
+                        <td class="section-to-Not-print">False</td>
+                    }
+                    else
+                    {
+                        <td class="section-to-Not-print">True</td>
+                    }
+
+                    <td class="section-to-Not-print">
+                        @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+                    </td>
+                </tr>
+
+                                i++;
+                            }
+            <tr>
+                <td></td>
+                <td><b>Less Retention Money @ViewBag.RetPerc</b></td>
+                <td class="section-to-Not-print"></td>
+                <td class="section-to-Not-print"></td>
+                <td></td>
+                <td><b>@ViewBag.RetAmt </b></td>
+
+            </tr>
+            <tr>
+                @{ decimal LessRet = bamt - ViewBag.RetAmt;  }
+                <td></td>
+                <td><b>Total</b></td>
+                <td class="section-to-Not-print"></td>
+                <td class="section-to-Not-print"></td>
+                <td></td>
+                <td><b>@LessRet  </b></td>
 
         </tr>
-           @{
+        @{
             var cntw = new ChangeNumbersToWords();
 
-            string mtw = cntw.changeToWords(bamt.ToString());
+            string mtw = cntw.changeToWords(LessRet.ToString());
 
         }
-        <tr><td colspan="6">
-            <p>The Total Amount Due For Payment is <b>Rs @bamt/- Rupees @mtw</b></p>
-            <p>Please make the payment to <b>SWEDELL REALTORS PVT LTD,HDFC BANK,Caranzalem Branch,<br /> and A/c No. 03732320000191 RTGS/NFT IFCS:HDFC0000373</b></p>
-            <p>Thanking You,</p>
-            <br />
-            <br />
-            <p>Mr Stanley D'costa</p>
-            <br />
-            <p><b>Swedell Realtors Pvt Ltd.</b></p>
+        <tr>
+            <td colspan="6">
+                <p>The Total Amount Due For Payment is <b>Rs @LessRet/- Rupees @mtw</b></p>
+                <p>Please make the payment to <b>SWEDELL REALTORS PVT LTD,HDFC BANK,Caranzalem Branch,<br /> and A/c No. 03732320000191 RTGS/NFT IFCS:HDFC0000373</b></p>
+                <p>Thanking You,</p>
+                <br />
+                <br />
+                <p>Mr Stanley D'costa</p>
+                <br />
+                <p><b>Swedell Realtors Pvt Ltd.</b></p>
             </td>
         </tr>
 
     </table>
- 
-   }
- 
+
+     }
