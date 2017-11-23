@@ -1,41 +1,57 @@
 ﻿@model Samara.Client_Bill
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Client Bill Details";
+    ViewBag.Title = "Invoice";
 }
 
 <center>
-    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+    <div class="section-to-print">
+        <br />
 
+    <p class="pull-left"><b>PAN:@ViewBag.pan</b></p><p class="pull-right"><b>TAN:@ViewBag.tan</b></p>
+        <br />
+    <h2 ><b>@ViewBag.Title</b></h2>
+    </div>
+    <div class=" pull-right section-to-print">
+        <p>
+            Bill Date: @Model.ClientDets.Tdate
+            <div style="border:dashed;padding:2px;">
+                @Model.ClientDets.ClientName
+            </div>
+        </p>
 
+    </div>
 
+<br />
+    <br />
+    @{int i = 1; decimal bamt = 0; }
     <table class="table-condensed">
-      
+
         @using (@Html.BeginForm())
         {
             if (ViewBag.ClientBillDets != null)
-            {        
-                   @Html.Hidden("CBillID", (int)ViewBag.ClientBillDets.CBillID)
-                   @Html.Hidden("ItemID", (int)ViewBag.ClientBillDets.ItemID)
-                   @Html.Hidden("CBillDetailID", (int)ViewBag.ClientBillDets.CBillDetailID)
-             <tr>
-               <td>@Html.Label("Item")</td>
-               <td>@Html.Label((string)ViewBag.ItemName, new { @class = "form-control" })</td>                    
-            </tr>
-            <tr>
-                <td>@Html.Label("Quantity")</td>
-                <td>@Html.TextBox("Qty", (int)ViewBag.ClientBillDets.Qty, new { @class = "form-control"  } )</td>
-            </tr>
-            <tr>
-                <td>@Html.Label("Unit Price")</td>
+            {
+                @Html.Hidden("CBillID", (int)ViewBag.ClientBillDets.CBillID)
 
-                <td>@Html.TextBox("UnitSellPrice",(decimal)ViewBag.ClientBillDets.UnitSellPrice, new { @class = "form-control"} )</td>
-            </tr>
-            <tr>
-                <td>@Html.Label("Tax Perc")</td>
+                @Html.Hidden("CBillDetailID", (int)ViewBag.ClientBillDets.CBillDetailID)
 
-                <td>@Html.TextBox("TaxPerc", (decimal)ViewBag.ClientBillDets.TaxPerc, new { @class = "form-control" })</td>
-            </tr>
+                <tr>
+                    <td>@Html.Label("Description")</td>
+                    <td>@Html.TextBox("Description", (string)ViewBag.ClientBillDets.Description, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Amount")</td>
+
+                    <td>@Html.TextBox("Amount", (decimal)ViewBag.ClientBillDets.Amount, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Is Debit?")</td>
+                    <td>@Html.CheckBox("DebitCredit", (bool)ViewBag.ClientBillDets.DebitCredit, new { @class = "form-control" })</td>
+                </tr>
+                <tr>
+                    <td>@Html.Label("Before Tax")</td>
+                    <td>@Html.CheckBox("BeforeTax", (bool)ViewBag.ClientBillDets.BeforeTax, new { @class = "form-control" })</td>
+                </tr>
             }
             else
             {
@@ -43,37 +59,36 @@
                 {
                     @Html.Hidden("CBillID", (int)ViewBag.CBillID)
                 }
-                @Html.Hidden("ItemID")
-                <tr>
-                     <td class="col-md-4">Client Name:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.ClientName)</td>
+
+          
+                <tr class="section-to-Not-print">
+                    <td class="col-md-4">Retention Percantage:</td>
+                    <td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td>
                 </tr>
-                <tr>
-                     <td class="col-md-4">Date:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.Tdate)</td>
+                <tr class="section-to-Not-print">
+                    <td class="col-md-4">Tax Percantage:</td>
+                    <td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.TaxPerc)</td>
                 </tr>
-                <tr>
-                     <td class="col-md-4">Retention Percantage:</td><td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td>
+                <tr class="section-to-Not-print">
+                    <td>@Html.Label("Description")</td>
+                    <td>@Html.Editor("Description", new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
 
-                <tr>
-                    <td>@Html.Label("Item Name")</td>
-                    <td>
-                        <input type="text" id="ItemName" name="ItemName" style="color:black;" data-autocomplete-idholder="#ItemID" data-autocombo-url="@Url.Action("AutoCompleteItem")" class="form-control" />
-                    </td>
+                <tr class="section-to-Not-print">
+                    <td>@Html.Label("Amount")</td>
+                    <td>@Html.Editor("Amount", new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
-                <tr>
-                    <td>@Html.Label("Quantity")</td>
-                    <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
+                <tr class="section-to-Not-print">
+                    <td>@Html.Label("Is Debit?")</td>
+                    <td>@Html.CheckBox("DebitCredit", new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
-                <tr>
-                    <td>@Html.Label("Unit Sell Price")</td>
-                    <td>@Html.Editor("UnitSellPrice", new { htmlAttributes = new { @class = "form-control" } })</td>
+                <tr class="section-to-Not-print">
+                    <td>@Html.Label("Before Tax")</td>
+                    <td>@Html.CheckBox("BeforeTax", new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
-                <tr>
-                    <td>@Html.Label("Tax Perc")</td>
-                    <td>@Html.Editor("TaxPerc", new { htmlAttributes = new { @class = "form-control" } })</td>
-                </tr>
+
             }
-            <tr>
+            <tr class="section-to-Not-print">
                 <td></td>
 
                 <td><input type="submit" value="Submit" /></td>
@@ -81,62 +96,190 @@
         }
     </table>
 </center>
-<br />
-  @if (ViewBag.ClientBillDets == null)
-  {
-<table class="table">
-    <tr>
-        <th>
-            Sr No
-        </th>
-    
-        <th>
-           ItemID
-        </th>
-        <th>
-          Qty
-        </th>
-        <th>
-          Unit Sell Price
-        </th>
-        <th>
-         Tax Percantage
-        </th>
-      
-        <th>
-
-        </th>
-        <th></th>
-
-    </tr>
-    @{int i = 1; }
-    @foreach (var item in Model.ClientBillDets)
-    {
+<br class="section-to-Not-print" />
+@if (ViewBag.ClientBillDets == null)
+{
+    <table class="table section-to-print">
         <tr>
-            <td>
-                @i
-            </td>
-       
-            <td>
-                @Html.DisplayFor(modelItem => item.ItemID)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Qty)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UnitSellPrice)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TaxPerc)
-            </td> 
-   
-            <td>
-                @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
-            </td>
-        </tr>
-        i++;
-    }
-</table>
+            <th>
+                Sr No
+            </th>
 
+            <th>
+                Description
+            </th>
+            <th>
+                Amount
+            </th>
+            <th class="section-to-Not-print">
+                Is Debit?
+            </th>
+            <th class="section-to-Not-print">
+                Before tax?
+            </th>
+
+            <th>
+
+            </th>
+            <th class="section-to-Not-print"><input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
+
+
+</tr>
+      
+        @foreach (var item in Model.ClientBillDets.Where(a => a.BeforeTax == 1))
+        {
+
+            <tr>
+                <td>
+                    @i
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @{
+                        if (item.DebitCredit == 1)
+                        {
+                            bamt = bamt - item.Amount;
+                        }
+                        else
+                        {
+                            bamt = item.Amount + bamt;
+                        }
+                    }
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+
+                @if (item.DebitCredit == 0)
+                {
+                    <td class="section-to-Not-print">False</td>
+                }
+                else
+                {
+                    <td class="section-to-Not-print">True</td>
+                }
+
+                @if (item.BeforeTax == 0)
+                {
+                    <td class="section-to-Not-print">False</td>
+                }
+                else
+                {
+                    <td class="section-to-Not-print">True</td>
+                }
+
+                <td class="section-to-Not-print">
+                    @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+                </td>
+            </tr>
+
+                            i++;
+                        }
+        <tr>
+            <td></td>
+            <td>Total</td>
+            <td class="section-to-Not-print"></td>
+            <td class="section-to-Not-print"></td>
+            <td></td>
+            <td>@bamt</td>
+
+        </tr>
+        <tr>
+            @{ decimal GstAmt = bamt * (decimal)ViewBag.gst / 100; }
+            <td>@i</td>
+            <td>ADD GST @ViewBag.gst %</td>
+            <td class="section-to-Not-print"></td>
+            <td class="section-to-Not-print"></td>
+            <td></td>
+            <td>@GstAmt</td>
+
+        </tr>
+        <tr>
+            @{ decimal OrigGA = GstAmt + bamt; bamt = GstAmt + bamt; }
+            <td></td>
+            <td>Total</td>
+            <td class="section-to-Not-print"></td>
+            <td class="section-to-Not-print"></td>
+            <td></td>
+            <td>@OrigGA</td>
+
+        </tr>
+        @foreach (var item in Model.ClientBillDets.Where(a => a.BeforeTax == 0))
+        {
+
+            <tr>
+                <td></td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @{
+                        if (item.DebitCredit == 1)
+                        {
+                            bamt = bamt - item.Amount;
+                        }
+                        else
+                        {
+                            bamt = item.Amount + bamt;
+                        }
+                    }
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+
+                @if (item.DebitCredit == 0)
+                {
+                    <td class="section-to-Not-print">False</td>
+                }
+                else
+                {
+                    <td class="section-to-Not-print">True</td>
+                }
+
+                @if (item.BeforeTax == 0)
+                {
+                    <td class="section-to-Not-print">False</td>
+                }
+                else
+                {
+                    <td class="section-to-Not-print">True</td>
+                }
+
+                <td class="section-to-Not-print">
+                    @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+                </td>
+            </tr>
+
+                            i++;
+                        }
+        <tr>
+            <td></td>
+            <td><b>Total</b></td>
+            <td class="section-to-Not-print"></td>
+            <td class="section-to-Not-print"></td>
+            <td></td>
+            <td><b>@bamt </b></td>
+
+        </tr>
+           @{
+            var cntw = new ChangeNumbersToWords();
+
+            string mtw = cntw.changeToWords(bamt.ToString());
 
         }
+        <tr><td colspan="6">
+            <p>The Total Amount Due For Payment is <b>Rs @bamt/- Rupees @mtw</b></p>
+            <p>Please make the payment to <b>SWEDELL REALTORS PVT LTD,HDFC BANK,Caranzalem Branch,<br /> and A/c No. 03732320000191 RTGS/NFT IFCS:HDFC0000373</b></p>
+            <p>Thanking You,</p>
+            <br />
+            <br />
+            <p>Mr Stanley D'costa</p>
+            <br />
+            <p><b>Swedell Realtors Pvt Ltd.</b></p>
+            </td>
+        </tr>
+
+    </table>
+ 
+   }
+ 

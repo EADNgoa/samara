@@ -176,18 +176,18 @@ namespace Samara
     {
 
         [Required]
-        public int ItemID;
+        public string Description;
 
-        [Required]
-        public int Qty;
-
-        [Required]
-        [Range(0.0, Double.MaxValue)]
-        public decimal UnitSellPrice;
+     
 
         [Required]
         [Range(0.0, Double.MaxValue)]
-        public decimal TaxPerc;
+        public decimal Amount;
+
+
+      
+
+
 
     }
 
