@@ -42,8 +42,8 @@ namespace Samara.Controllers
         {
            // ViewBag.ClientBillDets = base.BaseCreateEdit<ClientBillDetail>(id, "CBillDetailID");
             ViewBag.gst = db.Fetch<decimal>("select TaxPerc From ClientBill",id);
-            ViewBag.tan = db.FirstOrDefault<decimal>("select TANnumber From Config");
-            ViewBag.pan = db.FirstOrDefault<decimal>("select PANnumber From Config");
+            ViewBag.tan = db.FirstOrDefault<string>("select TANnumber From Config");
+            ViewBag.pan = db.FirstOrDefault<string>("select PANnumber From Config");
 
 
             var viewdata = new Client_Bill
