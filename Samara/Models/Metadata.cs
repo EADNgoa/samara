@@ -105,6 +105,9 @@ namespace Samara
         [Required]
         public int ItemID;
 
+        [Range(0.0, Double.MaxValue)]
+        public decimal Price;
+
         [Required]
         public int QtyAdded;
 
@@ -127,8 +130,7 @@ namespace Samara
         [Display(Name ="Date")]
         [DisplayFormat(DataFormatString = "{0:dd-MMM-yyyy}", ApplyFormatInEditMode = true)]
         public DateTime Tdate;
-
-        [Required]
+                
         [Range(0.0, 100)]
         [Display(Name ="TDS Percentage")]
         public decimal TDSperc;
@@ -145,6 +147,10 @@ namespace Samara
         [Required]
         public int LabourID;
 
+        [Required]
+        [Display(Name ="Job Done")]
+        [StringLength(150,MinimumLength =3)]
+        public string Job;
 
         [Required]
         public int Qty;

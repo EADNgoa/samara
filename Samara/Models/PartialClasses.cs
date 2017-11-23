@@ -77,6 +77,7 @@ namespace Samara
 
         public int ItemID { get; set; }
 
+        public decimal Price { get; set; }
 
         public int SupplierID { get; set; }
 

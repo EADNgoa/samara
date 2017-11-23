@@ -276,17 +276,57 @@ namespace Samara
 	}
     
 	[TableName("dbo.SitePictures")]
+
+
+
 	[PrimaryKey("SitePictureID")]
+
+
+
+
 	[ExplicitColumns]
+
     public partial class SitePicture  
     {
+
+
+
 		[Column] public int SitePictureID { get; set; }
+
+
+
+
+
 		[Column] public int? SiteID { get; set; }
+
+
+
+
+
 		[Column] public string Picture { get; set; }
+
+
+
+
+
 		[Column] public string UserID { get; set; }
+
+
+
+
+
 		[Column] public DateTime? DTime { get; set; }
+
+
+
+
+
 		[Column] public string Comment { get; set; }
+
+
+
 	}
+
     
 	[TableName("dbo.Sites")]
 	[PrimaryKey("SiteID")]
@@ -310,6 +350,7 @@ namespace Samara
 		[Column] public int? ClientID { get; set; }
 		[Column] public int? SupplierID { get; set; }
 		[Column] public int? ItemID { get; set; }
+		[Column] public decimal? Price { get; set; }
 		[Column] public string path { get; set; }
 		[Column] public int? QtyAdded { get; set; }
 		[Column] public int? QtyRemoved { get; set; }
@@ -376,7 +417,8 @@ namespace Samara
 		[Column] public int SBillDetailID { get; set; }
 		[Column] public int? SBillID { get; set; }
 		[Column] public int? LabourID { get; set; }
-		[Column] public int? Qty { get; set; }
+		[Column] public string Job { get; set; }
+		[Column] public decimal? Qty { get; set; }
 		[Column] public decimal? UnitPrice { get; set; }
 		[Column] public int? QtyRec { get; set; }
 		[Column] public int? QtySold { get; set; }

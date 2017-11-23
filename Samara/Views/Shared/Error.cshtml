@@ -6,7 +6,10 @@
 
 <h1 class="text-danger">Error!</h1>
 <h2 class="text-danger">@Model.Exception.Message  .</h2>
-@Model.Exception.InnerException.InnerException.Message
+@if (Model.Exception.InnerException != null)
+{
+    @Model.Exception.InnerException.InnerException.Message
+}
 <br />
 @Model.ControllerName  &nbsp; @Model.ActionName
 

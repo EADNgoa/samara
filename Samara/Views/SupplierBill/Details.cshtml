@@ -16,11 +16,16 @@
             if (ViewBag.supBillDets != null)
             {        
                    @Html.Hidden("SBillID", (int)ViewBag.SupBillDets.SBillID)
-                 
+                 @Html.Hidden("LabourID", (int)ViewBag.SupBillDets.LabourID)
                    @Html.Hidden("SBillDetailID", (int)ViewBag.SupBillDets.SBillDetailID)
+                   @Html.Hidden("Job", (string)ViewBag.SupBillDets.Job)
              <tr>
                <td>@Html.Label("Labour")</td>
                <td>@Html.Label((string)ViewBag.LabourName, new { @class = "form-control" })</td>                    
+            </tr>
+            <tr>
+                <td>@Html.Label("Job")</td>
+                <td>@Html.Label((string)ViewBag.SupBillDets.Job, new { @class = "form-control" })</td>                    
             </tr>
             <tr>
                 <td>@Html.Label("Quantity")</td>
@@ -54,6 +59,10 @@
 
                 </tr>
                 <tr>
+                    <td>@Html.Label("Job")</td>
+                    <td>@Html.Editor("Job", new { htmlAttributes = new { @class = "form-control" } })</td>
+                </tr>
+                <tr>
                     <td>@Html.Label("Quantity")</td>
                     <td>@Html.Editor("Qty", new { htmlAttributes = new { @class = "form-control" } })</td>
                 </tr>
@@ -83,6 +92,9 @@
            Labour
         </th>
         <th>
+            Job
+        </th>
+        <th>
           Qty
         </th>
         <th>
@@ -108,6 +120,9 @@
        
             <td>
                 @Html.DisplayFor(modelItem => item.LabourName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Job)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Qty)
