@@ -169,6 +169,11 @@ input[type=submit], input[type=button] {
     .section-to-print, .section-to-print * {
         visibility: visible;
     }
+    .section-to-Not-print, .section-to-Not-print * {
+        visibility: hidden;
+        display: none;
+    }
+       
 
     .section-to-print-top {
         position: absolute;

@@ -50,7 +50,7 @@ namespace Samara.Controllers
                  
             };
             ViewBag.LabourID = new SelectList(db.Fetch<Labour>("Select LabourID,LabourName from Labour"), "LabourID", "LabourName");
-
+            ViewBag.tds = db.FirstOrDefault<decimal>("Select TDSperc from Config");
             ViewBag.SBillID = id;
             return View("Details", viewdata);            
         }
@@ -62,14 +62,16 @@ namespace Samara.Controllers
             if(GetItem ==  null)
             {
                 supplierBillDetail.QtyRec = 0;
-                base.BaseSave<SupplierBillDetail>(supplierBillDetail, supplierBillDetail.SBillDetailID > 0);
+                ViewBag.Total = db.Fetch<SupplierBillDetail>("");
+              base.BaseSave<SupplierBillDetail>(supplierBillDetail, supplierBillDetail.SBillDetailID > 0);
+              
             }
             else
             {
                 db.Update("SupplierBillDetail", "SBillDetailID", new { Qty = GetItem.Qty + supplierBillDetail.Qty ,UnitPrice =supplierBillDetail.UnitPrice }, GetItem.SBillDetailID);
             }
-           
 
+        
             return RedirectToAction("Details",new {id=supplierBillDetail.SBillID });
         }
 
@@ -77,7 +79,7 @@ namespace Samara.Controllers
         {
             ViewBag.SupBillDets = base.BaseCreateEdit<SupplierBillDetail>(id, "SBillDetailID");
             ViewBag.LabourName = db.FirstOrDefault<SuppBillDet>("Select LabourName From SupplierBillDetail sbd inner  join  labour as l on sbd.LabourID = l.LabourID where SBillDetailID= @0", id).LabourName;
-
+            ViewBag.tds = db.FirstOrDefault<decimal>("Select TDSperc from Config");
             var viewdata = new Suplier_Bill
                 {
                     SuplierDets = db.FirstOrDefault<SuppDet>("Select SBillID,SupplierName,Tdate,TDSperc from SupplierBill as sb Inner Join Supplier as s on sb.SupplierID =s.SupplierID where SBillID = @0", id),

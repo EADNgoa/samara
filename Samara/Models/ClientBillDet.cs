@@ -9,11 +9,11 @@ namespace Samara
     {
         public int CBillDetailID { get; set; }
         public int CBillID { get; set; }
-        public int ItemID { get; set; }
-        public string ItemName { get; set; }
-        public int Qty { get; set; }
-        public decimal UnitCostPrice { get; set; }
-        public decimal UnitSellPrice { get; set; }
+     
+        public string Description { get; set; }
+        public int Amount { get; set; }
+        public byte DebitCredit { get; set; }
+        public byte BeforeTax { get; set; }
         public decimal TaxPerc { get; set; }
 
     }
