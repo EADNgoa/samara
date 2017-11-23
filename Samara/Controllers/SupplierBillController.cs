@@ -56,7 +56,7 @@ namespace Samara.Controllers
         }
   
         [HttpPost]     
-        public ActionResult Details([Bind(Include = "SBillDetailID,SBillID,LabourID,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
+        public ActionResult Details([Bind(Include = "SBillDetailID,SBillID,LabourID,Job,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
         {
             var GetItem = db.FirstOrDefault<SupplierBillDetail>("Select * From SupplierBillDetail Where LabourID=@0 and SBillID =@0", supplierBillDetail.LabourID,supplierBillDetail.SBillID);
             if(GetItem ==  null)
@@ -89,9 +89,21 @@ namespace Samara.Controllers
         }
   
         [HttpPost]     
-        public ActionResult ManageDetails([Bind(Include = "SBillDetailID,SBillID,LabourID,Qty,UnitPrice,QtyRec,QtySold")] SupplierBillDetail supplierBillDetail)
+        public ActionResult ManageDetails([Bind(Include = "SBillDetailID,SBillID,LabourID,Job,Qty,UnitPrice,QtyRec,QtySold")] SuppBillDet supplierBillDetail)
         {
-            base.BaseSave<SupplierBillDetail>(supplierBillDetail, supplierBillDetail.SBillDetailID > 0);
+            var objToSave = new SupplierBillDetail()
+            {
+                SBillDetailID = supplierBillDetail.SBillDetailID,
+                SBillID = supplierBillDetail.SBillID,
+                LabourID = supplierBillDetail.LabourID,
+                Job = supplierBillDetail.Job,
+                Qty = supplierBillDetail.Qty,
+                UnitPrice = supplierBillDetail.UnitPrice,
+                QtyRec = supplierBillDetail.QtyRec,
+                QtySold = supplierBillDetail.QtySold
+            };
+
+            base.BaseSave<SupplierBillDetail>(objToSave, supplierBillDetail.SBillDetailID > 0);
        
             return RedirectToAction("Details",new { id = supplierBillDetail.SBillID });
         }

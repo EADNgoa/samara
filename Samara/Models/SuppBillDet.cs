@@ -11,7 +11,8 @@ namespace Samara
         public int SBillID { get; set; }
         public int LabourID { get; set; }
         public string LabourName { get; set; }
-        public int Qty { get; set; }
+        public string Job { get; set; }
+        public decimal Qty { get; set; }
         public decimal UnitPrice { get; set; }
         public int QtyRec { get; set; }
         public int QtySold { get; set; }

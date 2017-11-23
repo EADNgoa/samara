@@ -889,17 +889,57 @@ namespace Samara
     
 
 	[TableName("dbo.SitePictures")]
+
+
+
 	[PrimaryKey("SitePictureID")]
+
+
+
+
 	[ExplicitColumns]
+
     public partial class SitePicture  
     {
+
+
+
 		[Column] public int SitePictureID { get; set; }
+
+
+
+
+
 		[Column] public int? SiteID { get; set; }
+
+
+
+
+
 		[Column] public string Picture { get; set; }
+
+
+
+
+
 		[Column] public string UserID { get; set; }
+
+
+
+
+
 		[Column] public DateTime? DTime { get; set; }
+
+
+
+
+
 		[Column] public string Comment { get; set; }
+
+
+
 	}
+
     
 
 	[TableName("dbo.Sites")]
@@ -991,6 +1031,12 @@ namespace Samara
 
 
 		[Column] public int? ItemID { get; set; }
+
+
+
+
+
+		[Column] public decimal? Price { get; set; }
 
 
 
@@ -1246,7 +1292,13 @@ namespace Samara
 
 
 
-		[Column] public int? Qty { get; set; }
+		[Column] public string Job { get; set; }
+
+
+
+
+
+		[Column] public decimal? Qty { get; set; }
 
 
 

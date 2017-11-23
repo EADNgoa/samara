@@ -17,10 +17,9 @@ namespace Samara.Controllers
     {
      
         public ActionResult Index(int? page ,string SiteName )
-
         {
            if(SiteName?.Length >0) page = 1;
-           return View("Index", base.BaseIndex<BossTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ItemName,SupplierName,QtyAdded,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join Supplier on Supplier.SupplierID = SiteTransasction.SupplierID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID  Where SiteName like '%" + SiteName + "%' and  QtyRemoved = 0"));
+           return View("Index", base.BaseIndex<BossTransDet>(page, "SiteTransID,Tdate,Email,SiteName,ItemName,Price,SupplierName,QtyAdded,Remarks", "SiteTransasction Inner Join Sites on SiteTransasction.SiteID = Sites.SiteID Inner Join Item on Item.ItemID = SiteTransasction.ItemID Inner Join Supplier on Supplier.SupplierID = SiteTransasction.SupplierID Inner Join AspNetUsers on AspNetUsers.Id = SiteTransasction.UserID  Where SiteName like '%" + SiteName + "%' and  QtyRemoved = 0"));
         }
         public ActionResult IssueIndex(int? page , string SiteName)
         {
@@ -210,6 +209,7 @@ namespace Samara.Controllers
                 ChallanImg ci = new ChallanImg()
                 {
                     ItemID = rec.ItemID.Value,
+                    Price= (decimal)rec.Price,
                     QtyAdded = (int)rec.QtyAdded,
                     QtyRemoved = (int)rec.QtyRemoved,
                     Remarks = rec.Remarks,
@@ -232,7 +232,7 @@ namespace Samara.Controllers
       
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,SupplierID,Path,UploadedFile,ItemID,QtyAdded,Remarks,QtyRemoved")] ChallanImg siteTransaction, int OriginalQty)
+        public ActionResult Manage([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,SupplierID,Path,UploadedFile,ItemID,Price,QtyAdded,Remarks,QtyRemoved")] ChallanImg siteTransaction, int OriginalQty)
       {
            
             siteTransaction.Tdate = DateTime.Now;            
@@ -290,6 +290,7 @@ namespace Samara.Controllers
                         SiteTransasction res = new SiteTransasction
                         {
                             ItemID = siteTransaction.ItemID,
+                            Price=siteTransaction.Price,
                             QtyAdded = siteTransaction.QtyAdded,
                             QtyRemoved = siteTransaction.QtyRemoved,
                             Remarks = siteTransaction.Remarks,

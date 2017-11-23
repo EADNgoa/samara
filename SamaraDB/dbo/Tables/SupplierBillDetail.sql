@@ -3,8 +3,8 @@
 	[SBillDetailID] INT NOT NULL PRIMARY KEY IDENTITY, 
     [SBillID] INT NULL, 
     [LabourID] INT NULL,
-   
-    [Qty] INT NULL, 
+    [Job] VARCHAR(150) NULL,
+    [Qty]           DECIMAL(18, 2)             NULL,
     [UnitPrice] DECIMAL(18, 2) NULL, 
     [QtyRec] INT NULL, 
     [QtySold] INT NULL, 
