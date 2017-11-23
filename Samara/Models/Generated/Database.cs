@@ -185,13 +185,12 @@ namespace Samara
 	}
     
 	[TableName("dbo.ClientBillDetail")]
-	[PrimaryKey("CBillDetailID", AutoIncrement=false)]
+	[PrimaryKey("CBillDetailID")]
 	[ExplicitColumns]
     public partial class ClientBillDetail  
     {
 		[Column] public int CBillDetailID { get; set; }
 		[Column] public int? CBillID { get; set; }
-		[Column] public int? AbstractID { get; set; }
 		[Column] public string Description { get; set; }
 		[Column] public decimal? Amount { get; set; }
 		[Column] public bool? DebitCredit { get; set; }
