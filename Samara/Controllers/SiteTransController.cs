@@ -28,10 +28,24 @@ namespace Samara.Controllers
         }
         public ActionResult TransferIndex(int? page, string SiteName)
         {
-            page = 1;
+            if (SiteName?.Length > 0) page = 1;
             return View("TransferIndex", base.BaseIndex<SiteTransfers>(page, "SiteTransID,Tdate,Email,sf.SiteName as CurrentSite,ItemName, QtyAdded, QtyRemoved,st.SiteName as ToSite,Remarks ", " SiteTransasction stf Inner Join Sites sf on stf.SiteID = sf.SiteID Inner Join Item i on i.ItemID = stf.ItemID inner join Sites as st on st.SiteID = stf.ToSiteID Inner Join AspNetUsers ans on ans.Id = stf.UserID Where sf.SiteName like '%" + SiteName + "%' and ToSiteID IS NOT NULL"));
         }
 
+        public ActionResult ConfirmTransfer(int? page)
+        {            
+            var currentUser = User.Identity.GetUserId();
+
+            return View("ConfirmTransfer", base.BaseIndex<SiteTransfers>(page, "SiteTransID,Tdate,Email,sf.SiteName as CurrentSite,ItemName, QtyAdded, QtyRemoved,st.SiteName as ToSite,Remarks ", " SiteTransasction stf Inner Join Sites sf on stf.SiteID = sf.SiteID Inner Join Item i on i.ItemID = stf.ItemID inner join Sites as st on st.SiteID = stf.ToSiteID Inner Join AspNetUsers ans on ans.Id = stf.UserID inner join supervisorSites sups on sups.SiteId = stf.SiteID Where sups.UserID='" + currentUser + "' and ToSiteID IS NOT NULL and TransfConfUserID IS NULL"));
+        }
+
+        public ActionResult SetConfirmTransfer(int id)
+        {
+            SiteTransasction siteTransaction = db.SingleOrDefault<SiteTransasction>("select * from SiteTransasction where SiteTransID =@0", id);
+            siteTransaction.TransfConfUserID = User.Identity.GetUserId();
+            base.BaseSave<SiteTransasction>(siteTransaction,true );
+            return RedirectToAction("ConfirmTransfer", new { page = 1 });
+        }
 
 
         public ActionResult ManageTransfer(int? id)
@@ -59,8 +73,7 @@ namespace Samara.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ManageTransfer([Bind(Include = "SiteTransID,UserID,Tdate,SiteID,ItemID,QtyAdded,QtyRemoved,ToSiteID,Remarks")] SiteTransasction siteTransaction,int OriginalQty)
         {
-            siteTransaction.Tdate = DateTime.Now;
-         
+            siteTransaction.Tdate = DateTime.Now;       
 
 
             var getStock = db.FirstOrDefault<SiteCurrentStock>("Select SiteStockID,Qty From SiteCurrentStock Where  SiteID=@0 and ItemID =@1", siteTransaction.SiteID, siteTransaction.ItemID);

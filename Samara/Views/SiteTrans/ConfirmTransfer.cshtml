@@ -1,0 +1,69 @@
+﻿@model PagedList.IPagedList<Samara.SiteTransfers>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Confirm receipt of goods";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+    
+</center>
+
+<table class="table">
+    <tr>
+        <th>
+            Date
+        </th>
+        <th>
+            Transfered By 
+        </th>
+        <th>
+          From Site
+        </th>
+        <th>
+            To Site
+        </th>
+        <th>
+            Item Name
+        </th>
+        <th>
+            Quantity Transfered
+        </th>
+
+  
+        <th></th>
+
+    </tr>
+    
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Tdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Email)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CurrentSite)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ToSite)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ItemName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.QtyRemoved)
+        </td>
+        <td>
+            @Html.ActionLink("Confirm", "SetConfirmTransfer", new { id=item.SiteTransID }) 
+        </td>
+    </tr>
+    
+}
+
+</table>
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
