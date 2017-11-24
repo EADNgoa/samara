@@ -433,6 +433,7 @@
     <Content Include="Views\RateAddition\Manage.cshtml" />
     <Content Include="Views\SitePicture\Index.cshtml" />
     <Content Include="Views\SitePicture\Manage.cshtml" />
+    <Content Include="Views\SiteTrans\ConfirmTransfer.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
