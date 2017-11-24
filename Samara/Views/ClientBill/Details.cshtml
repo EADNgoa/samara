@@ -254,8 +254,18 @@
                         }
         <tr>
             <td></td>
+            <td><b>Less Retention Money @ViewBag.RetPerc</b></td>
+            <td><b>@(String.Format("{0:#,##0.00}", ViewBag.RetAmt))</b></td>
+            <td class="section-to-Not-print"></td>
+            <td class="section-to-Not-print"></td>
+            <td></td>
+
+        </tr>
+        <tr>
+            @{ decimal LessRet = bamt - ViewBag.RetAmt;  }
+            <td></td>
             <td><b>Total</b></td>
-            <td><b>@(String.Format("{0:#,##0.00}", bamt)) </b></td>
+            <td><b>@(String.Format("{0:#,##0.00}", LessRet)) </b></td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
@@ -264,7 +274,7 @@
            @{
             var cntw = new ChangeNumbersToWords();
 
-            string mtw = cntw.changeToWords(bamt.ToString());
+            string mtw = cntw.changeToWords(LessRet.ToString());
 
         }
         <tr><td colspan="6">
