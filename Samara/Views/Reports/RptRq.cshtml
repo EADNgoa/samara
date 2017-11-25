@@ -9,8 +9,8 @@
 
 @using (Html.BeginForm((string)ViewBag.ReturnAction, "Reports", FormMethod.Post)) 
 {
-   
-    @Html.AntiForgeryToken()
+   @Html.AntiForgeryToken()
+   @Html.HiddenFor(model => model.SiteID)
    
     <div class="form-horizontal">
         <h4>Appoint Goods To Site</h4>
@@ -32,6 +32,15 @@
                 @Html.Label("Year", htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
                     @Html.DropDownList("RptYear", (IEnumerable<SelectListItem>)ViewBag.YearBox, htmlAttributes: new { @class = "form-control" })
+                </div>
+            </div>
+        }
+              @if (ViewBag.FromSiteName != null)
+              {
+            <div class="form-group">
+                @Html.Label("Site", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    <input type="text" id="SiteName" name="SiteName" style="color:black;" data-autocomplete-idholder="#SiteID" data-autocombo-url="@Url.Action("AutoCompleteSite")" class="form-control" />
                 </div>
             </div>
         }
