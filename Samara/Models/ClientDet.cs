@@ -14,6 +14,8 @@ namespace Samara
         public string ClientName { get; set; }
         public DateTime Tdate { get; set; }
         public decimal RetentionPerc { get; set; }
+        public decimal RetentionAmt { get; set; }
+        public bool RetentionAmtIsPaid { get; set; }
         public decimal TaxPerc { get; set; }
 
 

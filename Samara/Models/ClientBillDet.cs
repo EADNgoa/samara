@@ -11,7 +11,7 @@ namespace Samara
         public int CBillID { get; set; }
      
         public string Description { get; set; }
-        public int Amount { get; set; }
+        public decimal Amount { get; set; }
         public byte DebitCredit { get; set; }
         public byte BeforeTax { get; set; }
         public decimal TaxPerc { get; set; }

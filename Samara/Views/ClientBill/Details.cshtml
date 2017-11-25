@@ -5,8 +5,11 @@
 }
 
 <center>
+    @if (ViewBag.ClientBillDets == null)
+    {
     <div class="section-to-print">
         <br />
+
 
     <p class="pull-left"><b>PAN:@ViewBag.pan</b></p><p class="pull-right"><b>TAN:@ViewBag.tan</b></p>
         <br />
@@ -21,7 +24,7 @@
         </p>
 
     </div>
-
+    }
 <br />
     <br />
     @{int i = 1; decimal bamt = 0; }
@@ -32,7 +35,7 @@
             if (ViewBag.ClientBillDets != null)
             {
                 @Html.Hidden("CBillID", (int)ViewBag.ClientBillDets.CBillID)
-
+                
                 @Html.Hidden("CBillDetailID", (int)ViewBag.ClientBillDets.CBillDetailID)
 
                 <tr>
@@ -58,9 +61,10 @@
                 if (ViewBag.CBillID != null)
                 {
                     @Html.Hidden("CBillID", (int)ViewBag.CBillID)
+                    @Html.Hidden("RetentionPerc", (decimal)Model.ClientDets.RetentionPerc)
                 }
 
-          
+
                 <tr class="section-to-Not-print">
                     <td class="col-md-4">Retention Percantage:</td>
                     <td class="col-md-4">@Html.DisplayFor(modelItem => Model.ClientDets.RetentionPerc)</td>
@@ -91,7 +95,14 @@
             <tr class="section-to-Not-print">
                 <td></td>
 
-                <td><input type="submit" value="Submit" /></td>
+                <td>
+                    @if (Model.ClientDets.RetentionAmtIsPaid)
+                    { <p class="alert alert-success">Bill Sealed: Retention Money Paid</p>}
+                    else
+                    {<input type="submit" value="Submit" />}
+                    <input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
+                    <input action="action" onclick="window.history.go(-1); return false;" type="button" value="Back" />
+                </td>
             </tr>
         }
     </table>
@@ -111,17 +122,17 @@
             <th>
                 Amount
             </th>
-            <th class="section-to-Not-print">
+            <th style="text-align:right;" class="section-to-Not-print">
                 Is Debit?
             </th>
-            <th class="section-to-Not-print">
+            <th style="text-align:right;" class="section-to-Not-print">
                 Before tax?
             </th>
 
             <th>
 
             </th>
-            <th class="section-to-Not-print"><input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
+            
 
 
 </tr>
@@ -137,7 +148,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
-                <td>
+                <td style="text-align:right;">
                     @{
                         if (item.DebitCredit == 1)
                         {
@@ -153,20 +164,20 @@
 
                 @if (item.DebitCredit == 0)
                 {
-                    <td class="section-to-Not-print">False</td>
+                    <td style="text-align:right;" class="section-to-Not-print">False</td>
                 }
                 else
                 {
-                    <td class="section-to-Not-print">True</td>
+                    <td style="text-align:right;" class="section-to-Not-print">True</td>
                 }
 
                 @if (item.BeforeTax == 0)
                 {
-                    <td class="section-to-Not-print">False</td>
+                    <td style="text-align:right;" class="section-to-Not-print">False</td>
                 }
                 else
                 {
-                    <td class="section-to-Not-print">True</td>
+                    <td style="text-align:right;" class="section-to-Not-print">True</td>
                 }
 
                 <td class="section-to-Not-print">
@@ -179,7 +190,7 @@
         <tr>
             <td></td>
             <td>Total</td>
-            <td>@(String.Format("{0:#,##0.00}",bamt))</td>
+            <td style="text-align:right;">@(String.Format("{0:#,##0.00}",bamt))</td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
@@ -189,7 +200,7 @@
             @{ decimal GstAmt = bamt * (decimal)ViewBag.gst / 100; }
             <td>@i</td>
             <td>ADD GST @ViewBag.gst %</td>
-            <td>@(String.Format("{0:#,##0.00}", GstAmt))</td>
+            <td style="text-align:right;">@(String.Format("{0:#,##0.00}", GstAmt))</td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
@@ -199,7 +210,7 @@
             @{ decimal OrigGA = GstAmt + bamt; bamt = GstAmt + bamt; }
             <td></td>
             <td>Total</td>
-            <td>@(String.Format("{0:#,##0.00}", OrigGA))</td>
+            <td style="text-align:right;">@(String.Format("{0:#,##0.00}", OrigGA))</td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
@@ -213,7 +224,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Description)
                 </td>
-                <td>
+                <td style="text-align:right;">
                     @{
                         if (item.DebitCredit == 1)
                         {
@@ -229,20 +240,20 @@
 
                 @if (item.DebitCredit == 0)
                 {
-                    <td class="section-to-Not-print">False</td>
+                    <td style="text-align:right;" class="section-to-Not-print">False</td>
                 }
                 else
                 {
-                    <td class="section-to-Not-print">True</td>
+                    <td style="text-align:right;" class="section-to-Not-print">True</td>
                 }
 
                 @if (item.BeforeTax == 0)
                 {
-                    <td class="section-to-Not-print">False</td>
+                    <td style="text-align:right;" class="section-to-Not-print">False</td>
                 }
                 else
                 {
-                    <td class="section-to-Not-print">True</td>
+                    <td style="text-align:right;" class="section-to-Not-print">True</td>
                 }
 
                 <td class="section-to-Not-print">
@@ -255,7 +266,7 @@
         <tr>
             <td></td>
             <td><b>Less Retention Money @ViewBag.RetPerc</b></td>
-            <td><b>@(String.Format("{0:#,##0.00}", ViewBag.RetAmt))</b></td>
+            <td style="text-align:right;"><b>@(String.Format("{0:#,##0.00}", ViewBag.RetAmt))</b></td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>
@@ -265,7 +276,7 @@
             @{ decimal LessRet = bamt - ViewBag.RetAmt;  }
             <td></td>
             <td><b>Total</b></td>
-            <td><b>@(String.Format("{0:#,##0.00}", LessRet)) </b></td>
+            <td style="text-align:right;"><b>@(String.Format("{0:#,##0.00}", LessRet)) </b></td>
             <td class="section-to-Not-print"></td>
             <td class="section-to-Not-print"></td>
             <td></td>

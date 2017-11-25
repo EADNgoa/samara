@@ -42,24 +42,21 @@ namespace Samara.Controllers
         {
            // ViewBag.ClientBillDets = base.BaseCreateEdit<ClientBillDetail>(id, "CBillDetailID");
             ViewBag.gst = db.Fetch<decimal>("select TaxPerc From ClientBill",id);
-            ViewBag.tan = db.FirstOrDefault<string>("select TANnumber From Config");
-            ViewBag.pan = db.FirstOrDefault<string>("select PANnumber From Config");
+            var confi = db.FirstOrDefault<Config>("select * From Config");
+            ViewBag.tan = confi.TANnumber;
+            ViewBag.pan = confi.PANnumber;
 
 
             var viewdata = new Client_Bill
              {
-                        ClientDets = db.FirstOrDefault<ClientDet>("Select CBillID,ClientName,Tdate,RetentionPerc,TaxPerc from ClientBill as cb Inner Join Client as c on cb.ClientID =c.ClientID where CBillID = @0", id),
+                        ClientDets = db.FirstOrDefault<ClientDet>("Select CBillID,ClientName,Tdate,RetentionPerc,RetentionAmt, RetentionAmtIsPaid,TaxPerc from ClientBill as cb Inner Join Client as c on cb.ClientID =c.ClientID where CBillID = @0", id),
                         ClientBillDets = db.Fetch<ClientBillDet>("Select * From ClientBillDetail  Where CBillID = @0", id)
                  
             };
-            decimal RetPerc = viewdata.ClientDets.RetentionPerc;
-            decimal BefTaxDebit = db.FirstOrDefault<decimal>("select sum(Amount) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, id, 1);
-            decimal BefTaxCredit = db.FirstOrDefault<decimal>("select sum(Amount) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, id, 0);
-            decimal BefTax = BefTaxCredit - BefTaxDebit;
             
-            decimal RetAmt = BefTax * RetPerc / 100;
-            ViewBag.RetAmt = RetAmt;
-            ViewBag.RetPerc = RetPerc;
+            ViewBag.RetAmt = viewdata.ClientDets.RetentionAmt;
+            ViewBag.RetPerc = viewdata.ClientDets.RetentionPerc;
+            ViewBag.RetAmtIsPAid = viewdata.ClientDets.RetentionAmtIsPaid;
             ViewBag.CBillID = id;
             ViewBag.gst = db.FirstOrDefault<decimal>("select TaxPerc From ClientBill",id);
 
@@ -67,12 +64,35 @@ namespace Samara.Controllers
         }
   
         [HttpPost]     
-        public ActionResult Details([Bind(Include = "CBillDetailID,CBillID,Description,Amount,DebitCredit,BeforeTax")] ClientBillDetail clientBillDetail)
+        public ActionResult Details([Bind(Include = "CBillDetailID,CBillID,Description,Amount,DebitCredit,BeforeTax")] ClientBillDetail clientBillDetail, decimal RetentionPerc)
         {
             ViewBag.gst = db.FirstOrDefault<decimal>("select TaxPerc From ClientBill", clientBillDetail.CBillID);
 
-            base.BaseSave<ClientBillDetail>(clientBillDetail, clientBillDetail.CBillDetailID > 0);
-            return RedirectToAction("Details",new {id=clientBillDetail.CBillID });
+            using (var transaction = db.GetTransaction())
+            {
+                try
+                {
+                    base.BaseSave<ClientBillDetail>(clientBillDetail, clientBillDetail.CBillDetailID > 0);
+
+                    //Set Retention Amount
+                    decimal RetPerc = RetentionPerc;
+                    decimal BefTaxDebit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 1);
+                    decimal BefTaxCredit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 0);
+                    decimal BefTax = BefTaxCredit - BefTaxDebit;
+
+                    decimal RetAmt = BefTax * (RetPerc / 100);
+
+                    db.Update("ClientBill", "CBillID", new { RetentionAmt = RetAmt }, clientBillDetail.CBillID);
+
+                    transaction.Complete();                    
+                    return RedirectToAction("Details",new {id=clientBillDetail.CBillID });
+                }
+                catch (Exception ex)
+                {
+                    db.AbortTransaction();
+                    throw ex;
+                }
+            }
         }
        
         public ActionResult ManageDetails(int? id)
@@ -80,22 +100,42 @@ namespace Samara.Controllers
             ViewBag.ClientBillDets = base.BaseCreateEdit<ClientBillDetail>(id, "CBillDetailID");
 
 
-            var viewdata = new Client_Bill
-            {
-                ClientDets = db.FirstOrDefault<ClientDet>("Select CBillID,ClientName,Tdate,RetentionPerc,TaxPerc from ClientBill as cb Inner Join Client as c on cb.ClientID =c.ClientID where CBillID = @0", id),
-                ClientBillDets = db.Fetch<ClientBillDet>("Select * From ClientBillDetail  Where CBillID = @0", id)
+            //var viewdata = new Client_Bill();
+            //viewdata.ClientBillDets = db.Fetch<ClientBillDet>("Select * From ClientBillDetail  Where CBillDetailID = @0", id);
+            //viewdata.ClientDets = db.FirstOrDefault<ClientDet>("Select CBillID,ClientName,Tdate,RetentionPerc,RetentionAmt, RetentionAmtIsPaid,TaxPerc from ClientBill as cb Inner Join Client as c on cb.ClientID =c.ClientID where CBillID = @0", viewdata.ClientBillDets.First<ClientBillDet>().CBillID);
 
-            };
-
-            return View("Details", viewdata);            
+            return View("Details");            
         }
   
         [HttpPost]     
         public ActionResult ManageDetails([Bind(Include = "CBillDetailID,CBillID,Description,Amount,DebitCredit,BeforeTax")] ClientBillDetail clientBillDetail)
         {
-            base.BaseSave<ClientBillDetail>(clientBillDetail, clientBillDetail.CBillDetailID > 0);
-       
-            return RedirectToAction("Details",new { id = clientBillDetail.CBillID });
+            using (var transaction = db.GetTransaction())
+            {
+                try
+                {
+                    base.BaseSave<ClientBillDetail>(clientBillDetail, clientBillDetail.CBillDetailID > 0);
+
+                    //Set Retention Amount
+                    decimal RetPerc = db.FirstOrDefault<decimal>("Select RetentionPerc From ClientBill Where CBillID = @0", clientBillDetail.CBillID);
+                    decimal BefTaxDebit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 1);
+                    decimal BefTaxCredit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 0);
+                    decimal BefTax = BefTaxCredit - BefTaxDebit;
+
+                    decimal RetAmt = BefTax * (RetPerc / 100);
+
+                    db.Update("ClientBill", "CBillID", new { RetentionAmt = RetAmt }, clientBillDetail.CBillID);
+
+                    transaction.Complete();
+                    return RedirectToAction("Details", new { id = clientBillDetail.CBillID });
+                }
+                catch (Exception ex)
+                {
+                    db.AbortTransaction();
+                    throw ex;
+                }
+            }
+                
         }
 
 

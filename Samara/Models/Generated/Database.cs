@@ -524,6 +524,18 @@ namespace Samara
 
 
 
+		[Column] public decimal? RetentionAmt { get; set; }
+
+
+
+
+
+		[Column] public bool RetentionAmtIsPaid { get; set; }
+
+
+
+
+
 		[Column] public decimal? TaxPerc { get; set; }
 
 
@@ -579,58 +591,6 @@ namespace Samara
 
 
 		[Column] public bool? BeforeTax { get; set; }
-
-
-
-	}
-
-    
-
-	[TableName("dbo.ClientViewBillDetail")]
-
-
-
-	[PrimaryKey("ClientViewBillDetailID", AutoIncrement=false)]
-
-
-	[ExplicitColumns]
-
-    public partial class ClientViewBillDetail  
-    {
-
-
-
-		[Column] public int ClientViewBillDetailID { get; set; }
-
-
-
-
-
-		[Column] public int? CBillID { get; set; }
-
-
-
-
-
-		[Column] public string Description { get; set; }
-
-
-
-
-
-		[Column] public decimal? Amount { get; set; }
-
-
-
-
-
-		[Column] public bool? DebitCredit { get; set; }
-
-
-
-
-
-		[Column] public string BeforeTax { get; set; }
 
 
 
