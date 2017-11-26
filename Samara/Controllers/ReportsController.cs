@@ -60,10 +60,21 @@ namespace Samara.Controllers
 
             int Site = int.Parse(fm["SiteID"]);
             ViewBag.sn = fm["SiteName"];
-            ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SupplierName,ItemName,sum(QtyAdded) as QtyAdded,sum(Price) as Price from SiteTransasction st inner join item i on st.ItemID = i.ItemID inner join Supplier s on s.SupplierID = st.SupplierID Where SiteID = @0 and Price IS NOT NULL Group BY  SupplierName,ItemName ", Site);
-            ViewBag.Income = db.Fetch<SuppBillDet>("Select SupplierName,LabourName,sum(Qty) as Qty,sum(UnitPrice) as UnitPrice from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID inner join Labour l on l.LabourID = sbd.LabourID inner join Supplier sp on sp.SupplierID =sb.SupplierID where sb.SiteID = @0 Group By SupplierName,LabourName",Site);
+            ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SupplierName,ItemName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded * Price)  as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID inner join Supplier s on s.SupplierID = st.SupplierID Where SiteID = 1 and Price IS NOT NULL Group BY  SupplierName,ItemName ", Site);
+            ViewBag.Income = db.Fetch<SuppBillDet>("Select SupplierName,LabourName,Sum(Qty) as Qty,sum(Qty  *UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID inner join Labour l on l.LabourID = sbd.LabourID inner join Supplier sp on sp.SupplierID =sb.SupplierID where sb.SiteID = @0 Group By SupplierName,LabourName", Site);
             return View();
         }
+
+        public ActionResult ProfitLossSummary(FormCollection fm)
+        {
+          
+
+         
+            ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SiteName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded*Price) as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID  inner join Sites ss on st.SiteID = ss.SiteID where  Price IS NOT NULL Group BY  SiteName ");
+            ViewBag.Income = db.Fetch<SuppBillDet>("Select SiteName,Sum(Qty) as Qty,sum(Qty * UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID   Group By SiteName");
+            return View();
+        }
+
 
         public ActionResult AutoCompleteSite(string term)
         {

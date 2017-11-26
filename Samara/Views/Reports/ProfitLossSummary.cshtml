@@ -1,11 +1,11 @@
 ﻿
 @using PagedList.Mvc;
 @{
-    ViewBag.Title = "Profit/Loss";
+    ViewBag.Title = "Profit/Loss Summary";
 }
 
 <center>
-    <h2 class="section-to-print"><b>@ViewBag.Title: @(String.Format(ViewBag.sn))  </b></h2>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
     
 
 </center>
@@ -18,11 +18,9 @@
                 Sr No
             </th>
             <th>
-                Supplier Name
+                Site
             </th>
-            <th>
-               Item Name
-            </th>
+          
 
             <th>
                Quantity
@@ -41,11 +39,9 @@
                     @i
                 </td>
                 <td>
-                    @item.SupplierName
+                    @item.SiteName
                 </td>
-                <td>
-                    @item.ItemName
-                </td>
+              
                 <td>
                     @item.QtyAdded
                 </td>
@@ -71,11 +67,9 @@
                 Sr No
             </th>
             <th>
-                Supplier Name
+            Site
             </th>
-            <th>
-              Labour
-            </th>
+         
 
             <th>
                 Quantity
@@ -93,11 +87,9 @@
                     @a
                 </td>
                 <td>
-                    @item.SupplierName
+                    @item.SiteName
                 </td>
-                <td>
-                    @item.LabourName
-                </td>
+            
                 <td>
                     @item.Qty
                 </td>

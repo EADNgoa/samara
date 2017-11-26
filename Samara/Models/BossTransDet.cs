@@ -19,6 +19,7 @@ namespace Samara
 
         public string ItemName { get; set; }
         public decimal Price { get; set; }
+        public decimal Amount { get; set; }
 
         public int QtyAdded { get; set; }
 
