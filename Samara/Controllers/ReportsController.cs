@@ -57,7 +57,7 @@ namespace Samara.Controllers
         {
             if (fm["SiteName"] ==  null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-
+ 
             int Site = int.Parse(fm["SiteID"]);
             ViewBag.sn = fm["SiteName"];
             ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SupplierName,ItemName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded * Price)  as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID inner join Supplier s on s.SupplierID = st.SupplierID Where SiteID = 1 and Price IS NOT NULL Group BY  SupplierName,ItemName ", Site);
@@ -65,16 +65,27 @@ namespace Samara.Controllers
             return View();
         }
 
-        public ActionResult ProfitLossSummary(FormCollection fm)
-        {
-          
-
-         
+        public ActionResult ProfitLossSummary()
+        {    
             ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SiteName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded*Price) as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID  inner join Sites ss on st.SiteID = ss.SiteID where  Price IS NOT NULL Group BY  SiteName ");
             ViewBag.Income = db.Fetch<SuppBillDet>("Select SiteName,Sum(Qty) as Qty,sum(Qty * UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID   Group By SiteName");
             return View();
         }
 
+        public ActionResult RetentionReport(int? id)
+        {
+            if (id != null)
+            {
+                ClientBill clientbill = db.SingleOrDefault<ClientBill>("select * from ClientBill where CBillID =@0", id);
+                clientbill.RetentionAmtIsPaid = true;
+                base.BaseSave<ClientBill>(clientbill, true);
+            }
+            return View("RetentionReport", base.BaseIndex<ClientDet>(null, " *  ","ClientBill cb inner join Client c on cb.ClientID = c.ClientID where RetentionAmtIsPaid = '0' "));
+        }
+
+
+
+      
 
         public ActionResult AutoCompleteSite(string term)
         {

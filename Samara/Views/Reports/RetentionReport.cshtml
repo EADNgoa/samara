@@ -1,0 +1,85 @@
+﻿
+@model PagedList.IPagedList<Samara.ClientDet>
+
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Retention Report";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title</b></h2>
+    
+
+</center>
+<input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
+
+<center>
+    <table class="table section-to-print" width="100%">
+        <tr>
+            <th>
+                Sr No
+            </th>
+            <th>
+                Client Name
+            </th>
+          
+
+            <th>
+               Tdate
+            </th>
+            <th>
+                Retention Percantage
+            </th>
+            <th>
+                Retention Amount
+            </th>
+            <th class="section-to-Not-print">
+               
+            </th>
+   
+
+        </tr>
+        @{int i = 1;decimal tot=0; }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @item.ClientName
+                </td>
+              
+                <td>
+                    @item.Tdate
+                </td>
+                <td>
+                  
+                    @item.RetentionPerc
+                </td>
+                <td>
+                    @item.RetentionAmt
+                </td>
+                @if(item.RetentionAmtIsPaid == false)
+                {
+                   <td class="section-to-Not-print">
+                       @Html.ActionLink("Paid", "RetentionReport", new { id = item.CBillID })
+                  </td>
+                }
+                else
+                {
+                    <td class="section-to-Not-print">
+
+                    </td>
+                }
+
+            </tr>
+            i++;
+        }
+    
+
+    </table>
+
+    <br />
+  
+</center>
