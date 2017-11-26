@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 //using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -44,7 +45,43 @@ namespace Samara.Controllers
             return View("OCbalance");
         }
 
+        public ActionResult RptRqPls(int? page)
+        {
+            ViewBag.FromSiteName = 1;
+            ViewBag.ReturnAction = "ProfitLossSite";
+            return View("RptRq");
 
+        }
+
+        public ActionResult ProfitLossSite(FormCollection fm)
+        {
+            if (fm["SiteName"] ==  null)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+
+            int Site = int.Parse(fm["SiteID"]);
+            ViewBag.sn = fm["SiteName"];
+            ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SupplierName,ItemName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded * Price)  as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID inner join Supplier s on s.SupplierID = st.SupplierID Where SiteID = 1 and Price IS NOT NULL Group BY  SupplierName,ItemName ", Site);
+            ViewBag.Income = db.Fetch<SuppBillDet>("Select SupplierName,LabourName,Sum(Qty) as Qty,sum(Qty  *UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID inner join Labour l on l.LabourID = sbd.LabourID inner join Supplier sp on sp.SupplierID =sb.SupplierID where sb.SiteID = @0 Group By SupplierName,LabourName", Site);
+            return View();
+        }
+
+        public ActionResult ProfitLossSummary(FormCollection fm)
+        {
+          
+
+         
+            ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SiteName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded*Price) as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID  inner join Sites ss on st.SiteID = ss.SiteID where  Price IS NOT NULL Group BY  SiteName ");
+            ViewBag.Income = db.Fetch<SuppBillDet>("Select SiteName,Sum(Qty) as Qty,sum(Qty * UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID   Group By SiteName");
+            return View();
+        }
+
+
+        public ActionResult AutoCompleteSite(string term)
+        {
+            string UserID = User.Identity.GetUserId();
+            var h = db.Fetch<AutoCompleteData>($"Select ss.SiteID as id, SiteName as value from SupervisorSites as ss Inner Join Sites s on s.SiteID = ss.SiteID inner join AspNetUsers anu on ss.UserID=anu.Id Where SiteName like '%{term}%' and ss.UserID = @0 ", UserID).ToList();
+            return Json(h, JsonRequestBehavior.AllowGet);
+        }
 
 
         protected override void Dispose(bool disposing)

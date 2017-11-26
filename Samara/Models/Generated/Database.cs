@@ -648,254 +648,69 @@ namespace Samara
 
 	[TableName("dbo.Item")]
 
-
-
 	[PrimaryKey("ItemID")]
-
-
-
-
 	[ExplicitColumns]
-
     public partial class Item  
     {
-
-
-
 		[Column] public int ItemID { get; set; }
-
-
-
-
-
 		[Column] public string ItemName { get; set; }
-
-
-
-
-
 		[Column] public int? UnitID { get; set; }
-
-
-
-
-
 		[Column] public decimal? ReorderLevel { get; set; }
-
-
-
-
-
 		[Column] public decimal? Rate { get; set; }
-
-
-
-
-
 		[Column] public decimal? TaxPerc { get; set; }
-
-
-
 	}
-
     
-
 	[TableName("dbo.Labour")]
-
-
-
 	[PrimaryKey("LabourID")]
-
-
-
-
 	[ExplicitColumns]
-
     public partial class Labour  
     {
-
-
-
 		[Column] public int LabourID { get; set; }
-
-
-
-
-
 		[Column] public string LabourName { get; set; }
-
-
-
-
-
 		[Column] public decimal? Rate { get; set; }
-
-
-
 	}
-
     
-
 	[TableName("dbo.Project")]
-
-
-
 	[PrimaryKey("ProjectID")]
-
-
-
-
 	[ExplicitColumns]
-
     public partial class Project  
     {
-
-
-
 		[Column] public int ProjectID { get; set; }
-
-
-
-
-
 		[Column] public string Name { get; set; }
-
-
-
 	}
-
     
-
 	[TableName("dbo.RateAdditions")]
-
-
-
 	[PrimaryKey("RateAdditionID")]
-
-
-
-
 	[ExplicitColumns]
-
     public partial class RateAddition  
     {
-
-
-
 		[Column] public int RateAdditionID { get; set; }
-
-
-
-
-
 		[Column] public string RateAdditionDesc { get; set; }
-
-
-
-
-
 		[Column] public decimal? Percentage { get; set; }
-
-
-
 	}
-
     
-
 	[TableName("dbo.SiteCurrentStock")]
-
-
-
 	[PrimaryKey("SiteStockID")]
-
-
-
-
 	[ExplicitColumns]
-
     public partial class SiteCurrentStock  
     {
-
-
-
 		[Column] public int SiteStockID { get; set; }
-
-
-
-
-
 		[Column] public int? SiteID { get; set; }
-
-
-
-
-
 		[Column] public int? ItemID { get; set; }
-
-
-
-
-
 		[Column] public int? Qty { get; set; }
-
-
-
 	}
-
     
-
 	[TableName("dbo.SitePictures")]
-
-
-
 	[PrimaryKey("SitePictureID")]
-
-
-
-
 	[ExplicitColumns]
-
     public partial class SitePicture  
     {
-
-
-
 		[Column] public int SitePictureID { get; set; }
-
-
-
-
-
 		[Column] public int? SiteID { get; set; }
-
-
-
-
-
 		[Column] public string Picture { get; set; }
-
-
-
-
-
 		[Column] public string UserID { get; set; }
-
-
-
-
-
 		[Column] public DateTime? DTime { get; set; }
-
-
-
-
-
 		[Column] public string Comment { get; set; }
-
-
-
-	}
-
     
 
 	[TableName("dbo.Sites")]
@@ -1202,10 +1017,7 @@ namespace Samara
 
 		[Column] public int? SupplierID { get; set; }
 
-
-
-
-
+		[Column] public int? SiteID { get; set; }
 		[Column] public DateTime? Tdate { get; set; }
 
 

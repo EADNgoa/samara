@@ -9,11 +9,16 @@ namespace Samara
     {
         public int SBillDetailID { get; set; }
         public int SBillID { get; set; }
+        public string SupplierName { get; set; }
+        public int SiteID { get; set; }
+        public string SiteName { get; set; }
         public int LabourID { get; set; }
         public string LabourName { get; set; }
         public string Job { get; set; }
         public decimal Qty { get; set; }
         public decimal UnitPrice { get; set; }
+        public decimal Amount { get; set; }
+
         public int QtyRec { get; set; }
         public int QtySold { get; set; }
 

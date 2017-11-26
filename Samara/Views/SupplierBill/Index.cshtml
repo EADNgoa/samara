@@ -37,6 +37,9 @@
             Contractor Name
         </th>
         <th>
+            Site 
+        </th>
+        <th>
            @Html.DisplayNameFor(modelItem => modelItem.FirstOrDefault().Tdate)
         </th>
        
@@ -53,9 +56,12 @@
             @Html.DisplayFor(modelItem => item.SupplierName)
         </td>
         <td>
+            @Html.DisplayFor(modelItem => item.SiteName)
+        </td>
+        <td>
             @Html.DisplayFor(modelItem => item.Tdate)
         </td>
- 
+    
         <td>
             @Html.ActionLink("Edit", "Manage", new { id=item.SBillID }) |@Html.ActionLink("Details", "Details", new { id = item.SBillID })
             

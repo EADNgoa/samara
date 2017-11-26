@@ -1,0 +1,118 @@
+﻿
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Profit/Loss";
+}
+
+<center>
+    <h2 class="section-to-print"><b>@ViewBag.Title: @(String.Format(ViewBag.sn))  </b></h2>
+    
+
+</center>
+<input type="button" onclick="javascript:window.print();" value="Print" class="eabutton section-to-not-print" />
+
+<center>
+    <table class="table-bordered section-to-print" width="100%">
+        <tr>
+            <th>
+                Sr No
+            </th>
+            <th>
+                Supplier Name
+            </th>
+            <th>
+               Item Name
+            </th>
+
+            <th>
+               Quantity
+            </th>
+            <th>
+                Price
+            </th>
+   
+
+        </tr>
+        @{int i = 1;decimal tot=0; }
+        @foreach (var item in ViewBag.Expenditure)
+        {
+            <tr>
+                <td>
+                    @i
+                </td>
+                <td>
+                    @item.SupplierName
+                </td>
+                <td>
+                    @item.ItemName
+                </td>
+                <td>
+                    @item.QtyAdded
+                </td>
+                <td>
+                    @{ tot = tot + item.Amount;}
+                    @item.Amount
+                </td>
+
+            </tr>
+            i++;
+        }
+        <tr>
+            <td>Total</td>
+            <td>@tot</td>
+        </tr>
+
+    </table>
+
+    <br />
+    <table class="table-bordered section-to-print" width="100%">
+        <tr>
+            <th>
+                Sr No
+            </th>
+            <th>
+                Supplier Name
+            </th>
+            <th>
+              Labour
+            </th>
+
+            <th>
+                Quantity
+            </th>
+        <th>
+            Unit Price
+        </th>
+
+        </tr>
+        @{int a = 1; decimal stot = 0;}
+        @foreach (var item in ViewBag.Income)
+        {
+            <tr>
+                <td>
+                    @a
+                </td>
+                <td>
+                    @item.SupplierName
+                </td>
+                <td>
+                    @item.LabourName
+                </td>
+                <td>
+                    @item.Qty
+                </td>
+                <td>
+                    @{ stot = stot + item.Amount; }
+                    @item.Amount
+                </td>
+
+
+            </tr>
+            a++;
+        }
+        <tr>
+            <td>Total</td>
+            <td>@stot</td>
+        </tr>
+    </table>
+</center>

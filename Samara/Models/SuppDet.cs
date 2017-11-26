@@ -12,6 +12,8 @@ namespace Samara
         public int SBillID { get; set; }
 
         public string SupplierName { get; set; }
+        public string SiteName { get; set; }
+
 
         public DateTime Tdate { get; set; }
         public decimal TDSperc { get; set; }

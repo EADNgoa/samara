@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 //using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -15,7 +16,7 @@ namespace Samara.Controllers
         public ActionResult Index(int? page, string SupplierName)
         {
             if (SupplierName?.Length > 0) page = 1;
-            return View("Index", base.BaseIndex<SuppDet>(page, "SBillID,SupplierName, Tdate", "SupplierBill as sb Inner Join Supplier as s on sb.SupplierID = s.SupplierID where SupplierName like '%" + SupplierName + "%'"));
+            return View("Index", base.BaseIndex<SuppDet>(page, "SBillID,SupplierName,SiteName, Tdate", "SupplierBill as sb Inner Join Supplier as s on sb.SupplierID = s.SupplierID inner join Sites st on sb.SiteID = st.SiteID where SupplierName like '%" + SupplierName + "%'"));
         }
 
 
@@ -34,7 +35,7 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "SBillID,SupplierID,Tdate")] SupplierBill supplierBill)
+        public ActionResult Manage([Bind(Include = "SBillID,SupplierID,SiteID,Tdate")] SupplierBill supplierBill)
         {
             supplierBill.TDSperc =(decimal) db.FirstOrDefault<Config>("Select TDSperc from Config").TDSperc;
             return base.BaseSave<SupplierBill>(supplierBill, supplierBill.SBillID > 0);
@@ -61,6 +62,7 @@ namespace Samara.Controllers
             var GetItem = db.FirstOrDefault<SupplierBillDetail>("Select * From SupplierBillDetail Where LabourID=@0 and SBillID =@0", supplierBillDetail.LabourID,supplierBillDetail.SBillID);
             if(GetItem ==  null)
             {
+         
                 supplierBillDetail.QtyRec = 0;
                 ViewBag.Total = db.Fetch<SupplierBillDetail>("");
               base.BaseSave<SupplierBillDetail>(supplierBillDetail, supplierBillDetail.SBillDetailID > 0);
@@ -71,6 +73,7 @@ namespace Samara.Controllers
                 db.Update("SupplierBillDetail", "SBillDetailID", new { Qty = GetItem.Qty + supplierBillDetail.Qty ,UnitPrice =supplierBillDetail.UnitPrice }, GetItem.SBillDetailID);
             }
 
+      
         
             return RedirectToAction("Details",new {id=supplierBillDetail.SBillID });
         }
@@ -108,6 +111,14 @@ namespace Samara.Controllers
             base.BaseSave<SupplierBillDetail>(objToSave, supplierBillDetail.SBillDetailID > 0);
        
             return RedirectToAction("Details",new { id = supplierBillDetail.SBillID });
+        }
+
+
+        public ActionResult AutoCompleteSite(string term)
+        {
+            string UserID = User.Identity.GetUserId();
+            var h = db.Fetch<AutoCompleteData>($"Select ss.SiteID as id, SiteName as value from SupervisorSites as ss Inner Join Sites s on s.SiteID = ss.SiteID inner join AspNetUsers anu on ss.UserID=anu.Id Where SiteName like '%{term}%' and ss.UserID = @0 ", UserID).ToList();
+            return Json(h, JsonRequestBehavior.AllowGet);
         }
 
 
