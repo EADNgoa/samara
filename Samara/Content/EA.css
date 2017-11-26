@@ -46,7 +46,7 @@ a, .navbar-nav, .well-lg {
 
 /* Bigger Checkboxes */
 input[type=checkbox] {
-    zoom: 1.5;
+    zoom: 1;
  }
 
 input[type=submit], input[type=button] {    

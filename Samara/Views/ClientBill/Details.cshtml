@@ -96,7 +96,7 @@
                 <td></td>
 
                 <td>
-                    @if (Model.ClientDets.RetentionAmtIsPaid)
+                    @if (Model !=null && Model.ClientDets.RetentionAmtIsPaid)
                     { <p class="alert alert-success">Bill Sealed: Retention Money Paid</p>}
                     else
                     {<input type="submit" value="Submit" />}
@@ -181,7 +181,8 @@
                 }
 
                 <td class="section-to-Not-print">
-                    @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+                    @if (Model != null && !Model.ClientDets.RetentionAmtIsPaid)
+                    { @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID }) }
                 </td>
             </tr>
 
@@ -257,7 +258,10 @@
                 }
 
                 <td class="section-to-Not-print">
-                    @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+                    @if (Model != null && !Model.ClientDets.RetentionAmtIsPaid)
+                    {
+                        @Html.ActionLink("Edit", "ManageDetails", new { id = item.CBillDetailID })
+                    }
                 </td>
             </tr>
 
