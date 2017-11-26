@@ -436,7 +436,7 @@
     <Content Include="Views\Reports\ProfitLossSite.cshtml" />
     <Content Include="Views\Reports\ProfitLossSummary.cshtml" />
     <Content Include="Views\SiteTrans\ConfirmTransfer.cshtml" />
-
+    <Content Include="Views\Reports\RetentionReport.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
