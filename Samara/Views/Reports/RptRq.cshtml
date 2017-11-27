@@ -4,16 +4,18 @@
     ViewBag.Title = "Manage";
 }
 
-<h2>Manage</h2>
+<h2>Report Request</h2>
 
 
 @using (Html.BeginForm((string)ViewBag.ReturnAction, "Reports", FormMethod.Post)) 
 {
    @Html.AntiForgeryToken()
-   @Html.HiddenFor(model => model.SiteID)
-   
+    @Html.HiddenFor(model => model.SiteID)
+ 
+
     <div class="form-horizontal">
-        <h4>Appoint Goods To Site</h4>
+     
+       
         <hr />
      
         @if (ViewBag.MonthBox != null)
@@ -48,7 +50,7 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Search" class="btn btn-default" />
             </div>
         </div>
     </div>

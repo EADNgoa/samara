@@ -13,6 +13,9 @@
 
 <center>
     <table class="table-bordered section-to-print" width="100%">
+        <thead>
+           <b> Expenditure: Items</b>
+        </thead>
         <tr>
             <th>
                 Sr No
@@ -32,7 +35,7 @@
 
         </tr>
         @{int i = 1;decimal tot=0; }
-        @foreach (var item in ViewBag.Expenditure)
+        @foreach (var item in ViewBag.ExpenditureItem)
         {
             <tr>
                 <td>
@@ -47,21 +50,23 @@
                 </td>
                 <td>
                     @{ tot = tot + item.Amount;}
-                    @item.Amount
+                    @(String.Format("{0:#,##0.00}", item.Amount))
+                  
                 </td>
 
             </tr>
             i++;
         }
         <tr>
-            <td>Total</td>
-            <td>@tot</td>
+            <td><b>Total</b>td>
+            <td colspan="3"><b>@(String.Format("{0:#,##0.00}", tot))</b></td>
         </tr>
 
     </table>
 
     <br />
     <table class="table-bordered section-to-print" width="100%">
+        <thead><b>Expenditure: Labours</b></thead>
         <tr>
             <th>
                 Sr No
@@ -75,12 +80,12 @@
                 Quantity
             </th>
         <th>
-            Unit Price
+            Price
         </th>
 
         </tr>
         @{int a = 1; decimal stot = 0;}
-        @foreach (var item in ViewBag.Income)
+        @foreach (var item in ViewBag.ExpenditureLabour)
         {
             <tr>
                 <td>
@@ -95,7 +100,8 @@
                 </td>
                 <td>
                     @{ stot = stot + item.Amount; }
-                    @item.Amount
+                    @(String.Format("{0:#,##0.00}", item.Amount))
+                  
                 </td>
 
 
@@ -103,8 +109,81 @@
             a++;
         }
         <tr>
-            <td>Total</td>
-            <td>@stot</td>
+            <td><b>Total</b></td>
+            <td colspan="3"><b>@(String.Format("{0:#,##0.00}", stot))</b></td>
+        </tr>
+    </table>
+    <br />
+    <br />
+        <table class="table-bordered section-to-print" width="100%">
+        <thead><b><big>Income</big></b></thead>
+        <tr>
+            <th>
+                Sr No
+            </th>
+        
+            <th>
+                Site Name
+            </th>
+
+       
+            <th>
+               Tax Amount
+            </th>
+            <th>
+                Amount
+            </th>
+
+        </tr>
+        @{int c = 1; decimal itot = 0;}
+        @foreach (var item in ViewBag.Income)
+        {
+            <tr>
+                <td>
+                    @c
+                </td>
+             
+                <td>
+                    @item.SiteName
+                </td>
+              
+                <td>
+                    @item.TaxAmt
+                </td>
+                <td>
+                    @{ itot = itot + item.GrandTotalNoTax; }
+                    @(String.Format("{0:#,##0.00}", item.GrandTotalNoTax))
+                  
+                </td>
+
+
+            </tr>
+          a++;
+         }
+        <tr>
+            <td><b>Total</b></td>
+            <td colspan="3"><b>@(String.Format("{0:#,##0.00}", itot)) </b></td>
+        </tr>
+        <tr>
+            <td >
+                <b>
+                    @{
+                        decimal exp = tot + stot;
+                        decimal profit = exp - itot;
+                    }
+                    @if (profit >= 0)
+                    {
+                        @:Profit
+                    }
+                    else
+                    {
+                        @:Loss
+                    }
+                </b>
+            </td>
+            <td colspan="3">
+                <b> @(String.Format("{0:#,##0.00}", profit))</b> 
+            </td>
         </tr>
     </table>
 </center>

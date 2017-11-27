@@ -6,6 +6,9 @@
     [Amount] DECIMAL(18, 2) NULL, 
     [DebitCredit] BIT NULL, 
     [BeforeTax] BIT NULL, 
+
+
+
  
  
  
