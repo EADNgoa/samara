@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNet.Identity;
+using System;
 //using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -14,7 +15,7 @@ namespace Samara.Controllers
         public ActionResult Index(int? page, string ClientName)
         {
             if (ClientName?.Length > 0) page = 1;
-            return View("Index", base.BaseIndex<ClientDet>(page, "CBillID,ClientName, Tdate,RetentionPerc,TaxPerc", "ClientBill as cb Inner Join Client as c on cb.ClientID = c.ClientID where ClientName like '%" + ClientName + "%'"));
+            return View("Index", base.BaseIndex<ClientDet>(page, "CBillID,ClientName,SiteName, Tdate,RetentionPerc,TaxPerc", "ClientBill as cb Inner Join Client as c on cb.ClientID = c.ClientID inner join sites s on s.SiteID = cb.SiteID where ClientName like '%" + ClientName + "%'"));
         }
 
 
@@ -33,7 +34,7 @@ namespace Samara.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Manage([Bind(Include = "CBillID,ClientID,Tdate,RetentionPerc,TaxPerc")] ClientBill cBill)
+        public ActionResult Manage([Bind(Include = "CBillID,ClientID,SiteID,Tdate,RetentionPerc,TaxPerc")] ClientBill cBill)
         {
             return base.BaseSave<ClientBill>(cBill, cBill.CBillID > 0);
         }
@@ -41,7 +42,7 @@ namespace Samara.Controllers
         public ActionResult Details(int? id)
         {
            // ViewBag.ClientBillDets = base.BaseCreateEdit<ClientBillDetail>(id, "CBillDetailID");
-            ViewBag.gst = db.Fetch<decimal>("select TaxPerc From ClientBill",id);
+            ViewBag.gst = db.Fetch<decimal>("select TaxPerc From ClientBill where CBillID = @0",id);
             var confi = db.FirstOrDefault<Config>("select * From Config");
             ViewBag.tan = confi.TANnumber;
             ViewBag.pan = confi.PANnumber;
@@ -75,14 +76,20 @@ namespace Samara.Controllers
                     base.BaseSave<ClientBillDetail>(clientBillDetail, clientBillDetail.CBillDetailID > 0);
 
                     //Set Retention Amount
-                    decimal RetPerc = RetentionPerc;
+                    decimal RetPerc = db.FirstOrDefault<decimal>("Select RetentionPerc From ClientBill Where CBillID = @0", clientBillDetail.CBillID);
                     decimal BefTaxDebit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 1);
                     decimal BefTaxCredit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 0);
                     decimal BefTax = BefTaxCredit - BefTaxDebit;
-
                     decimal RetAmt = BefTax * (RetPerc / 100);
+                    decimal AftTaxDebit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 0, clientBillDetail.CBillID, 1);
+                    decimal AftTaxCredit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 0, clientBillDetail.CBillID, 0);
+                    decimal AftTax = AftTaxCredit - AftTaxDebit;
+                    decimal GT = BefTax + AftTax;
 
-                    db.Update("ClientBill", "CBillID", new { RetentionAmt = RetAmt }, clientBillDetail.CBillID);
+                    var TaxPerc = db.FirstOrDefault<decimal>("Select TaxPerc From ClientBill where CBillID=@0", clientBillDetail.CBillID);
+                    var TaxAmt = BefTax * (TaxPerc / 100);
+
+                    db.Update("ClientBill", "CBillID", new { RetentionAmt = RetAmt, TaxAmt = TaxAmt, GrandTotalNoTax = GT }, clientBillDetail.CBillID);
 
                     transaction.Complete();                    
                     return RedirectToAction("Details",new {id=clientBillDetail.CBillID });
@@ -121,10 +128,16 @@ namespace Samara.Controllers
                     decimal BefTaxDebit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 1);
                     decimal BefTaxCredit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 1, clientBillDetail.CBillID, 0);
                     decimal BefTax = BefTaxCredit - BefTaxDebit;
-
                     decimal RetAmt = BefTax * (RetPerc / 100);
+                    decimal AftTaxDebit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 0, clientBillDetail.CBillID, 1);
+                    decimal AftTaxCredit = db.FirstOrDefault<decimal>("select COALESCE(sum(Amount),0) as Amount from ClientBillDetail where BeforeTax = @0 and CBillID =@1 and DebitCredit =@2", 0, clientBillDetail.CBillID, 0);
+                    decimal AftTax = AftTaxCredit - AftTaxDebit;
+                    decimal GT = BefTax + AftTax;
 
-                    db.Update("ClientBill", "CBillID", new { RetentionAmt = RetAmt }, clientBillDetail.CBillID);
+                    var TaxPerc = db.FirstOrDefault<decimal>("Select TaxPerc From ClientBill where CBillID=@0", clientBillDetail.CBillID);
+                    var TaxAmt = BefTax * (TaxPerc / 100);
+
+                    db.Update("ClientBill", "CBillID", new { RetentionAmt = RetAmt, TaxAmt= TaxAmt, GrandTotalNoTax= GT }, clientBillDetail.CBillID);
 
                     transaction.Complete();
                     return RedirectToAction("Details", new { id = clientBillDetail.CBillID });
@@ -138,7 +151,12 @@ namespace Samara.Controllers
                 
         }
 
-
+        public ActionResult AutoCompleteSite(string term)
+        {
+            string UserID = User.Identity.GetUserId();
+            var h = db.Fetch<AutoCompleteData>($"Select ss.SiteID as id, SiteName as value from SupervisorSites as ss Inner Join Sites s on s.SiteID = ss.SiteID inner join AspNetUsers anu on ss.UserID=anu.Id Where SiteName like '%{term}%' and ss.UserID = @0 ", UserID).ToList();
+            return Json(h, JsonRequestBehavior.AllowGet);
+        }
         public ActionResult AutoCompleteItem(string term)
         {
             var h = db.Fetch<AutoCompleteData>($"Select ItemID as id, ItemName as value from Item where ItemName like '%{term}%'").ToList();

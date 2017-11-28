@@ -179,11 +179,14 @@ namespace Samara
     {
 		[Column] public int CBillID { get; set; }
 		[Column] public int? ClientID { get; set; }
+		[Column] public int? SiteID { get; set; }
 		[Column] public DateTime? Tdate { get; set; }
 		[Column] public decimal? RetentionPerc { get; set; }
 		[Column] public decimal? RetentionAmt { get; set; }
 		[Column] public bool RetentionAmtIsPaid { get; set; }
 		[Column] public decimal? TaxPerc { get; set; }
+		[Column] public decimal? GrandTotalNoTax { get; set; }
+		[Column] public decimal? TaxAmt { get; set; }
 	}
     
 	[TableName("dbo.ClientBillDetail")]

@@ -38,8 +38,7 @@ namespace Samara.Controllers
             int LastDate = DateTime.DaysInMonth(RptYr, RptMon);
             DateTime CurrMonDate = DateTime.Parse($"{LastDate}/{RptMon}/{RptYr}");
             ViewBag.RptMon = MyExtensions.MonthFromInt(RptMon);
-            ViewBag.RptYr = RptYr;
-            
+            ViewBag.RptYr = RptYr;            
             ViewBag.OpeningBalance = db.Fetch<StockSummaryDetails>("Select i.itemId, ItemName,sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By i.itemId, ItemName", lastMonDate).ToDictionary(i => i.ItemId);
             ViewBag.ClosingBalance = db.Fetch<StockSummaryDetails>(" Select i.itemId, ItemName,Sum(Qty) as Qty from StockSummary ss inner join Item i on ss.ItemID =i.ItemID Where Tdate= @0 Group By i.itemId, ItemName", CurrMonDate).ToDictionary(i => i.ItemId);
             return View("OCbalance");
@@ -60,15 +59,17 @@ namespace Samara.Controllers
  
             int Site = int.Parse(fm["SiteID"]);
             ViewBag.sn = fm["SiteName"];
-            ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SupplierName,ItemName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded * Price)  as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID inner join Supplier s on s.SupplierID = st.SupplierID Where SiteID = 1 and Price IS NOT NULL Group BY  SupplierName,ItemName ", Site);
-            ViewBag.Income = db.Fetch<SuppBillDet>("Select SupplierName,LabourName,Sum(Qty) as Qty,sum(Qty  *UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID inner join Labour l on l.LabourID = sbd.LabourID inner join Supplier sp on sp.SupplierID =sb.SupplierID where sb.SiteID = @0 Group By SupplierName,LabourName", Site);
+            ViewBag.ExpenditureItem = db.Fetch<BossTransDet>("Select SupplierName,ItemName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded * Price)  as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID inner join Supplier s on s.SupplierID = st.SupplierID Where SiteID = @0 and Price IS NOT NULL Group BY  SupplierName,ItemName ", Site);
+            ViewBag.ExpenditureLabour = db.Fetch<SuppBillDet>("Select SupplierName,LabourName,Sum(Qty) as Qty,sum(Qty  *UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID inner join Labour l on l.LabourID = sbd.LabourID inner join Supplier sp on sp.SupplierID =sb.SupplierID where sb.SiteID = @0 Group By SupplierName,LabourName", Site);
+            ViewBag.Income = db.Fetch<ClientDet>("Select ClientName,SiteName,Tdate,TaxAmt,GrandTotalNoTax From ClientBill cb Inner join Client c on c.ClientId = cb.ClientID inner join Sites s on s.SiteID = cb.SiteID where cb.SiteID = @0",Site);
             return View();
         }
 
         public ActionResult ProfitLossSummary()
         {    
-            ViewBag.Expenditure = db.Fetch<BossTransDet>("Select SiteName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded*Price) as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID  inner join Sites ss on st.SiteID = ss.SiteID where  Price IS NOT NULL Group BY  SiteName ");
-            ViewBag.Income = db.Fetch<SuppBillDet>("Select SiteName,Sum(Qty) as Qty,sum(Qty * UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID   Group By SiteName");
+            ViewBag.ExpenditureItem = db.Fetch<BossTransDet>("Select SiteName,Sum(QtyAdded) as QtyAdded,sum(QtyAdded*Price) as Amount from SiteTransasction st inner join item i on st.ItemID = i.ItemID  inner join Sites ss on st.SiteID = ss.SiteID where  Price IS NOT NULL Group BY  SiteName ");
+            ViewBag.ExpenditureLabour = db.Fetch<SuppBillDet>("Select SiteName,Sum(Qty) as Qty,sum(Qty * UnitPrice) as Amount from SupplierBill sb inner join SupplierBillDetail sbd on sb.SBillID = sbd.SBillID inner join Sites s on s.SiteID = sb.SiteID   Group By SiteName");
+            ViewBag.Income = db.Fetch<ClientDet>("Select SiteName,sum(TaxAmt) as TaxAmt,sum(GrandTotalNoTax) as GrandTotalNoTax From ClientBill cb  inner join Sites s on s.SiteID = cb.SiteID Group By SiteName");
             return View();
         }
 
